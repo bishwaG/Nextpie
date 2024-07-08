@@ -7,7 +7,7 @@ Nextpie can be run inside varities of software environments. Use one of the foll
     - [Guix environment](deploy-guix.md)
     - [Docker](deploy-docker.md)
     - [Gunicorn](deploy-gunicorn.md)
-    - [Waitress](deploy-waitress) (Windows)
+    - [Waitress](deploy-waitress.md) (Windows)
 
 * #### Configurations
     - [Email](config-email.md)
