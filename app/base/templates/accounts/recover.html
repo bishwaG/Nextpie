@@ -1,0 +1,52 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Account recovery {% endblock %}
+
+{% block content %}   
+
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather icon-user auth-icon"></i>
+                    </div>
+                    <h3 class="mb-4">Account Recovery</h3>
+
+                    <span class="mb-0 text-muted">
+                        {% if msg %}
+                            {{ msg | safe }}
+                        {% else %}
+                            Provide your email.
+                        {% endif %} 
+                    </span>
+
+                    <br />
+                    <br />
+                    
+                    <form role="form" method="post" action="">
+
+                        {{ form.hidden_tag() }}                    
+
+                        <div class="input-group mb-3">
+                            {{ form.email(placeholder="Email", class="form-control") }}
+                        </div>
+                        
+                        
+                        <button type="submit" name="recover" class="btn btn-primary shadow-2 mb-4">Recover</button>
+
+                    </form>
+                    <p> <a href="{{ url_for('base_blueprint.login') }}" >Go to login page</a></p>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,118 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Charts Morris {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="/static/assets/plugins/chart-morris/css/morris.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Analysis</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Project run status by workflow</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+                                  <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Group's project count</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="group-size" class="group-size">
+                                  <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Group process size vs runtime</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="p-size-runtime" class="p-size-runtime">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process Run Status</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="per-group-workflow-runs" class="per-group-workflow-runs">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- [ Morris Chart ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts-more.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/variwide.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/sankey.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/exporting.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/export-data.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/accessibility.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/dependency-wheel.js"></script>
+
+
+<script src="/static/assets/js/pages/stats-group-project.js"></script>
+
+
+{% endblock javascripts %}

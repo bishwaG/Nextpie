@@ -1,0 +1,19 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+5	c6/0f2552	-	workflow_summary_mqc	COMPLETED	-	2023-04-23 15:36:55.021	14ms	5ms	-	-	-	-	-
+1	0e/0c0e10	121134	lock (test_run_poj_2)	COMPLETED	0	2023-04-23 15:36:54.889	7s	29ms	114.3%	0	0	57.3 KB	339 B
+4	4d/07ea09	121147	get_software_versions	COMPLETED	0	2023-04-23 15:36:55.086	18.6s	11.9s	146.8%	51 MB	20.3 GB	96.1 MB	4.1 KB
+2	61/39a59b	6117985	fastqc (test_sample_1)	COMPLETED	0	2023-04-23 15:36:54.982	31m 55s	30m 55s	97.4%	371 MB	3.5 GB	12 GB	2.1 MB
+3	10/d3d3f0	6117986	trim_galore (test_sample_1)	COMPLETED	0	2023-04-23 15:36:55.159	3h 9m 45s	1h 11m 29s	332.2%	330.6 MB	3.5 GB	474.9 GB	462.8 GB
+6	19/04081f	6118326	star (test_sample_1)	COMPLETED	0	2023-04-23 18:46:40.793	4h 56m 3s	2h 43m 59s	677.4%	36.6 GB	39.3 GB	317.5 GB	138.5 GB
+13	07/58c8ae	6118393	stringtieFPKM (test_sample_1)	COMPLETED	0	2023-04-23 23:42:44.714	26m 46s	14m 3s	84.2%	1.5 GB	1.8 GB	15.8 GB	585 MB
+8	aa/fa2e06	6118396	RNASeQC (test_sample_1)	COMPLETED	0	2023-04-23 23:42:46.590	33m 54s	20m 42s	99.9%	1.2 GB	2.8 GB	15.8 GB	153.1 MB
+14	87/2dea8f	6118991	mergeRNASeQC (test_run_poj_2)	COMPLETED	0	2023-04-24 00:16:42.101	43.8s	4s	131.2%	67 MB	1.6 GB	10 MB	13.7 KB
+10	2a/eca1e7	6118394	markDuplicates (test_sample_1)	COMPLETED	0	2023-04-23 23:42:46.233	1h 23m 45s	1h 23m 30s	602.0%	16.9 GB	24 GB	46.1 GB	17.2 GB
+9	0f/3eaef7	6118397	preseq (test_sample_1)	COMPLETED	0	2023-04-23 23:42:46.775	1h 29m 19s	1h 16m 18s	100.4%	32.3 MB	1.5 GB	14.4 GB	475.6 KB
+7	5a/971e35	6118398	RSeQC (test_sample_1)	COMPLETED	0	2023-04-23 23:42:46.987	1h 37m 14s	1h 36m 35s	96.0%	21.1 GB	22.7 GB	87.2 GB	173 MB
+15	5e/e9d710	6119000	dupradar (test_sample_1)	COMPLETED	0	2023-04-24 01:06:31.719	1h 56m 45s	1h 56m 34s	88.2%	3.1 GB	5.2 GB	346.6 GB	205.7 GB
+11	3c/c00c3e	6118399	genebody_coverage (test_sample_1)	COMPLETED	0	2023-04-23 23:42:47.195	6h 21m 10s	6h 8m 28s	30.4%	1 GB	2.5 GB	1 TB	341 MB
+12	f5/adbdac	6118395	featureCounts (test_sample_1)	COMPLETED	0	2023-04-23 23:42:46.440	11h 39m 32s	1h 34m 3s	58.3%	2 GB	2.7 GB	188 GB	109.7 GB
+16	d7/b48cab	6121408	merge_featureCounts (test_sample_1)	COMPLETED	0	2023-04-24 11:22:18.707	39.5s	392ms	57.8%	1.2 MB	110.5 MB	32.1 MB	1.1 MB
+18	82/e9d057	72370	multiqc (test_run_poj_2)	COMPLETED	0	2023-04-24 11:22:58.755	55.1s	29.3s	24.3%	94.1 MB	927.2 MB	44.6 MB	4.1 MB
+19	c1/923ef7	6121410	documentation (test_run_poj_2)	COMPLETED	0	2023-04-24 11:23:54.165	34.1s	2.9s	166.2%	58.4 MB	1.7 GB	13.9 MB	4.2 MB

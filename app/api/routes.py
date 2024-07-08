@@ -1,0 +1,284 @@
+from app import app
+from app.api import blueprint
+from app.home.utils import Utils
+
+from app.api.utils import token_required
+from flask import jsonify
+from flask_restx import Api, Resource, reqparse, inputs, Namespace
+from werkzeug.datastructures import FileStorage
+from werkzeug.utils import secure_filename
+import glob
+import os
+
+from wtforms.validators import Regexp
+from wtforms.fields import StringField
+
+import datetime
+from flask_restx import fields
+
+from app.home.models import Group, Project, Run, Process
+
+## Token
+authorizations = {
+    'apikey': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'X-API-KEY'
+    }
+}
+
+## Create the API
+desc  = "This is a RESTful API to interact with Nextpie web application.\n"
+desc += "Code repository: https://version.helsinki.fi/fimm/nextpie\n"
+desc += "Contact: nextpie@gmail.com"
+ver   = "1.0"
+api = Api(blueprint,
+          version=ver,
+          title="Nextpie API entry point",
+          description=desc,
+          doc="/api/v"+ver,
+          prefix="/api/v"+ver,
+          authorizations=authorizations)
+
+ns1 = Namespace('default', description='Default namespace')
+#api.add_namespace(ns1,path="/api/upload-data")
+#api.add_namespace(ns1,path="/api/get-runs")
+
+
+## for select list
+years = [(year, str(year)) for year in range(2020, datetime.datetime.now().year + 1)]
+
+################################################################################
+## U P L O A D   D A T A
+################################################################################
+
+## Input fields File, Workflow, Version, Group, Project
+parser = api.parser()
+parser.add_argument('File', location='files',type=FileStorage, required=True,
+                            help="Trace.txt produced from Nextflow")
+parser.add_argument('Workflow', type=str, required=True, help='Workflow name.', trim=True)
+parser.add_argument('Version',  type=inputs.regex(r'^[0-9]\.[0-9*.]'), required=True, help='Workflow version. Example: 1.0.2', trim=True)
+parser.add_argument('Group',    type=str, required=True, help='Research group name.', trim=True)
+parser.add_argument('Project',  type=str, required=True, help='Project name.', trim=True)
+
+
+## Upload data
+@api.route('/upload-data', endpoint='upload-data')
+@api.doc(security='apikey')
+class MyResource1(Resource):
+
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser)
+	@token_required
+	def post(self):
+		args = parser.parse_args()
+
+		trace_file = args['File']
+		filename   = secure_filename(trace_file.filename)
+		if not (filename == "Trace.txt" or filename == "trace.txt"):
+			return {"message":"File name can only be Trace.txt or trace.txt "},403
+
+
+		workflow   = args['Workflow']
+		version    = args['Version']
+		group      = args['Group']
+		project    = args['Project']
+
+		details = [group, project, workflow, version]
+
+		## get uploaded file
+		path = os.path.join( app.config['UPLOAD_FOLDER'], "API")
+
+		if not os.path.isdir(path):
+			os.makedirs(path, exist_ok=True)
+
+		## Save uploaded file
+		if trace_file:
+			trace_file.save(os.path.join(path, filename))
+
+		x =  Utils.parseTraceFiles(details, path, actionSource="API" )
+		return jsonify(x)
+
+		#api.abort(403)
+
+
+################################################################################
+## G E T   G R O U P S  &  P R O J E C T S 
+################################################################################
+from app.api.analysis import Analysis
+@api.route('/get-groups', endpoint='get-groups')
+@api.doc(security='apikey')
+class GetGroups(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@token_required
+	def get(self):
+		return Analysis.get_all_groups()
+	
+
+
+@api.route('/get-projects', endpoint='get-projects')
+@api.doc(security='apikey')
+class GetProjects(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	#@token_required
+	def get(self):
+		return Analysis.get_all_projects()		
+
+################################################################################
+## G E T   R U N S
+################################################################################
+
+## input fields 
+parser2 = api.parser()
+#parser2.add_argument('Year',type=str, required=True, help="Year", choices=tuple(range(2015, 2050,1)))
+parser2.add_argument('Year', type=int, required=False, help="Select a year", choices=[year[0] for year in years])
+
+
+@api.route('/get-runs', endpoint='get-runs')
+@api.doc(security='apikey')
+class GetRuns(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser2)
+	#@token_required
+	def post(self):
+		args = parser2.parse_args()
+		year = args['Year']
+		return Analysis.get_runs(year)
+		
+		
+################################################################################
+## G E T   P R O C E S S E S
+################################################################################
+
+
+## input fields 
+parser3 = api.parser()
+parser3.add_argument('Year', type=int, required=False, help="Select a year", choices=[year[0] for year in years])
+parser3.add_argument('Project', type=str, required=False, help="Project name")
+parser3.add_argument('Status', type=str, required=False, 
+                     help="Process status", 
+                     choices=("","COMPLETED", "FAILED", "CACHED", "ABORTED"))
+
+@api.route('/get-processes', endpoint='get-processes')
+@api.doc(security='apikey')
+class GetProcs(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser3)
+	#@token_required
+	def post(self):
+		pass
+
+
+################################################################################
+## G E T   D A T A   F O O T P R I N T
+################################################################################
+
+## by year
+parser4 = api.parser()
+
+@api.route('/get-data-footprint-yearly-TB', endpoint='get-data-footprint-yearly-TB')
+@api.doc(security='apikey')
+class GetFootprintYr(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser4)
+	#@token_required
+	def get(self):
+		return Analysis.get_footprint_by_year()
+                  
+
+parser5 = api.parser()
+parser5.add_argument('Year', type=int, required=True, help="Select a year", choices=[year[0] for year in years])
+
+@api.route('/get-data-footprint-montly-TB', endpoint='get-data-footprint-montly-TB')
+@api.doc(security='apikey')
+class GetFootprintMth(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser5)
+	#@token_required
+	def post(self):
+		args = parser5.parse_args()
+		year = args['Year']
+		return Analysis.get_footprint_by_month(year)
+
+
+
+
+################################################################################
+## G E T   T O T A L (Groups, projects, runs, processe)
+################################################################################
+parser6 = api.parser()
+
+@api.route('/get-total', endpoint='get-total')
+@api.doc(security='apikey')
+class GetTotal(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser6)
+	#@token_required
+	def get(self):
+		
+		groups    = Group.query.count()
+		projects  = Project.query.count()
+		runs      = Run.query.count()
+		processes = Process.query.count()
+
+		return jsonify([{"groups": groups,
+		                "projects": projects,
+		                "runs": runs,
+		                "processes": processes}])
+
+
+################################################################################
+## W O R K F L O W S   B Y   S T A T U S
+################################################################################
+parser7 = api.parser()
+
+@api.route('/get-workflows-no-by-status', endpoint='get-workflow-by-status')
+@api.doc(security='apikey')
+class GetWorkflowByStatus(Resource):
+	@ns1.doc(responses={403: 'Not Authorized', 200:'Success'})
+	@api.expect(parser7)
+	#@token_required
+	def get(self):
+		
+		pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

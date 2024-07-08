@@ -1,0 +1,143 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="http://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+{% endblock stylesheets %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/jquery-datatables/jquery.dataTables.min.js"></script>
+<script>
+
+   
+$(document).ready(function () {
+    $('#example').DataTable({
+        dom: "Blfrtip",
+        pageLength: 20,
+        ajax: {url:'/get-users',type:'GET'},
+        columns: [
+          { data: "project_name"},
+          { data: "run_id" },
+          { data: "process_name"},
+          { data: "hash"},
+          { data: "status"},
+          { data: "exit"},
+          { data: "submitted"},
+          { data: "duration"},
+          { data: "realtime"},
+          { data: "cpu"},
+          { data: "peak_rss_mb"},
+          { data: "peak_vmem_mb"},
+          { data: "rchar_mb"},
+          { data: "wchar_mb"}
+        ]
+        
+    });
+});
+
+</script>
+{% endblock javascripts %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+        
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Actions</a></li>
+                            <li class="breadcrumb-item"><a href="#!">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        
+        <div id="messages" class="hide" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div id="messages_content" >
+              
+              </div>
+            </div>
+            
+        <div id="alert" class="alert alert-info alert-dismissible fade show" role="alert">
+              {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            {{ message }}</br>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                    
+                     <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>{{title}}</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+                                     
+                                     <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Run ID</th>
+                <th>Name</th>
+                <th>Hash</th>
+                <th>Status</th>
+                <th>Exit</th>
+                <th>Submitted</th>
+                <th>Duration</th>
+                <th>Realtime</th>
+                <th>CPU</th>
+                <th>Peak RSS (MB)</th>
+                <th>Peak VMEM (MB)</th>
+                <th>RCHAR (MB)</th>
+                <th>WCHAR (MB)</th>
+            </tr>
+        </thead>
+    </table>
+    
+                             </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    </div>
+   
+                   
+                    <div>
+
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+

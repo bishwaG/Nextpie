@@ -1,0 +1,281 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Charts Morris {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+<link rel="stylesheet" href="/static/assets/plugins/chart-morris/css/morris.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Analysis</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                
+                <div class="row">
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process status by workflow</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+                                  <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process Status</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="proc-status" class="proc-status">
+                                <img src="/static/assets/images/loading.gif" alt="loading">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-12">
+                    <div class="card">
+                    <div class="card-header">
+                    <h5>Workflow</h5>
+                    <div class="card-block">
+                    <select class="form-control form-control-lg" id="workflow" onchange="getVersion(this)"> <option>Workflow name</option> </select>
+                    <p></p>
+                    <select class="form-control form-control-lg" id="version"> <option>Workflow version</option> </select>
+                    <p></p>
+                    <button type="button" id="button" class="btn btn-primary btn-lg" onclick="showPlots()" disabled>Show plots</button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process Runtime</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="runtime" class="runtime"></div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process Peak Memory</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="memory" class="memory"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Process I/O</h5>
+                            </div>
+                            
+                            <div class="col-xl-12 col-md-12 m-b-30">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active show" data-toggle="tab" href="#read" role="tab" aria-selected="true">Read</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#write" role="tab" aria-selected="false">Write</a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade active show" id="read" role="tabpanel"></div>
+                                <div class="tab-pane fade" id="write" role="tabpanel"></div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <!-- [ Morris Chart ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- BOXPLOT -->
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/sankey.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts-more.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/exporting.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/export-data.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/accessibility.js"></script>
+
+<script src="/static/assets/js/pages/stats-proc.js"></script>
+
+<script>
+
+var data = []
+// DB counts
+ $.ajax({
+    url: '/info/workflows',
+    type: 'GET',
+    async: false,
+    dataType: "json",
+    success: function (res_data) {
+       data = res_data;
+    }
+  });
+
+  
+
+
+
+let workflow = $('#workflow');
+let version = $('#version');
+
+workflow.empty();
+
+workflow.append('<option selected="true" disabled>Workflow</option>');
+workflow.prop('selectedIndex', 0);
+
+const exists = [];
+
+  $.each(data, function (key, entry) {
+  if(exists.indexOf(entry.name) == -1){
+  workflow.append($('<option></option>').attr('value', entry.name).text(entry.name));
+    exists.push(entry.name);
+  } 
+    
+  })
+
+
+  
+// function to put version on second lelect
+function getVersion(selectObject) {
+  var value = selectObject.value;  
+  
+  version.empty();
+  
+  $.each(data, function (key, entry) {
+  if(value==entry.name)
+     version.append($('<option></option>').attr('value', entry.version).text(entry.version));
+  
+  });
+  
+  // if there are values in workflow select enable button
+  var name_val = $('#workflow').val();
+  var ver_val  = $('#version').val();
+  if(name_val && ver_val){
+    $("#button").attr("disabled", false);
+    }
+  
+}
+
+// show plots after button click
+function showPlots(){
+
+  // loaders
+  $('#runtime').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+  $('#memory').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+  $('#read').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+  $('#write').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+  
+  let workflow_value   = $("#workflow").val();
+  let workflow_version = $("#version").val();
+  
+  // ajax request for process runtime
+   $.ajax({
+        url: '/analysis/get-process-runtime/'+workflow_value+"/"+workflow_version,
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            runtime(data);
+        }
+    });
+    
+    // ajax request for process memory
+    $.ajax({
+        url: '/analysis/get-process-memory/'+workflow_value+"/"+workflow_version,
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            memory(data);
+        }
+    });
+    
+    // ajax request for process disk read
+    $.ajax({
+        url: '/analysis/get-process-read/'+workflow_value+"/"+workflow_version,
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            procDiskRead(data);
+        }
+    });
+   
+   // ajax request for process disk write
+    $.ajax({
+        url: '/analysis/get-process-write/'+workflow_value+"/"+workflow_version,
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            procDiskWrite(data);
+        }
+    });
+}
+</script>
+
+
+{% endblock javascripts %}

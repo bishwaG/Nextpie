@@ -1,0 +1,89 @@
+Apr-26 13:12:43.922 [main] DEBUG nextflow.cli.Launcher - $> nextflow run ../main.nf --fastqs 'fastq/big/*_R{1,2}*.fastq.gz' --name test_project --group test_research_group -resume
+Apr-26 13:12:44.294 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.10.1
+Apr-26 13:12:44.362 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/bishwa/.nextflow/plugins; core-plugins: nf-amazon@2.1.4,nf-azure@1.3.3,nf-cloudcache@0.3.0,nf-codecommit@0.1.5,nf-console@1.0.6,nf-ga4gh@1.1.0,nf-google@1.8.3,nf-tower@1.6.3,nf-wave@1.0.1
+Apr-26 13:12:44.415 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Apr-26 13:12:44.419 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Apr-26 13:12:44.436 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Apr-26 13:12:44.472 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Apr-26 13:12:44.586 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/nextflow.config
+Apr-26 13:12:44.593 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/nextflow.config
+Apr-26 13:12:44.760 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Apr-26 13:12:47.629 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Apr-26 13:12:47.714 [main] INFO  nextflow.cli.CmdRun - Launching `../main.nf` [soggy_lattes] DSL2 - revision: ca8089d2a3
+Apr-26 13:12:47.717 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Apr-26 13:12:47.718 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Apr-26 13:12:47.813 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/bishwa/.nextflow/secrets/store.json
+Apr-26 13:12:47.833 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@17143b3b] - activable => nextflow.secret.LocalSecretsProvider@17143b3b
+Apr-26 13:12:48.146 [main] DEBUG nextflow.Session - Session UUID: 4d81b667-c27b-4ec7-b7f6-7d0aabc50fbc
+Apr-26 13:12:48.146 [main] DEBUG nextflow.Session - Run name: soggy_lattes
+Apr-26 13:12:48.149 [main] DEBUG nextflow.Session - Executor pool size: 12
+Apr-26 13:12:48.189 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Apr-26 13:12:48.210 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Apr-26 13:12:48.365 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.10.1 build 5891
+  Created: 12-01-2024 22:01 UTC (13-01-2024 00:01 EEST)
+  System: Linux 5.14.0-362.18.1.el9_3.x86_64
+  Runtime: Groovy 3.0.19 on OpenJDK 64-Bit Server VM 11.0.22+7-LTS
+  Encoding: UTF-8 (UTF-8)
+  Process: 338943@thinkpad-l14 [192.168.0.109]
+  CPUs: 12 - Mem: 30.8 GB (691.5 MB) - Swap: 7.8 GB (7.1 GB)
+Apr-26 13:12:48.482 [main] DEBUG nextflow.Session - Work-dir: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/test-runs/work [ext2/ext3]
+Apr-26 13:12:48.535 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Apr-26 13:12:48.624 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Apr-26 13:12:48.770 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Apr-26 13:12:48.811 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 13; maxThreads: 1000
+Apr-26 13:12:49.089 [main] DEBUG nextflow.Session - Session start
+Apr-26 13:12:49.115 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/test-runs/results/pipeline_info/Trace.txt
+Apr-26 13:12:49.158 [main] DEBUG nextflow.Session - Using default localLib path: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/lib
+Apr-26 13:12:49.168 [main] DEBUG nextflow.Session - Adding to the classpath library: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/lib
+Apr-26 13:12:50.732 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Apr-26 13:12:51.158 [main] INFO  nextflow.Nextflow - ===============================================================================
+Apr-26 13:12:51.162 [main] INFO  nextflow.Nextflow -  Test-workflow v0.0.1
+Apr-26 13:12:51.163 [main] INFO  nextflow.Nextflow - ===============================================================================
+Apr-26 13:12:51.168 [main] INFO  nextflow.Nextflow - Run Name       : test_project
+Group          : test_research_group
+FASTQs         : fastq/big/*_R{1,2}*.fastq.gz
+Output Dir     : ./results
+Apr-26 13:12:51.174 [main] INFO  nextflow.Nextflow - ===============================================================================
+Apr-26 13:12:55.493 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Apr-26 13:12:55.495 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Apr-26 13:12:55.527 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Apr-26 13:12:55.542 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=12; memory=30.8 GB; capacity=12; pollInterval=100ms; dumpInterval=5m
+Apr-26 13:12:55.550 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Apr-26 13:12:55.829 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: preprocess:FastQC, FastQC
+Apr-26 13:12:55.834 [main] DEBUG nextflow.Session - Igniting dataflow network (2)
+Apr-26 13:12:55.885 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > preprocess:FastQC
+Apr-26 13:12:55.902 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_32ad9aab896d9268: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/./lib/functions.nf
+  Script_3d533492940f2da7: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/./lib/preprocess.nf
+  Script_029a470fb2f69ec9: /home/bishwa/Desktop/data-analyses/nextpie/assets/example-workflow/main.nf
+Apr-26 13:12:55.902 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Apr-26 13:12:55.902 [main] DEBUG nextflow.Session - Session await
+Apr-26 13:12:55.888 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: fastq/big/; pattern: *_R{1,2}*.fastq.gz; options: [:]
+Apr-26 13:12:57.053 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Apr-26 13:12:57.062 [Task submitter] INFO  nextflow.Session - [48/35c31f] Submitted process > preprocess:FastQC (SRR2121687)
+Apr-26 13:12:57.083 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Apr-26 13:12:57.090 [Task submitter] INFO  nextflow.Session - [30/f3c5e3] Submitted process > preprocess:FastQC (SRR2121688)
+Apr-26 13:13:03.204 [SIGINT handler] DEBUG nextflow.Session - Session aborted -- Cause: SIGINT
+Apr-26 13:13:03.216 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Apr-26 13:13:03.311 [main] DEBUG nextflow.Session - Session await > all processes finished
+Apr-26 13:13:03.312 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Apr-26 13:13:03.316 [main] INFO  nextflow.Nextflow - workflow: Test-workflow
+Apr-26 13:13:03.318 [main] INFO  nextflow.Nextflow - version : 0.0.1
+Apr-26 13:13:03.319 [main] INFO  nextflow.Nextflow - group   : test_research_group
+Apr-26 13:13:03.319 [main] INFO  nextflow.Nextflow - project : test_project
+Apr-26 13:13:03.320 [main] INFO  nextflow.Nextflow - Pushing run metadata to Nextpie http://localhost:5000
+Apr-26 13:13:06.392 [main] INFO  nextflow.Nextflow - Response: java.lang.RuntimeException: groovyx.net.http.HttpException: INTERNAL SERVER ERROR
+Apr-26 13:13:06.405 [main] WARN  n.processor.TaskPollingMonitor - Killing running tasks (2)
+Apr-26 13:13:06.480 [main] DEBUG n.executor.local.LocalTaskHandler - Unable to kill preprocess:FastQC (SRR2121687) -- command: kill -TERM 339099; exit: 1 
+ bash: line 1: kill: (339099) - No such process
+
+Apr-26 13:13:06.600 [main] DEBUG n.executor.local.LocalTaskHandler - Unable to kill preprocess:FastQC (SRR2121688) -- command: kill -TERM 339103; exit: 1 
+ bash: line 1: kill: (339103) - No such process
+
+Apr-26 13:13:06.610 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=0; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=1; retriesCount=0; abortedCount=1; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=1; loadMemory=0; peakRunning=2; peakCpus=2; peakMemory=0; ]
+Apr-26 13:13:06.610 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+Apr-26 13:13:06.628 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+Apr-26 13:13:08.073 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+Apr-26 13:13:08.277 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Apr-26 13:13:08.320 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

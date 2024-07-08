@@ -1,0 +1,188 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} {{title}} {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<!-- <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css"> -->
+
+<style>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.my-chart {
+  flex: 1;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Database</a></li>
+                            <li class="breadcrumb-item"><a href="#!">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+
+
+
+ <div class="row">
+  <div class="col-8">
+  </div>
+  <div class="col-4">
+   <div class="row">
+
+    <div class="col-6">
+    <input type="button" onclick="sizeToFit(false)" value="Fit to width" class="form-control btn btn-primary " name="">
+    </div>
+    <div class="col-6" align="left">
+    <input type="button" onclick="autoSizeAll(false)" value="Auto size" class="form-control btn btn-primary " name="">
+    </div>
+   </div>
+  </div>
+                </div>
+
+
+                <div class="row">
+
+                    <!-- [ basic-table ] start -->
+                    <div class="col-xl-12">
+
+
+
+                      <div id="myGrid" style="height: 750px;width:100%;" class="ag-theme-alpine"></div>
+
+                          <div class="wrapper">
+                              <div id="myGrid" class="ag-theme-alpine my-grid"></div>
+                         </div>
+                      </div>
+
+
+                </div>
+                <!-- [ Main Content ] end -->
+                </div> <!-- page wraper -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/ag-grid/26.0.0/dev/@ag-grid-enterprise/all-modules/dist/ag-grid-enterprise.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+// For data filter
+var filterParams = {
+  comparator: function (filterLocalDateAtMidnight, cellValue) {
+    var dateAsString = cellValue;
+    if (dateAsString == null) return -1;
+    var dateParts = dateAsString.split('/');
+    var cellDate = new Date(
+      Number(dateParts[2]),
+      Number(dateParts[1]) - 1,
+      Number(dateParts[0])
+    );
+
+    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+      return 0;
+    }
+
+    if (cellDate < filterLocalDateAtMidnight) {
+      return -1;
+    }
+
+    if (cellDate > filterLocalDateAtMidnight) {
+      return 1;
+    }
+  },
+  browserDatePicker: true,
+  minValidYear: 2000,
+};
+
+
+    // specify the columns
+    const columnDefs = [
+      { headerName:"Group ID",   field: "id",      filter:'agNumberColumnFilter', sortable: true,chartDataType: 'series' },
+      { headerName:"Group name", field: "name",    filter: 'agTextColumnFilter', sortable: true,chartDataType: 'category' },    ];
+
+
+    // let the grid know which columns to use
+    const gridOptions = {
+      columnDefs: columnDefs,
+      pagination: true,
+      paginationPageSize: 15,
+      flex: 1,
+      filter: true,
+      resizable:true,
+      popupParent: document.body,
+      enableRangeSelection: true,
+      enableCharts: false,
+      getChartToolbarItems: getChartToolbarItems,
+
+      autoGroupColumnDef: {
+	minWidth: 200,
+      },
+      animateRows: true,
+      //rowGroupPanelShow: 'always',
+
+    };
+
+  // lookup the container we want the Grid to use
+  const eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  // fetch the row data to use and one ready provide it to the Grid via the Grid API
+  //'https://www.ag-grid.com/example-assets/row-data.json'
+  agGrid.simpleHttpRequest({url: '/db-fetch/Group'})
+      .then(data => {
+          gridOptions.api.setRowData(data);
+      });
+
+gridOptions.api.sizeColumnsToFit();
+
+function getChartToolbarItems() {
+  return ['chartDownload', 'chartData', 'chartSettings'];
+}
+
+
+ function autoSizeAll(skipHeader) {
+  var allColumnIds = [];
+  gridOptions.columnApi.getAllColumns().forEach(function (column) {
+    allColumnIds.push(column.colId);
+  });
+
+  gridOptions.columnApi.autoSizeColumns(allColumnIds, skipHeader);
+
+}
+
+function sizeToFit() {
+  gridOptions.api.sizeColumnsToFit();
+}
+</script>
+{% endblock javascripts %}

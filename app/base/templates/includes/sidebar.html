@@ -1,0 +1,135 @@
+
+    <nav class="pcoded-navbar">
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                <a href="index" class="b-brand">
+                    <div class="b-bg">
+                        <i class="feather icon-pie-chart"></i>
+                    </div>
+                    <span class="b-title">NextPie</span>
+                </a>
+                <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+            </div>
+            <div class="navbar-content scroll-div">
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li data-username="" 
+                        class="nav-item {% if 'index' in segment %} active {% endif %}">
+                        <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    </li>
+            
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Input data</label>
+                    
+                    
+                    <li data-username="" 
+                        class="nav-item {% if 'upload' in segment %} active {% endif %}">
+                        <a href="/upload" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Upload Data</span></a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    <!-- DATABASE -------------------------------------------->
+                    
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Database</label>
+                    </li>
+                    <!--
+                    <li data-username="" class="nav-item pcoded-hasmenu">
+                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-menu"></i></span><span class="pcoded-mtext">Tables</span></a>
+                        <ul class="pcoded-submenu">
+                            <li class=""><a href="/db-group" class="">Group</a></li>
+                            <li class=""><a href="/db-project" class="">Project</a></li>
+                            <li class=""><a href="/db-run" class="">Run</a></li>
+                            <li class=""><a href="/db-process" class="">Process</a></li>
+                        </ul>
+                    </li>
+                    </li>
+                    </li>
+                    -->
+                    
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'db-group' in segment %} active {% endif %}">
+                        <a href="/db-group" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Group</span></a>
+                    </li>
+                    
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'db-project' in segment %} active {% endif %}">
+                        <a href="/db-project" class="nav-link "><span class="pcoded-micon"><i class="feather icon-layers"></i></span><span class="pcoded-mtext">Project</span></a>
+                    </li>
+                    
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'db-run' in segment %} active {% endif %}">
+                        <a href="/db-run" class="nav-link "><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Run</span></a>
+                    </li>
+                    
+                    <li class="nav-item {% if 'db-process' in segment %} active {% endif %}">
+                        <a href="/db-process" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Process</span></a>
+                    </li>
+                    
+                    
+                    <!-- Analysis  -------------------------------------------->
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Analysis (Plots)</label>
+                    </li>
+                    
+
+                    <li data-username="Group & project statistics" 
+                        class="nav-item {% if 'stats-gp' in segment %} active {% endif %}">
+                        <a href="/stats-gp" class="nav-link ">
+                            <span class="pcoded-micon">
+                            <i class="feather icon-trending-up"></i>
+                            </span>
+                            <span class="pcoded-mtext">Group & Project</span>
+                        </a>
+                    </li>
+                    
+                    <li data-username="Run statistics" 
+                        class="nav-item {% if 'stats-run' in segment %} active {% endif %}">
+                        <a href="/stats-run" class="nav-link ">
+                            <span class="pcoded-micon">
+                            <i class="feather icon-pie-chart"></i>
+                            </span>
+                            <span class="pcoded-mtext">Run</span>
+                        </a>
+                    </li>
+                    
+                    <li data-username="Process statistics" 
+                        class="nav-item {% if 'stats-proc' in segment %} active {% endif %}">
+                        <a href="/stats-proc" class="nav-link ">
+                            <span class="pcoded-micon">
+                            <i class="feather icon-bar-chart"></i>
+                            </span>
+                            <span class="pcoded-mtext">Process</span>
+                        </a>
+                    </li>
+                    
+                    <!-- ACTIONS   -------------------------------------------->
+                    
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Actions</label>
+                    </li>
+                    
+                    <li data-username="Disabled Menu" class="nav-item">
+                        <a href="/settings" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Settings</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li data-username="Disabled Menu" class="nav-item">
+                        <a href="{{ url_for('base_blueprint.logout') }}" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-power"></i></span><span class="pcoded-mtext">Logout</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>

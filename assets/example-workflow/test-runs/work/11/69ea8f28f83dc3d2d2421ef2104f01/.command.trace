@@ -1,0 +1,17 @@
+nextflow.trace/v2
+realtime=2155
+%cpu=2602
+cpu_model=12th Gen Intel(R) Core(TM) i5-1235U
+rchar=12563862
+wchar=4306172
+syscr=9584
+syscw=14378
+read_bytes=0
+write_bytes=4624384
+%mem=8
+vmem=3937960
+rss=256224
+peak_vmem=12120492
+peak_rss=256240
+vol_ctxt=2
+inv_ctxt=3

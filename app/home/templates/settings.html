@@ -1,0 +1,299 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/jquery/js/jquery-mini.js"></script>
+<script>
+
+function generateKey(){
+
+var username = $("#userName").val();
+
+$("#key").val("Fetching..")
+
+$.ajax({
+        type: "GET",
+        url: "key/"+username,
+        //dataType: "json",
+        success: function(data) {
+            $("#key").val(data)
+            $("#copy").removeAttr("disabled");
+        },
+        error: function(jqXHR, textStatus){
+        if(textStatus === 'timeout')
+	  {     
+             alert('Failed from timeout');         
+            //do something. Try again perhaps?
+	  }
+	},
+    
+        timeout: 3000 // sets timeout to 3 seconds
+     });
+     
+$.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ key_form.csrf_token._value() }}")
+                }
+            }
+        })
+}
+
+const input = document.getElementById("key");
+const btn = document.getElementById("copy");
+
+btn.addEventListener("click", copyText);
+
+function copyText() {
+  $("#key").removeAttr("disabled");
+  input.select();
+  document.execCommand("copy");
+  btn.innerHTML = "Copied!";
+}
+
+</script>
+{% endblock javascripts %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+        
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Actions</a></li>
+                            <li class="breadcrumb-item"><a href="#!">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        
+        <div id="messages" class="hide" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div id="messages_content" >
+              
+              </div>
+            </div>
+            
+        <div id="alert" class="alert alert-info alert-dismissible fade show" role="alert">
+              {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            {{ message }}</br>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+
+        
+        
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                    
+                     <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Change password</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+                                  
+                                    <form id="form1" method="post" action="">
+
+                                            
+                                            <div class="form-group">
+                                                <label for="username">{{ pwd_form.userName.label }}</label>
+                                                {{ pwd_form.userName( id="userName", class_="form-control", value=pwd_form.userName._name, placeholder=pwd_form.userName._name, disabled=True) }}
+                                                <small id="emailHelp" class="form-text text-muted">Username can not changed.</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="old-pass">{{ pwd_form.oldPassword.label }}</label>
+                                                {{ pwd_form.oldPassword( class_="form-control", placeholder="Old password") }}
+                                                <small id="traceHelp" class="form-text text-muted">Type your old password. Password should be at least 6 characters long.</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="email">{{ pwd_form.email.label }}</label>
+                                                {{ pwd_form.email( class_="form-control", placeholder="name@example.com") }}
+                                                <small id="traceHelp" class="form-text text-muted">name@example.com</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="new-pass">{{ pwd_form.newPassword.label }}</label>
+                                                {{ pwd_form.newPassword( class_="form-control", placeholder="New password") }} 
+                                                <small id="traceHelp" class="form-text text-muted">Type new password.</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="confirm">{{ pwd_form.confirmPassword.label }}</label>
+                                                {{ pwd_form.confirmPassword( class_="form-control", placeholder="Confirm password") }} 
+                                                <small id="traceHelp" class="form-text text-muted">Retype yor new password to confirm.</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                            <button type="submit" name="submit1" value="1" class="btn btn-primary btn-lg">
+                                                 <span class="feather icon-save" aria-hidden="true"></span> Save
+                                            </button>
+
+                                        </form>
+                             
+                             </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    </div>
+                    
+                    
+                    
+                    
+                     <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>API key</h5>
+                                     <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+                                  
+                                    <form id="form2" method="post" action="">
+                                    <p> API key enables users to access application API. A key will not be generated if a user does not have API access.
+
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">{{ key_form.key.label }}</label>
+                                                
+                                                <div class="input-group mb-3">
+						  {{ key_form.key( class_="form-control", disabled=True) }}
+						  <div class="input-group-append">
+						    <button id="copy" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" disabled>
+						    <span class="feather icon-clipboard" aria-hidden="true"></span>
+						    </button>
+						    
+						  </div>
+						</div>
+
+                                                <small id="emailHelp" class="form-text text-muted" style="font-color:red;">WARNING: If old API key exists in the system, it will be overwritten by a new one.
+                                                Old key will not be functional. Copy the key to a safe place as same key can not be regenerated.</small>
+                                            </div>
+                                            
+                                            
+                                            <div class="form-group">
+                                            <button id="key" type="button" class="btn btn-primary btn-lg" onclick="generateKey();">
+                                                 <span class="feather icon-refresh-cw" aria-hidden="true"></span> Generate a key
+                                            </button>
+                                        </form>
+                             
+                             </div>
+                            </div>
+                        </div>
+                            
+                            </div>
+                        <div>
+                    <div>
+
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="row">
+        {% if user_is_admin %}
+        <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>SMTP settings</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="samtp" class="smtp">
+
+                                    <form id="form3" method="post" action="">
+
+
+                                            <div class="form-group">
+                                                <label for="smtp-server">{{ smtp_form.SMTPserver.label }}</label>
+                                                {{ smtp_form.SMTPserver( id="SMTPserver", class_="form-control", value=smtp_form.SMTPserver.data, placeholder="smtp.example.com") }}
+                                                <p style="color: red;">{{ error }}</p>
+                                                <small id="emailHelp" class="form-text text-muted">SMTP server's hostname or IP address.</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="smtp-port">{{ smtp_form.SMTPport.label }}</label>
+                                                {{ smtp_form.SMTPport( id="SMTPport", class_="form-control", value=smtp_form.SMTPport.data, placeholder=smtp_form.SMTPport._name) }}
+                                                <p style="color: red;">{{ error }}</p>
+                                                <small id="traceHelp" class="form-text text-muted">SMTP port number. Should be 587 if TLS is used.</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="smtp-tls">{{ smtp_form.SMTPtls.label }}</label>
+                                                {{ smtp_form.SMTPtls(id="SMTPtls", class_="form-control") }}
+                                                {% for error in smtp_form.SMTPtls.errors %}
+                                                <p style="color: red;">{{ error }}</p>
+                                                {% endfor %}
+                                                <small id="traceHelp" class="form-text text-muted">Select yes if your SMTP server uses TLS.</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="smtp-user">{{ smtp_form.SMTPuser.label }}</label>
+                                                {{ smtp_form.SMTPuser( id="SMTPuser", class_="form-control", value=smtp_form.SMTPuser.data, placeholder="name@example.com") }}
+                                                <p style="color: red;">{{ error }}</p>
+                                                <small id="traceHelp" class="form-text text-muted">Provide username as a full email address, such as name@example.com</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="smtp-pass">{{ smtp_form.SMTPpass.label }}</label>
+                                                {{ smtp_form.SMTPpass( id="SMTPpass", class_="form-control", value=smtp_form.SMTPpass.data, placeholder="Password") }}
+                                                <p style="color: red;">{{ error }}</p>
+                                                <small id="traceHelp" class="form-text text-muted">Can not be less than 6 characters</small>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="amtp-reply">{{ smtp_form.SMTPreply.label }}</label>
+                                                {{ smtp_form.SMTPreply( id="SMTPreply", class_="form-control", value=smtp_form.SMTPreply.data, placeholder="name@example.com") }}
+                                                <p style="color: red;">{{ error }}</p>
+                                                <small id="traceHelp" class="form-text text-muted">This email will be visible in the from field of a sent email. Eg. no-reply@example.com</small>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                            <button type="submit" name="submit3" value="1" class="btn btn-primary btn-lg">
+                                                 <span class="feather icon-save" aria-hidden="true"></span> Save
+                                            </button>
+
+                               </form>
+
+                             </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </div> <!-- col-xl-6 closed -->
+        {% endif %}
+     </div>
+{% endblock content %}
+
+

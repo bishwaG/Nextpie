@@ -1,0 +1,206 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Charts Morris {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Analysis</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Run Input/Output</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="io" class="io">
+                                  
+                                  <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="row">
+                    <!-- [ Morris Chart ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Workflow Run Timeline</h5>
+                            </div>
+                            <div class="card-block">
+                              <div id="run-timeline" class="run-timeline">
+                                  
+                                  <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Workflow Run Status</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="pipe-status" class="pipe-status">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Workflow status by version</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="pipe-ver-status" class="pipe-ver-status">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Run runtime by workflows</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="run-runtime" class="run-runtime">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Run runtime vs process counts</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="runtime-pc-count" class="runtime-pc-count">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Disk read by workflow</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="read" class="read">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Disk write by workflow</h5>
+                            </div>
+                            <div class="card-block">
+                                <div id="write" class="write">
+                                    <!-- Loader -->
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- [ Morris Chart ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/sankey.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/timeline.js"></script>
+
+<script src="/static/assets/plugins/Highcharts-v11.2.0/stock/modules/drag-panes.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/data.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/series-label.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/exporting.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/export-data.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/accessibility.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts-more.js"></script>
+
+<script src="/static/assets/js/pages/stats-run.js"></script>
+
+
+
+
+
+
+
+
+{% endblock javascripts %}

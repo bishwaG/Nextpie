@@ -1,0 +1,243 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} {{title}} {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+<style>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.my-chart {
+  flex: 1;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">{{title}}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Database</a></li>
+                            <li class="breadcrumb-item"><a href="#!">{{title}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                
+
+
+ <div class="row">
+  <div class="col-8">
+    <h5>Data from only this year</h5>
+  </div>
+  <div class="col-4">
+   <div class="row">
+    <div class="col-4"> 
+     <button type="button" class="form-control btn btn-primary" onclick="onChart1()(false)">
+       <i class="feather icon-pie-chart"></i> Chart
+     </button>
+    </div>
+    <div class="col-4">
+     <button type="button" class="form-control btn btn-primary" onclick="sizeToFit(false)">
+       <i class="feather icon-align-justify"></i>Fit to width
+     </button>
+    </div>
+    <div class="col-4" align="left">
+    <input type="button" onclick="onBtnExport()" value="Export to CSV" class="form-control btn btn-primary " name=""> 
+    </div>
+    </div>
+   </div>
+  </div>
+                </div>
+                
+                
+                <div class="row">
+                                    
+                    <!-- [ basic-table ] start -->
+                    <div class="col-xl-12">
+                        
+                                
+                                  
+                      <div id="myGrid" style="height: 750px;width:100%;" class="ag-theme-alpine"></div>
+                      
+                          <div class="wrapper">
+                              <div id="myGrid" class="ag-theme-alpine my-grid"></div>
+                         </div>
+                      </div>
+                      
+
+                </div>
+                <!-- [ Main Content ] end -->
+                </div> <!-- page wraper -->
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/ag-grid/26.0.0/dev/@ag-grid-enterprise/all-modules/dist/ag-grid-enterprise.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+// For data filter
+var filterParams = {
+  comparator: function (filterLocalDateAtMidnight, cellValue) {
+    var dateAsString = cellValue;
+    if (dateAsString == null) return -1;
+    var dateParts = dateAsString.split('/');
+    var cellDate = new Date(
+      Number(dateParts[2]),
+      Number(dateParts[1]) - 1,
+      Number(dateParts[0])
+    );
+
+    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {return 0;}
+    if (cellDate < filterLocalDateAtMidnight) {return -1;}
+    if (cellDate > filterLocalDateAtMidnight) {return 1;}
+  },
+  browserDatePicker: true,
+  minValidYear: 2000,
+};
+
+
+    // specify the columns
+    const columnDefs = [
+      { headerName:"Run ID",     field: "run_id",   filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'excluded',rowGroup: false, enableRowGroup: true, hide: false, rowGroupIndex: 1,enablePivot: true,  },
+      { headerName:"Hash",       field: "hash",     filter: 'agTextColumnFilter',  sortable: true,  chartDataType: 'excluded' }, 
+      
+      //{ headerName:"Native ID", field: "native_id",filter: 'agTextColumnFilter',sortable: true,  chartDataType: 'excluded' },
+      { headerName:"Name",       field: "process_name",     filter: 'agTextColumnFilter',  sortable: true , chartDataType: 'excluded' },
+      { headerName:"Status",     field: "status",   filter: 'agTextColumnFilter',  sortable: true,  chartDataType: 'category', rowGroup: false, enableRowGroup: true, hide: false,rowGroupIndex: 1  },
+      //{ headerName:"Exit",       field: "exit",     filter: 'agTextColumnFilter',  sortable: true,  chartDataType: 'excluded'  },
+      { headerName:"Submitted",  field: "submitted",   filter: 'agDateColumnFilter',  sortable: true,  chartDataType: 'excluded', filterParams: filterParams   },
+      { headerName:"Duration",   field: "duration", filter: 'agTextColumnFilter',  sortable: true,  chartDataType: 'excluded'  },
+      { headerName:"Realtime",   field: "realtime", filter: 'agTextColumnFilter',  sortable: true,  chartDataType: 'excluded' },
+      { headerName:"CPU %",      field: "cpu",      filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'series'},
+      { headerName:"Memory (MB)",field: "peak_rss_mb", filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'series',aggFunc: 'sum'  },
+      //{ headerName:"Vmem (GB)",  field: "peak_vmem",filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'series' },
+      { headerName:"Read (MB)",  field: "rchar_mb",    filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'series', aggFunc: 'sum' },
+      { headerName:"Write (MB)", field: "wchar_mb",    filter: 'agNumberColumnFilter',sortable: true,  chartDataType: 'series', aggFunc: 'sum' },
+      { headerName:"Projct name",field: "project_name",   filter: 'agTextColumnFilter',sortable: true,  chartDataType: 'excluded',rowGroup: false, enableRowGroup: true, hide: false, rowGroupIndex: 1,enablePivot: true,  }
+    ];
+
+
+    // let the grid know which columns to use
+    const gridOptions = {
+      columnDefs: columnDefs,
+      pagination: true,
+      paginationPageSize: 15,
+      flex: 1,
+      //filter: true,
+      resizable:true,
+      //charts 
+      popupParent: document.body,
+      enableRangeSelection: true,
+      //onFirstDataRendered: onFirstDataRendered,
+      enableCharts: true,
+      getChartToolbarItems: getChartToolbarItems,
+  
+      sideBar: true,
+      functionsReadOnly: false,
+      
+      autoGroupColumnDef: {
+	minWidth: 100,
+      },
+      animateRows: true,
+      rowGroupPanelShow: 'always',
+  
+    };
+
+  // lookup the container we want the Grid to use
+  const eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  // fetch the row data to use and one ready provide it to the Grid via the Grid API
+  //'https://www.ag-grid.com/example-assets/row-data.json'
+  agGrid.simpleHttpRequest({url: '/db-fetch/Process'})
+      .then(data => {
+          gridOptions.api.setRowData(data);
+      });
+function getChartToolbarItems() {
+   return ['chartData', 'chartSettings', 'chartFormat', 'chartDownload'];
+}
+
+// botton clicked chart
+function onChart1() {
+  var params = {
+    cellRange: {
+      //rowStartIndex: 0,
+      //rowEndIndex: 4,
+      columns: ['rchar_mb'],
+    },
+    chartType: 'histogram',
+    chartThemeName: 'ag-vivid',
+    chartThemeOverrides: {
+      common: {
+        title: {
+          enabled: true,
+          text: 'Read (MB)',
+        },
+      },
+    },
+  };
+  gridOptions.api.createRangeChart(params);
+  }
+  
+// onload chart
+function onFirstDataRendered(params) {
+  var createRangeChartParams = {
+    cellRange: {
+      //rowStartIndex: 0,
+      //rowEndIndex: 15,
+      columns: ['rchar'],
+    },
+    chartType: 'histogram',
+  };
+  params.api.createRangeChart(createRangeChartParams);
+ }
+ 
+ function autoSizeAll(skipHeader) {
+  var allColumnIds = [];
+  gridOptions.columnApi.getAllColumns().forEach(function (column) {
+    allColumnIds.push(column.colId);
+  });
+
+  gridOptions.columnApi.autoSizeColumns(allColumnIds, skipHeader);
+}
+
+function sizeToFit() {
+  gridOptions.api.sizeColumnsToFit();
+}
+
+function onBtnExport() {
+  gridOptions.api.exportDataAsCsv();
+}
+</script>
+{% endblock javascripts %}

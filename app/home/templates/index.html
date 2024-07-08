@@ -1,0 +1,189 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <!--[ Yearly footprint ] start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card daily-sales">
+                                <div class="card-block">
+                                    <h3 class="mb-4">Yearly Data Footprint (TB)</h3>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-9">
+                                            <h3 id="yearly-foot" class="f-w-400 d-flex align-items-center m-b-0"></h3>
+                                        </div>
+
+                                        <div class="col-3 text-right">
+                                            <p id="yearly-foot-per" class="m-b-0"></p>
+                                        </div>
+                                    </div>
+                                    <div class="progress m-t-30" style="height: 7px;">
+                                        <div id="yearly-foot-progress" class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--[ yearly footprint ] end-->
+                        <!--[ Monthly  sales section ] starts-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card Monthly-sales">
+                                <div class="card-block">
+                                    <h3 class="mb-4">Monthly Workflow Runs</h3>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-9">
+                                            <h3 id="monthly-runs" class="f-w-300 d-flex align-items-center  m-b-0"></h3>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <p id="monthly-runs-per" class="m-b-0"></p>
+                                        </div>
+                                    </div>
+                                    <div class="progress m-t-30" style="height: 7px;">
+                                        <div id="monthly-runs-progress" class="progress-bar progress-c-theme2" role="progressbar" style="width: 100%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--[ Monthly  sales section ] end-->
+                        <!--[ year  sales section ] starts-->
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card yearly-sales">
+                                <div class="card-block">
+                                    <h3 class="mb-4">Yearly Workflow Runs</h3>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-9">
+                                            <h3 id="yearly-runs" class="f-w-300 d-flex align-items-center  m-b-0"></h3>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <p id="yearly-runs-per" class="m-b-0"></p>
+                                        </div>
+                                    </div>
+                                    <div class="progress m-t-30" style="height: 7px;">
+                                        <div id="yearly-runs-progress" class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--[ year  sales section ] end-->
+
+                        <!-- [ statistics year chart ] start -->
+                        <div class="col-xl-4 col-md-6">
+
+                            <div class="card">
+
+
+                                <div class="card-block">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <i class="feather icon-user f-30 text-c-blue"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="f-w-300" id="groups">Loading..</h3>
+                                            <span class="d-block text-uppercase">TOTAL RESEARCH GROUPS</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <i class="feather icon-layers f-30 text-c-black"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="f-w-300" id="projects">Loading..</h3>
+                                            <span class="d-block text-uppercase">TOTAL RESEARCH PROJECTS</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <i class="feather icon-settings f-30 text-c-green"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="f-w-300" id="runs">Loading..</h3>
+                                            <span class="d-block text-uppercase">TOTAL PIPELINE RUNS</span>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <i class="feather icon-server f-30 text-c-red"></i>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="f-w-300" id="processes">Loading..</h3>
+                                            <span class="d-block text-uppercase">TOTAL ANALYSIS PROCESSES</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- [ statistics year chart ] end -->
+
+
+                        <div class="col-xl-8 col-md-12 m-b-30">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active show" id="profile-tab" data-toggle="tab" href="#month-run" role="tab" aria-controls="profile" aria-selected="true">Workflow Runs</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#month-disk" role="tab" aria-controls="contact" aria-selected="false">Data footprint</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#month-memory" role="tab" aria-controls="contact" aria-selected="false">Memory consumption</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#month-status" role="tab" aria-controls="contact" aria-selected="false">Workflow status</a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#month-projects" role="tab" aria-controls="contact" aria-selected="false">Projects</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade active show" id="month-run" role="tabpanel" aria-labelledby="week-tab"></div>
+                                <div class="tab-pane fade" id="month-disk" role="tabpanel" aria-labelledby="month-tab"></div>
+                                <div class="tab-pane fade" id="month-memory" role="tabpanel" aria-labelledby="month-tab"></div>
+                                <div class="tab-pane fade" id="month-status" role="tabpanel" aria-labelledby="month-tab"></div>
+                                <div class="tab-pane fade" id="month-projects" role="tabpanel" aria-labelledby="month-tab"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/plugins/Highcharts-v11.2.0/highcharts.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/exporting.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/export-data.js"></script>
+<script src="/static/assets/plugins/Highcharts-v11.2.0/modules/accessibility.js"></script>
+
+<script src="/static/assets/plugins/jquery/js/jquery-mini.js"></script>
+
+<script src="/static/assets/js/pages/index.js"></script>
+{% endblock javascripts %}
