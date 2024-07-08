@@ -4,7 +4,7 @@ Nextpie is a reporting tool for Nextflow workflows. It uses run metadata (trace 
 
 Nextpie comes with with a databased populated with sample data. Thus, user can [run it using docker](docs/deploy-docker.md) without zero configuration. This enable users to evaluate the tool without big hassle of setp and configuration.
 
-In case you decide to deploy Nextpie in a production environment please [clear the databased](docs/clear-db.md) and [SMTP](docs/config-email.md) details in. 
+In case you decide to deploy Nextpie in a production environment please [clear the databased](db-clear-test-data.md) and [SMTP](docs/config-email.md) details in. 
 
 ## Requirements
 The code is well tested in Python `v3.9` in Redhat Exterprise Linux 8 and 9. All the python packages in requirements files under the directory `requirements` have version enforcement. Thus, it should work with as long as you are able to create a Python virtual environment using mentioned version of Python packages. 
