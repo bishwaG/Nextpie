@@ -1,1 +1,0 @@
-2024-04-26 13:49:50	33.4s	loving_bhaskara	ERR	ca8089d2a37c08fcf5561a28ff4a2be9	6f43f46f-8d94-4e03-90a5-d454477fd40d	nextflow run ../main.nf --fastqs 'fastq/*_R{1,2}*.fastq.gz' --name test_project --group test_research_group -resume
