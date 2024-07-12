@@ -31,7 +31,7 @@ To run the example pipeline along with Nextpie, download manually or use git clo
 ```bash
 cd $HOME
 git clone https://github.com/bishwaG/Nextpie.git
-cd nextpie
+cd Nextpie
 ```
 
 Follow the instruction on Nextpie [running in a development mode](deploy-python.md). Although you can deploy Nextpie in a production environment rather easily, we are running it in development mode to keep things simple.

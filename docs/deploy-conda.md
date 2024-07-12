@@ -19,7 +19,7 @@ Now create a new conda environment using the file `environment.yml`. The file co
 
 ```bash
 git clone https://github.com/bishwaG/Nextpie.git
-cd nextpie
+cd Nextpie
 conda env create -f environment.yml python=3.9
 ```
 

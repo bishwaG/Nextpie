@@ -5,7 +5,7 @@ Nextpie can be run in Guix as well. Please refer to [Guix installation guide](ht
 THe the following code block to create a Guix environment for Nextpie. 
 ```bash
 git clone https://github.com/bishwaG/Nextpie.git
-cd nextpie
+cd Nextpie
 guix shell -m manifest.scm
 ```
 

@@ -5,7 +5,7 @@ Run the following commands in terminal to run Nextpie in development mode with d
 ```bash
 ## Clone the repository
 git clone https://github.com/bishwaG/Nextpie.git
-cd nextpie
+cd Nextpie
 
 ## Create a virtual environment (Unix)
 virtualenv -p python3.6 env
@@ -31,7 +31,7 @@ export FLASK_ENV=development
 # Start the application (development mode)
 # --host=0.0.0.0 - expose the app on all network interfaces (default 127.0.0.1)
 # --port=5000    - specify the app port (default 5000)  
-flask run --host=0.0.0.0 --port=5000
+flask run --host=127.0.0.1 --port=5000
 ```
 
 Access Nextpie via the link showed in the console. Use username `admin` and password `admin` to login. By default SQlite database is located at `$HOME/.Nextpie/nextpie-DB.sqlite3`. You can change the path by modifying the variable `SQLALCHEMY_DATABASE_URI ` in `config.py`.
