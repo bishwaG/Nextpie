@@ -4,7 +4,7 @@ Run the following commands in terminal to run Nextpie in development mode with d
 
 ```bash
 ## Clone the repository
-git clone https://version.helsinki.fi/fimm/nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git
 cd nextpie
 
 ## Create a virtual environment (Unix)

@@ -18,7 +18,7 @@ export PATH=/opt/Conda/miniconda3-py38_4.8.3/condabin:$PATH
 Now create a new conda environment using the file `environment.yml`. The file contains dependencies with versions.
 
 ```bash
-git clone https://version.helsinki.fi/fimm/nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git
 cd nextpie
 conda env create -f environment.yml python=3.9
 ```

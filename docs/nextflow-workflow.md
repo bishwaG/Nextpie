@@ -30,7 +30,7 @@ To run the example pipeline along with Nextpie, download manually or use git clo
 
 ```bash
 cd $HOME
-git clone https://version.helsinki.fi/fimm/nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git
 cd nextpie
 ```
 

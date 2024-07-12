@@ -5,7 +5,7 @@
 To run Nextpie as a docker container run the following commands in terminal. Before running following commands make sure that you have installed `docker` and `docker-compose` in your system and make sure that the docker daemon is running in your system. Please keep in mind that you should have root privlage to run docker containers. 
 
 ```bash
-git clone https://version.helsinki.fi/fimm/nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git
 cd nextpie
 sudo docker compose up --build
 ```
