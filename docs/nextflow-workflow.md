@@ -84,6 +84,8 @@ Please run the following command to run the pipeline. Make sure that your locate
 
 > NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in a [development mode](deploy-python.md). If you are running it in different IP address and port, put the correct IP address and the port in `example-workflow/nextflow.config`.
 
+> NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed. 
+
 ```bash
 ../bin/nextflow run \
   ../main.nf \
@@ -100,8 +102,8 @@ Once the workflow completes successfully you will see a reply from Nextpie. In t
 
 
 ```
-N E X T F L O W  ~  version 22.10.7
-Launching `../main.nf` [big_easley] DSL2 - revision: 867b93c1a0
+N E X T F L O W  ~  version 23.10.1
+Launching `../main.nf` [focused_planck] DSL2 - revision: ca8089d2a3
 ===============================================================================
  Test-workflow v0.0.1
 ===============================================================================
@@ -112,15 +114,15 @@ Output Dir     : ./results
 ===============================================================================
 Do you want to continue (y/n)?y
 executor >  local (2)
-[5f/6076e1] process > preprocess:FastQC (SRR2121687) [100%] 2 of 2 ✔
+[52/f9e05e] process > preprocess:FastQC (SRR2121687) [100%] 2 of 2 ✔
 workflow: Test-workflow
 version : 0.0.1
 group   : test_research_group
 project : test_project
 Pushing run metadata to Nextpie http://localhost:5000
-Response: {existant-processes=0, non-existant-processes=2, run-exists=0}
-Completed at: 31-May-2023 17:22:08
-Duration    : 6m 22s
+Response: {message=Records inserted into the database., response=info}
+Completed at: 12-Jul-2024 15:05:52
+Duration    : 7m 17s
 CPU hours   : 0.2
 Succeeded   : 2
 
