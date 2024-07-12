@@ -25,9 +25,10 @@ pip3 install -r requirements/requirements.txt
 Once the dependencies are installed successfully, run the following command to run Nextpie under Gunicorn wer server.
 
 ```bash
-## make sure that systemwide installed gunicorn is called
+## make sure that systemwide installed gunicorn is not called
 which gunicorn
 
+## run gunicorn
 gunicorn --bind 0.0.0.0:8001 run:app
 ```
 
