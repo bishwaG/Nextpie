@@ -16,3 +16,5 @@ Serving on http://localhost:8001
 ```
 
 Open your browser and go to `http://localhost:5005`. Use username `admin` and password `admin` to login.
+
+> NOTE: Nextipe is built to run under Linux. Theoritically it is possible to run under Windows, but it has not been tested. 

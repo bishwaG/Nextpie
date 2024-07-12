@@ -25,7 +25,13 @@ pip3 install -r requirements/requirements.txt
 Once the dependencies are installed successfully, run the following command to run Nextpie under Gunicorn wer server.
 
 ```bash
-gunicorn --bind 0.0.0.0:8001 run:app./run-app.sh
+## make sure that systemwide installed gunicorn is called
+which gunicorn
+
+gunicorn --bind 0.0.0.0:8001 run:app
 ```
 
-Open your browser and go to `http://localhost:80001`. Use username `admin` and password `admin` to login.
+Open your browser and go to `http://localhost:8001`. Use username `admin` and password `admin` to login.
+
+Press `Ctrl+C` to termiante Gunicorn webserver.
+Press `Ctrl+D` to deactivate Guix environment.

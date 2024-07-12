@@ -24,8 +24,34 @@ Nextpie image is readily available in Dockerhub as a repository `fimmtech/nextpi
 sudo docker pull fimmtech/nextpie:0.0.1
 
 ## run the image by forwarding local port 80 to container's port 5005
-docker run -p 80:5005 fimmtech/nextpie:0.0.1
+sudo docker run -p 80:5005 fimmtech/nextpie:0.0.1
 ```
 
 Open your browser and go to `http://localhost`. Use username `admin` and password `admin` to login.
 
+
+### Useful docker commands
+
+Following docker commands can be useful while debugging docker realated issues.
+
+```bash
+
+## list all docker images
+sudo docker images -a
+
+## delete a docker image
+sudo docker rmi [IMAGE ID]
+
+## list all containers
+docker ps -a
+
+## Stop a container
+docker stop [CONTAINER ID]
+
+## remove a container 
+docker rm --force [CONTAINER ID]
+
+## SSH to a container
+docker exec -it [CONTINER NAME] /bin/bash
+
+```

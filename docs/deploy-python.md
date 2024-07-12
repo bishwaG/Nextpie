@@ -8,7 +8,8 @@ git clone https://github.com/bishwaG/Nextpie.git
 cd Nextpie
 
 ## Create a virtual environment (Unix)
-virtualenv -p python3.6 env
+## Change python version or user only 'python3'
+virtualenv -p python3.9 env
 source env/bin/activate
 
 ## Install modules - SQLite Database

@@ -9,13 +9,14 @@ It is possible to run Nextpie under Conda environment. Runs the following comman
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.8.3-Linux-x86_64.sh
 
 ## Run the installer
+## Type yes and press enter when asked
+## Do you wish the installer to initialize Miniconda3 by running conda init?
 sh Miniconda3-py38_4.8.3-Linux-x86_64.sh -p /opt/Conda/miniconda3-py38_4.8.3
-
-## Set conda bin path
-export PATH=/opt/Conda/miniconda3-py38_4.8.3/condabin:$PATH
 ```
-
+For changes to take effect, please open a new terminal.
 Now create a new conda environment using the file `environment.yml`. The file contains dependencies with versions.
+
+> NOTE: If it take abnormally long time to create the environment please terminate the process and rerun the command.
 
 ```bash
 git clone https://github.com/bishwaG/Nextpie.git
@@ -26,8 +27,8 @@ conda env create -f environment.yml python=3.9
 Now load the Conda environment and run Gunicorn web server. 
 
 ```bash
-source activate nextpie-v0.0.1
+conda activate nextpie-v0.0.1
 gunicorn --bind 0.0.0.0:8001 run:app
 ```
 
-Open your browser and go to `http://localhost:80001`. Use username `admin` and password `admin` to login.
+Open your browser and go to `http://localhost:8001`. Use username `admin` and password `admin` to login.
