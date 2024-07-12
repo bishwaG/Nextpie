@@ -1,3 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-1	11/69ea8f	358231	preprocess:FastQC (SRR2121687)	COMPLETED	0	2024-04-26 13:49:53.474	2.2s	2.2s	260.2%	250.2 MB	11.6 GB	12 MB	4.1 MB
-2	c9/b7f353	358214	preprocess:FastQC (SRR2121688)	ABORTED	143	2024-04-26 13:49:53.465	28.4s	28.3s	-	-	-	-	-
