@@ -8,7 +8,7 @@ First, download FastQC zipped archive and decompresse it your `$HOME` directory 
 
 ```bash
 cd $HOME
-wget wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.12.1.zip
+wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.12.1.zip
 unzip fastqc_v0.12.1.zip
 rm -fv fastqc_v0.12.1.zip
 ```
@@ -31,7 +31,7 @@ To run the example pipeline along with Nextpie, download manually or use git clo
 ```bash
 cd $HOME
 git clone https://github.com/bishwaG/Nextpie.git
-cd Nextpie
+cd Nextpie/
 ```
 
 Follow the instruction on Nextpie [running in a development mode](deploy-python.md). Although you can deploy Nextpie in a production environment rather easily, we are running it in development mode to keep things simple.
@@ -81,6 +81,8 @@ drwxr-xr-x 6 user user 4.0K Feb 24 15:39 ..
 ### Step 4: Run the workflow
 
 Please run the following command to run the pipeline. Make sure that your located at `$HOME/nextpie/example-workflow/test-runs`. Nextflow binary is located inside `example-workflow/bin`
+
+> NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in a [development mode](deploy-python.md). If you are running it in different IP address and port, put the correct IP address and the port in `example-workflow/nextflow.config`.
 
 ```bash
 ../bin/nextflow run \
