@@ -129,7 +129,7 @@ $.ajax({
 	    },
 
 	    title: {
-		text: 'Labor Costs in Europe, 2016'
+		text: ''
 	    },
 
 
@@ -148,7 +148,7 @@ $.ajax({
 	    },
 
 	    series: [{
-		name: 'Labor Costs',
+		name: 'Total runtime',
 		data: data,
 		dataLabels: {
 		    enabled: true,
