@@ -10,7 +10,7 @@ vim: syntax=groovy
 */
 
 // Pipeline name
-pipelineName = "FIMM-RNASeq"
+pipelineName = "Test-pipeline"
 
 // Enable DSL2
 nextflow.enable.dsl=2
