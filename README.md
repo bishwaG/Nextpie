@@ -43,4 +43,4 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Admin page](docs/admin.md)
 
 ## Demo videos
-* [Generating plots using defult interace] (https://youtu.be/CrL1GM2gCLs)
+* [Generating plots using defult interace](https://youtu.be/CrL1GM2gCLs)
