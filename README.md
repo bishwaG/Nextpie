@@ -7,7 +7,7 @@ Nextpie comes with with a databased populated with sample data. Thus, user can [
 In case you decide to deploy Nextpie in a production environment please [clear the databased](docs/db-clear-test-data.md) and add [SMTP](docs/config-email.md) details in email configuration (web interface >> Settings >> SMTP settings). 
 
 ## Requirements
-The code is well tested in Python `v3.9` in Redhat Exterprise Linux 8 and 9. All the python packages in requirements files under the directory `requirements` have version enforcement. Thus, it should work with as long as you are able to create a Python virtual environment using mentioned version of Python packages. 
+The code is well tested in Python `v3.9` in Redhat Exterprise Linux 8 and 9. All the python packages in requirements files under the directory `requirements` have version enforcement. Thus, it should work with other Linux distributions as long as you are able to create a Python virtual environment using mentioned version of Python packages. 
 
 #### Minimal requirements
 * Linux operating system
