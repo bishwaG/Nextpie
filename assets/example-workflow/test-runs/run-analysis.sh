@@ -4,11 +4,14 @@
 NXF_OPTS='-Xms1g -Xmx1g'
 _JAVA_OPTIONS='-Xms1g -Xmx4g'
 
+export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json"
 
-../bin/nextflow run \
-  ../main.nf \
-  --fastqs 'fastq/big/*_R{1,2}*.fastq.gz' \
+#./nextflow run ../main.nf -plugins nf-hello@0.6.0\
+./nextflow run ../main.nf \
+  --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
   --group "test_research_group" \
   -resume
 
+
+SRR2121687 and SRR2121688

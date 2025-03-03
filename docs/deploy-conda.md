@@ -1,6 +1,6 @@
 # Running Nextpie inside a Conda environment
 
-It is possible to run Nextpie under Conda environment. Runs the following command block to install Conda.
+It is possible to run Nextpie under Conda environment. Runs the following command block to install Conda. 
 
 > NOTE: If you do not want ~/.bashrc to be modified by Conda, do not run conda init even if the conda installer suggests it.
 
@@ -8,10 +8,12 @@ It is possible to run Nextpie under Conda environment. Runs the following comman
 ## Download the installer
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.8.3-Linux-x86_64.sh
 
-## Run the installer
+## Pprovide INSTALL_PATH where you have write access
+INSTALL_PATH=/opt/Conda/miniconda3-py38_4.8.3
+
 ## Type yes and press enter when asked
 ## Do you wish the installer to initialize Miniconda3 by running conda init?
-sh Miniconda3-py38_4.8.3-Linux-x86_64.sh -p /opt/Conda/miniconda3-py38_4.8.3
+sh Miniconda3-py38_4.8.3-Linux-x86_64.sh -p $INSTALL_PATH
 ```
 For changes to take effect, please open a new terminal.
 Now create a new conda environment using the file `environment.yml`. The file contains dependencies with versions.
@@ -28,6 +30,13 @@ Now load the Conda environment and run Gunicorn web server.
 
 ```bash
 conda activate nextpie-v0.0.1
+
+## install dependency (missing in conda repo) sqlite_dump via pip
+## make sure that pip you are using is from conda environment
+which pip
+pip install sqlite_dump
+
+## run webserver
 gunicorn --bind 0.0.0.0:8001 run:app
 ```
 

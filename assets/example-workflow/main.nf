@@ -128,33 +128,7 @@ workflow{
  ******************************************************************************
  */
  
-// include Nextpie function
-include {Nextpie} from './lib/functions'
-
 workflow.onComplete {
     
-	// Nextpie
-	// params are defined in nextflow.config
-	if(params.nextpie_enable){
-	
-		log.info "workflow: " + params.workflow_name
-		log.info "version : " + params.workflow_ver
-		log.info "group   : " + params.group
-		log.info "project : " + custom_runName
-		
-		if(params.name && params.group){		
-			log.info "Pushing run metadata to Nextpie http://${params.nextpie_host}:${params.nextpie_port}"
-			log.info "Response: " + 
-			Nextpie(host      = params.nextpie_host, 
-				port      = params.nextpie_port,
-				traceFile = "${params.outDir}/pipeline_info/Trace.txt", 
-				Workflow  = params.workflow_name, 
-				Version   = params.workflow_ver, 
-				Group     = params.group, 
-				Project   = custom_runName,
-				APIkey    = params.nextpie_api_key).toString()
-		}else{
-			log.info "Run metadata pushing to Nextflow skipped (no --group --name provided)."
-			}
-		}
+	log.info "☑️  Workflow complete"
 }
