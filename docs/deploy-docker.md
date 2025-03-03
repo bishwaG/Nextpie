@@ -15,7 +15,7 @@ sudo docker compose up --build
 
 Open your browser and go to `http://localhost:5005`. Use username `admin` and password `admin` to login.
 
-### Using Dockerbub as a source
+### Using Dockerhub as a source
 
 Nextpie image is readily available in Dockerhub as a repository `fimmtech/nextpie`. You can conveniently pull the image and run as a container using the following commands in a terminal.
 
