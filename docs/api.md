@@ -1,7 +1,7 @@
 ## Nextpie API
 
 
-[![](./assets/images/API.png)](#)
+![](./assets/images/API.png)
 
 Nextpie's API end point is avaialable via URL `http://127.0.0.1:5000/api/v1.0` if Nextpie is running under `http://127.0.0.1:5000`. If you have run Nextpie in a different IP address and a port, the endpoint is available as `http://host-or-ip-address:port/api/v1.0`. The endpoint has Swagger API interface which can be used to test it.
 
