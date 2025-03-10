@@ -2,7 +2,7 @@
 
 Nextpie is a reporting tool for Nextflow workflows. It uses run metadata (trace files) produced by Nextflow, puts them in database and allows a user to perform aggregate analyses. The tool is build using Python Flask and design interface from AppSeed.
 
-Nextpie comes with with a databased populated with sample data. Thus, user can [run it using docker](docs/deploy-docker.md) without zero configuration. This enable users to evaluate the tool without big hassle of setp and configuration.
+Nextpie comes with with a databased populated with sample data. Thus, user can [run it using docker](docs/deploy-docker.md) without zero configuration. This enable users to evaluate the tool without big setup/configuration hassle.
 
 In case you decide to deploy Nextpie in a production environment please [clear the database](docs/db-clear-test-data.md) and add [SMTP](docs/config-email.md) details in email configuration (web interface >> Settings >> SMTP settings). 
 
