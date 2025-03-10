@@ -6,6 +6,10 @@
 Run the following line in the terminal. Make sure that your software environment is active.
 
 ```bash
+## Create a virtual environment (Unix) if you have not create by now
+#virtualenv -p python3.9 env
+source env/bin/activate
+
 gunicorn --bind 127.0.0.1:5000 run:app
 ```
 
