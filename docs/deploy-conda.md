@@ -37,7 +37,7 @@ which pip
 pip install sqlite_dump
 
 ## run webserver
-gunicorn --bind 0.0.0.0:8001 run:app
+gunicorn --bind 0.0.0.0:5000 run:app
 ```
 
-Open your browser and go to `http://localhost:8001`. Use username `admin` and password `admin` to login.
+Open your browser and go to `http://localhost:5000`. Use username `admin` and password `admin` to login.
