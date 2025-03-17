@@ -1,5 +1,14 @@
 # Running in a development mode
 
+## Prerequisite
+Before deploying nextpie using Python in development make sure that you have the following in your system.
+- python3.9
+- setuptools
+- python3-dev/python3-devel
+- python3-disutils
+
+If your system does not have `Python3.9`, please check the [instructions](python-from-source.md) how to build `Python3.9` from source.
+
 Run the following commands in terminal to run Nextpie in development mode with debugging. If you want to run as a docker container with zero configuration please skip this and refer to docker execution section.
 
 ```bash
