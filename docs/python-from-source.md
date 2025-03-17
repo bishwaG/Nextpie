@@ -1,6 +1,7 @@
 # Building Python 3.9 from source
 Nextpie runs on Python3.9 because of depenmdecies not available in more recent Python 3.12. You do not need a root access to a macine to build and install Python source, but you might need to install build dependencies using sudo rights.
 
+## Update packages
 It is recommended to updata system packages to tier latest versions.
 
 In Ubuntu
@@ -12,7 +13,7 @@ In Redhat/Fedora/Almalinux
 sudo dnf -y update
 ```
 
-Install Python build dependencies.
+## Install Python build dependencies.
 
 In Ubuntu
 ```bash
@@ -21,10 +22,11 @@ sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-
 In Redhat/Fedora/Almalinux
 
 ```bash
-
+sudo dnf install openssl-devel bzip2-devel libffi-devel
+sudo dnf groupinstall "Development Tools"
 ```
 
-
+## Build and install
 Download Python 3.9, extract, build and install.
 ```bash
 ## Download and extract the source
@@ -33,7 +35,7 @@ tar -xvf Python-3.9.21.tgz
 cd Python-3.9.21 
 
 ## Configure
-## Here we are using /opt/Python-3.9.21 as a installation path. 
+## Here we are using /opt/Python-3.9.21 as an installation path. 
 ## Provide a path where you have read and write access
 INSTALL_APATH=/opt/Python-3.9.21
 ./configure --enable-optimizations --enable-shared --prefix=$INSTALL_APATH
