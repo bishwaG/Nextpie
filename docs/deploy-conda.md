@@ -8,7 +8,9 @@ It is possible to run Nextpie under Conda environment. Runs the following comman
 ## Download the installer
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.8.3-Linux-x86_64.sh
 
-## Pprovide INSTALL_PATH where you have write access
+## Provide INSTALL_PATH where you have write access
+## sudo mkdir -p /opt/Conda
+## sudo chown user:user /opt/Conda
 INSTALL_PATH=/opt/Conda/miniconda3-py38_4.8.3
 
 ## Type yes and press enter when asked
@@ -37,7 +39,7 @@ which pip
 pip install sqlite_dump
 
 ## run webserver
-gunicorn --bind 0.0.0.0:5000 run:app
+gunicorn --bind 127.0.0.1:5000 run:app
 ```
 
-Open your browser and go to `http://localhost:5000`. Use username `admin` and password `admin` to login.
+Open your browser and go to [http://localhost:5000](http://localhost:5000). Use username `admin` and password `admin` to login.
