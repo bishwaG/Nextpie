@@ -9,6 +9,8 @@ Before deploying nextpie using Python in development make sure that you have the
 - libbz2-dev
 - git
 
+> NOTE: To deploy Nextpie using Python >=3.12, you have to install `distutils` manually. Starting from Python 3.10, the distutils module was deprecated and removed from the standard library in Python 3.12. Since Nextpie is not tested in >=3.10, we do not guaranteed that things will not break. Python >=3.10 support will be added in Nextpie in the future.
+
 If your system does not have `Python3.9`, please check the [instructions](python-from-source.md) how to build `Python3.9` from source.
 
 Run the following commands in terminal to run Nextpie in development mode with debugging. If you want to run as a docker container with zero configuration please skip this and refer to docker execution section.
