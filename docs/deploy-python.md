@@ -5,7 +5,9 @@ Before deploying nextpie using Python in development make sure that you have the
 - python3.9
 - setuptools
 - python3-dev/python3-devel
-- python3-disutils
+- libsqlite3-dev
+- libbz2-dev
+- git
 
 If your system does not have `Python3.9`, please check the [instructions](python-from-source.md) how to build `Python3.9` from source.
 
