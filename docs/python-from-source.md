@@ -2,7 +2,7 @@
 Nextpie runs on Python3.9 because of depenmdecies not available in more recent Python 3.12. You do not need a root access to a macine to build and install Python source, but you might need to install build dependencies using sudo rights.
 
 ## Update packages
-It is recommended to updata system packages to tier latest versions.
+It is recommended to updata system packages to their latest versions.
 
 In Ubuntu
 ```bash
