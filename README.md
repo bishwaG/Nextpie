@@ -12,7 +12,7 @@ The code is well tested in Python `v3.9` in Redhat Exterprise Linux 8 and 9. All
 #### Minimal requirements
 * Linux operating system
 * Python > 3.9 (with Python virtual environment)
-* Nextflow >= nextflow-23.10.1
+* Nextflow >=24.10.4
 
 #### Optional requirements
 * Conda
