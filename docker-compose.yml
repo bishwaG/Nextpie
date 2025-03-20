@@ -5,7 +5,7 @@ services:
     env_file: .env
     build: .
     ports:
-      - "5005:5005"
+      - "5000:5000"
     networks:
       - db_network
       - web_network
