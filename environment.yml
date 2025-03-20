@@ -27,7 +27,7 @@ dependencies:
   - PyJWT==2.6.0
   - Werkzeug~=2.0.0
   - Flask-Session==0.4.0
-  - Flask-Admin==1.5.8
+  - Flask-Admin==1.6.1
   - Jinja2==3.0.3
   
   
