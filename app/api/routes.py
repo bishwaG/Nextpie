@@ -1,6 +1,6 @@
 from app import app
 from app.api import blueprint
-from app.home.utils import Utils
+from app.home.utils import Utils, Misc
 
 from app.api.utils import token_required
 from flask import jsonify
@@ -29,7 +29,7 @@ authorizations = {
 
 ## Create the API
 desc  = "This is a RESTful API to interact with Nextpie web application.\n"
-desc += "Code repository: https://version.helsinki.fi/fimm/nextpie\n"
+desc += "Code repository: https://github.com/bishwaG/Nextpie\n"
 desc += "Contact: nextpie@gmail.com"
 ver   = "1.0"
 api = Api(blueprint,
@@ -83,9 +83,17 @@ class MyResource1(Resource):
 		version    = args['Version']
 		group      = args['Group']
 		project    = args['Project']
-
+		
+		## if group and project empty generate randomly.
+		rnd_group_proj = False
+		if not group or not project or group=="null" or project=="null":
+			group         = Misc.gen_groupName()
+			project       = Misc.gen_projectName()
+			rnd_group_proj    = True
+		
 		details = [group, project, workflow, version]
-
+		#return jsonify(details)
+		
 		## get uploaded file
 		path = os.path.join( app.config['UPLOAD_FOLDER'], "API")
 
@@ -96,7 +104,7 @@ class MyResource1(Resource):
 		if trace_file:
 			trace_file.save(os.path.join(path, filename))
 
-		x =  Utils.parseTraceFiles(details, path, actionSource="API" )
+		x =  Utils.parseTraceFiles(details, path, actionSource="API", random_group_proj=rnd_group_proj )
 		return jsonify(x)
 
 		#api.abort(403)
