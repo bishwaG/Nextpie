@@ -27,7 +27,7 @@ from .forms import uploadForm
 @blueprint.route('/upload')
 @login_required
 def load_data():
-	loadForm = uploadForm(csrf_enabled=True)
+	loadForm = uploadForm(meta={'csrf': False})
 	return render_template('upload-data.html',
 	    segment='upload',
 	    title="Upload Data",
@@ -295,17 +295,35 @@ def generate_key(username):
 import os
 from config import Config
 from app import app
-from app.home.utils import Utils
+from app.home.utils import Utils, Misc
 from werkzeug.utils import secure_filename
 
 @blueprint.route('/submit-data', methods=['GET','POST'])
 @login_required
 ## Uses static funtions from Utils class (./utils.py)
 def submit_data():
-
+	uploadForm1  = uploadForm(request.form, meta={'csrf': True})
+	
 	path = app.config['UPLOAD_FOLDER']
 
 	if request.method == 'POST':
+		
+		#return jsonify({"message":"Reply", "response":"success"})
+		
+		## check if the upload filder exists
+		if not os.path.exists(path):
+			#return jsonify(response="fail",reason="Upload folder does not exist in the server.")
+			return jsonify({"message":"Upload folder does not exist in the server.", "response":"error"})
+
+		## check if the foler has write access
+		is_readable = os.access(path, os.R_OK)
+		is_writable = os.access(path, os.W_OK)
+		if not is_readable:
+			#return jsonify(response="fail",reason="The upload folder does not have read access in the server.")
+			return jsonify({"message":"The upload folder does not have read access in the server.", "response":"error"})
+		if not is_writable:
+			#return jsonify(response="fail",reason="The upload folder does not have write access in the server.")
+			return jsonify({"message":"The upload folder does not have write access in the server.", "response":"error"})
 
 		## make upload folder empty
 		for f in Path(path).glob('*'):
@@ -313,10 +331,39 @@ def submit_data():
 				f.unlink()
 			except OSError as e:
 				print("Error: %s : %s" % (f, e.strerror))
-
+				
+		## get input values
+		## these are sent via javascript form_data form
+		## form_data.append should be used if more fields are needed to add
+		workflow_name = request.form.get('workflowName')
+		workflowVer = request.form.get('workflowVer')
+		groupName = request.form.get('groupName')
+		projectName = request.form.get('projectName')
+		
+		"""return jsonify(response="test",reason=
+		  "worfklow: " + str(workflow_name) +
+		  ", version: " + str(workflowVer) +
+		  ", group: " + str(groupName) + 
+		  ", project name: " + str(projectName))"""
+		
+		
+		## if group and project empty generate randomly.
+		rnd_group_proj = False
+		if not groupName or not projectName:
+			groupName         = Misc.gen_groupName()
+			projectName       = Misc.gen_projectName()
+			rnd_group_proj    = True
+			
+		"""return jsonify(response="test",reason=
+		  "worfklow: " + str(workflow_name) +
+		  ", version: " + str(workflowVer) +
+		  ", group: " + str(groupName) + 
+		  ", project name: " + str(projectName))"""
+		
+		projGroupVer = [groupName, projectName, workflow_name, workflowVer]
 
 		## for trace files  --------------------------------------------
-		files = request.files.getlist('myfile2[]')
+		files = request.files.getlist('traceFile[]')
 		fileList=[]
 		for file in files:
 			if file and files:
@@ -324,46 +371,60 @@ def submit_data():
 
 				## check extension
 				if not Utils.checkExt( filename,app.config['UPLOAD_EXTENSIONS']) :
-					return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
+					#return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
+					return jsonify({"message":"File type is not allowed. Only .txt allowed.", "response":"error"})
 				file.save(os.path.join(path, filename))
 				fileList.append(filename)
 			else:
-				return jsonify(response="fail",reason="No file part.")
-
+				#return jsonify(response="fail",reason="No file part.")
+				return jsonify({"message":"No file part.", "response":"error"})
 
 		## process report file -----------------------------------------
-		if 'myfile' not in request.files:
-			return jsonify(response="fail",reason="No file part.")
-		else:
-			file = request.files['myfile']
+		if 'reportFile' not in request.files and (workflow_name == "" or workflowVer == ""):
+			#return jsonify(response="fail",reason="Provide either workflow detailes (workflow name and version) or a pipeline report file.")
+			return jsonify({"message":"Provide either workflow detailes (workflow name and version) or a pipeline report file.", "response":"error"})
+		
+		if 'reportFile' in request.files:
+			file = request.files['reportFile']
 			filename = secure_filename(file.filename)
 
 			## check extension
 			if not Utils.checkExt( filename,app.config['UPLOAD_EXTENSIONS']) :
-					return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
+					#return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
+					return jsonify({"message":"File type is not allowed. Only .txt allowed.", "response":"error"})
 
 			## save file
 			file.save(os.path.join(path, filename))
 
-		## parse report file -------------------------------------------
-		## Returns projectname, group name and pipeline version
-		projGroupVer = Utils.parseReportFile(os.path.join(path, filename))
+			## parse report file -------------------------------------------
+			## Returns projectname, group name and pipeline version
+			projGroupVer = Utils.parseReportFile(os.path.join(path, filename))
+		
+			if projGroupVer[3] == "":
+				#return jsonify(response="fail", reason="Can not extract workflow version. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.")
+				return jsonify({"message":"Can not extract workflow version. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.", "response":"error"})
 
-		if projGroupVer[3] == "":
-			return jsonify(response="fail", reason="Can not extract workflow version. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.")
+			if projGroupVer[2] == "":
+				#return jsonify(response="fail", reason="Can not extract workflow name. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.")
+				return jsonify({"message":"Can not extract workflow name. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.", "response":"error"})
 
-		if projGroupVer[2] == "":
-			return jsonify(response="fail", reason="Can not extract workflow name. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.")
+			if projGroupVer[1] == "":
+				#return jsonify(response="fail", reason="Can not extract project name. Make sure that your report file contains 'Run Name: ' follwed by project name in any line.")
+				return jsonify({"message":"Can not extract project name. Make sure that your report file contains 'Run Name: ' follwed by project name in any line.", "response":"error"})
 
-		if projGroupVer[1] == "":
-			return jsonify(response="fail", reason="Can not extract project name. Make sure that your report file contains 'Run Name: ' follwed by project name in any line.")
-
-		if projGroupVer[0] == "":
-			return jsonify(response="fail", reason="Can not extract group name. Make sure that your report file contains 'Group: ' follwed by group name in any line.")
-
+			if projGroupVer[0] == "":
+				#return jsonify(response="fail", reason="Can not extract group name. Make sure that your report file contains 'Group: ' follwed by group name in any line.")
+				return jsonify({"message":"Can not extract group name. Make sure that your report file contains 'Group: ' follwed by group name in any line.", "response":"error"})
+			
+		## ['research_group_A', 'test_run_poj_1', 'RNAseq', '2.0.1']
+		print(projGroupVer)
+		
 		#return jsonify(projGroupVer)
 		## parse Trace.txt files ---------------------------------------
-		return jsonify( Utils.parseTraceFiles(projGroupVer, app.config['UPLOAD_FOLDER'], actionSource="GUI") )
+		return jsonify( Utils.parseTraceFiles(metadataList=projGroupVer, 
+		   uploadDir=app.config['UPLOAD_FOLDER'], 
+		   actionSource="GUI", 
+		   random_group_proj=rnd_group_proj))
 
 
 
@@ -429,7 +490,7 @@ def db_search(table):
 		    Run.status,
 		    Run.entry_via,
 		    Project.name).\
-		    filter(Run.id.like("%")).all()
+		    filter(Run.id.like("%")).filter(Run.run_time_hr.isnot(None)).all()
 		    #filter(extract('year', Run.submitted) == this_year).all()
 
 		## serialize query to be able to convert to JSON
@@ -825,7 +886,15 @@ def get_p_status(action):
 		return jsonify(main_list)
 
 	if action == "get-per-group-workflow-runs-runtime":
-		query = db.session.query(Group, Run).filter(Group.id==Project.group_id, Project.id==Run.project_id).group_by(Group.name).add_columns(Run.pipeline, func.count(Run.id), func.sum(Run.run_time_hr)).all()
+		#query = db.session.query(Group, Run).filter(Group.id==Project.group_id, Project.id==Run.project_id).group_by(Group.name).add_columns(Run.pipeline, func.count(Run.id), func.sum(Run.run_time_hr)).all()
+		
+		
+		query = db.session.query(Group, Run).\
+		  filter(Group.id == Project.group_id, Project.id == Run.project_id).\
+		  filter(Run.run_time_hr.isnot(None)).\
+		  group_by(Group.name).\
+		  add_columns(Run.pipeline, func.count(Run.id), func.sum(Run.run_time_hr)).\
+		  all()
 		
 		main_list = []
 		## (test_group, 102, 'Test-workflow', 1, 0.1)
@@ -1022,7 +1091,7 @@ def get_p_status(action):
 		box_data_list = []
 		for i in name_list:
 			search = i+"%"
-			query_res = Run.query.filter(Run.pipeline.like(search))
+			query_res = Run.query.filter(Run.pipeline.like(search)).filter(Run.run_time_hr.isnot(None))
 			runtime_list = []
 			for row in query_res:
 				run_time_hr    = row.run_time_hr
@@ -1159,7 +1228,7 @@ def get_p_status(action):
 	elif action == "get-run-io":
 		query_res = Run.query.with_entities(Run.completed,
 		                                    Run.read_TB,
-		                                    Run.write_TB).order_by(Run.completed).all()
+		                                    Run.write_TB).order_by(Run.completed).filter(Run.run_time_hr.isnot(None)).all()
 		csv= "Date,Disk Read,Disk Write\n"
 		for i in query_res:
 			dt        = str(i[0].date())
