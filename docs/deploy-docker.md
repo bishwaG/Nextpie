@@ -11,7 +11,7 @@ sudo docker compose up --build
 ```
 
 > **NOTE:** If you have docker-compose version `1.x.x`, you have to run `sudo docker-compose up --build` 
-> **NOTE:** Add `--remove-orphans` flag to the above command in case you there are orphan containers
+> **NOTE:** Add `--remove-orphans` flag to the above command in case you have orphan containers
 
 Open your browser and go to [http://localhost:5000](http://localhost:5000). Use username `admin` and password `admin` to login.
 
