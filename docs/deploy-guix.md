@@ -29,10 +29,10 @@ Once the dependencies are installed successfully, run the following command to r
 which gunicorn
 
 ## run gunicorn
-gunicorn --bind 0.0.0.0:8001 run:app
+gunicorn --bind 0.0.0.0:5000 run:app
 ```
 
-Open your browser and go to `http://localhost:8001`. Use username `admin` and password `admin` to login.
+Open your browser and go to `http://localhost:5000`. Use username `admin` and password `admin` to login.
 
 Press `Ctrl+C` to termiante Gunicorn webserver.
 Press `Ctrl+D` to deactivate Guix environment.
