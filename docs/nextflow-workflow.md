@@ -36,59 +36,38 @@ cd Nextpie/
 
 Follow the instruction on Nextpie [running in a development mode](deploy-python.md). Although you can deploy Nextpie in a production environment rather easily, we are running it in development mode to keep things simple.
 
-### Step 2: Generate a new API key
-Nextpie comes with default API key `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M`. If you have not modified this you can move to the next step.
+### Step 3: Locate input data
 
-Login to nextpie (username: admin, password: admin) and generate a new API access code code from settings page. Copy it and put the code in `example-workflow/nextflow.config`. For example in the following configuration `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M` is an API code generated from Nextpie GUI. Replace this code by the one you generated from the settings page.
-
-> NOTE: If you have a wrong API key in 
-
-```groovy
-params {
-	//Pipeline name and version
-	workflow_name = 'Test-workflow'
-	workflow_ver  = '0.0.1' 
-	
-	// Nextpie config
-	nextpie_host    = "localhost"
-	nextpie_port    = 5000
-	nextpie_api_key = "jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M"
-	nextpie_enable  = true
-}
-```
-
-### Step 3: Download input data
-
-The folder `example-workflow/test-runs/fastq` should contain input FASTQ files for the pipeline. Download the FASTQ files from the [Google drive](https://drive.google.com/drive/folders/19PsQchNjhlfb_-USSse0Xpblh9ky76Sn) and copy them to  `example-workflow/test-runs/fastq`. Please download the files on by one and do not put them in any sub-folders.
+The folder `assets/example-workflow/test-runs/fastq` should contain downsampled input FASTQ files for the pipeline.
 
 ```bash
-cd nextpie/example-workflow/test-runs
+cd assets/example-workflow/test-runs
 ls -lah fastq
 ```
 
 Once you run above bash command you should see the following files.
 ```
-total 10G
-drwxr-xr-x 2 user user 4.0K Feb 24 15:16 .
-drwxr-xr-x 6 user user 4.0K Feb 24 15:39 ..
--rw-r--r-- 1 user user  131 Feb 24 15:16 README.txt
--rw-rw-r-- 1 user user 2.7G Feb 23 16:19 SRR2121687_S1_R1_001.fastq.gz
--rw-rw-r-- 1 user user 2.7G Feb 23 16:19 SRR2121687_S1_R2_001.fastq.gz
--rw-rw-r-- 1 user user 2.4G Feb 23 19:12 SRR2121688_S2_R1_001.fastq.gz
--rw-rw-r-- 1 user user 2.4G Feb 23 19:12 SRR2121688_S2_R2_001.fastq.gz
+total 4.7M
+drwxr-xr-x 2 user user 4.0K Mar 12 19:18 .
+drwxr-xr-x 8 user user 4.0K Mar  3 16:02 ..
+-rw-r--r-- 1 user user  294 Mar  2 21:50 README.md
+-rw-r--r-- 1 user user 1.2M Mar  2 15:25 SRR2121687_S1_R1_001.fastq.gz
+-rw-r--r-- 1 user user 1.2M Mar  2 15:26 SRR2121687_S1_R2_001.fastq.gz
+-rw-r--r-- 1 user user 1.2M Mar  2 15:27 SRR2121688_S2_R1_001.fastq.gz
+-rw-r--r-- 1 user user 1.2M Mar  2 15:27 SRR2121688_S2_R2_001.fastq.gz
 ```
 
 ### Step 4: Run the workflow
 
 Please run the following command to run the pipeline. Make sure that your located at `$HOME/nextpie/example-workflow/test-runs`. Nextflow binary is located inside `example-workflow/bin`
 
-> NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in a [development mode](deploy-python.md). If you are running it in different IP address and port, put the correct IP address and the port in `example-workflow/nextflow.config`.
+> NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in a [development mode](deploy-python.md).
 
 > NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed. 
 
 ```bash
-../bin/nextflow run \
-  ../main.nf \
+./nextflow run ../main.nf -plugins nf-nextpie@0.0.1\
+  --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
   --group "test_research_group" \
   -resume
