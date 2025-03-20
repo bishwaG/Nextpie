@@ -1,6 +1,8 @@
 import re
 import os
 import os.path
+import random
+import string
 from datetime import datetime, time, timedelta
 
 import glob
@@ -20,6 +22,28 @@ from email.mime.multipart import MIMEMultipart
 from app.base.models import Settings
 class Misc:
 	"Misc. functions"
+	
+	@staticmethod
+	def gen_groupName(length=12):
+		while True:
+			random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+			group_name = f"group_{random_string}"
+			
+			## check if group exists
+			exist_group = Group.query.filter_by(name=group_name).first()
+			if exist_group is None:
+				return group_name
+	
+	@staticmethod
+	def gen_projectName(length=12):
+		while True:
+			random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+			project_name = f"project_{random_string}"
+			
+			## check if group exists
+			exist_project = Project.query.filter_by(name=project_name).first()
+			if exist_project is None:
+				return project_name
 	
 	@staticmethod
 	def send_email(toEmail, subject, message):
@@ -216,7 +240,7 @@ class Utils:
 	## function to parse trace files
 	## Takes list [groupName, projectName, pipelineVer]
 	@staticmethod
-	def parseTraceFiles(metadataList, uploadDir, actionSource):
+	def parseTraceFiles(metadataList, uploadDir, actionSource, random_group_proj):
 		
 		## function input
 		groupName   = metadataList[0]
@@ -237,7 +261,7 @@ class Utils:
 		if not groupExists:
 			g = Group(name=groupName)
 			db.session.add(g)
-			db.session.commit()
+			#db.session.commit()
 		else:
 			g = groupExists
 		
@@ -246,7 +270,7 @@ class Utils:
 		if not projExists: 
 			p = Project(name=projectName, group=g)
 			db.session.add(p)
-			db.session.commit()
+			#db.session.commit()
 		else:
 			p = projExists
 		
@@ -272,7 +296,7 @@ class Utils:
 				count = int(fExt) + 1
 			
 			
-			print("COUNT:" + str(count))
+			#print("COUNT:" + str(count))
 			
 			## check if record exists
 			runExists = Run.query.filter_by(pipeline=pipeline, 
@@ -295,11 +319,11 @@ class Utils:
 					entry_via=actionSource)
 				
 				db.session.add(r)
-				db.session.commit()
+				#db.session.commit()
 			else:
 				r=runExists
 				run_exists_flag = 1
-				return {"message":"No records inserted into the database. This is a completed run.", "response":"warning"}
+				return {"message":"No records inserted into the database. Records exist in the database. Processes with only unique hash will be stored in the database.", "response":"warning"}
 			
 			##------------------------------------------------------
 			## variables for summarizing columns from trace and adding
@@ -405,8 +429,9 @@ class Utils:
 					lineCounter += 1
 				
 				## for loop end
-			
-			
+				
+			## if there are any processes existing
+			#if(proc_exists_flag.count(1) == 0):
 			## update run table
 			if len(submitted_list) !=0:
 				r.submitted = min(submitted_list)
@@ -432,11 +457,39 @@ class Utils:
 			r.run_count = r.run_count 
 			
 			db.session.commit() 
+		
+		new_processes      = proc_exists_flag.count(0)
+		existing_processes = proc_exists_flag.count(1)
+		
+		## if zero new processes remove run, project and group
+		## when group and project is generated randomly 
+		print("########################################################")
+		print("Group: " + str(g.id) + " " + g.name)
+		print("Project: " + str(p.id) + " " + p.name)
+		print("Run: "+ str(r.id) + " " + r.pipeline + " " + r.version)
+		
+		if random_group_proj and new_processes ==0:
+			g_rm = Group.query.get(g.id)
+			p_rm = Project.query.get(p.id)
+			r_rm = Run.query.get(r.id)
+			
+			db.session.delete(g_rm)
+			db.session.delete(p_rm)
+			db.session.delete(r_rm)
+			
+			db.session.commit()
+			return  {"message":"No records were inserted into the database (provided process hashes are already in the database).", "response":"warning"} 
+			
 			
 			## with end
-			
+		if proc_exists_flag.count(1) !=0:
+			return  {"message":"No records are inserted or inserted only partly into the database. Database already contains provided records (" + str( proc_exists_flag.count(1) ) + " processes exist and " + str( proc_exists_flag.count(0) )  + " process are new).", "response":"warning"} 
+		else:
+			return  {"message":"Records are inserted into the database (" + str( proc_exists_flag.count(0) ) + " new processes).", "response":"success"} 
+		
+		#return {"existant-processes": proc_exists_flag.count(1),"non-existant-processes":proc_exists_flag.count(0)}
 		#return {"run-exists":run_exists_flag, "existant-processes": proc_exists_flag.count(1),"non-existant-processes":proc_exists_flag.count(0)}
-		return {"message":"Records inserted into the database.", "response":"info"}
+		#return {"message":"Records inserted into the database.", "response":"info"}
 		
 		
 
