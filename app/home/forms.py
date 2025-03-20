@@ -20,15 +20,21 @@ def validate_server(form, field):
 	if not re.match(pattern, field.data):
 		raise ValidationError('Invalid server name or IP address.')
 
+
 ## data load
 
 class uploadForm(FlaskForm):
     
 	#groupName    = TextField    ('Group name', id='run_name'   , validators=[DataRequired()])
 	#projectName  = TextField    ('Project name', id='run_name'   , validators=[DataRequired()])
-
+	
+	workflowName        = StringField('Workflow/pipeline Name',      id='workflowName')
+	workflowVer         = StringField('Workflow/pipeline Version',   id='workflowVer')
+	groupName           = StringField('Research Group Name',         id='groupName')
+	projectName         = StringField('Research Project Name',       id='projectName')
+	
 	reportFile    = FileField('Pipeline report file', validators=[
-	FileRequired(),
+	#FileRequired(),
 	FileAllowed(['txt'], 'Text file only!')
 	])
 
@@ -51,9 +57,6 @@ class APIkeyForm(FlaskForm):
 
 ## For SMTP settings
 class SMTPform(FlaskForm):
-	
-
-        
 	
 	SMTPserver = StringField('SMTP server', id='server', validators=[DataRequired(), validate_server])
 	SMTPport   = IntegerField('SMTP port', id='port', validators=[DataRequired()])
