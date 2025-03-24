@@ -1,3 +1,4 @@
+![](../assets/images/nextpie-plots.png)
 # Nextpie
 
 Nextpie is a reporting tool for Nextflow workflows. It uses run metadata (trace files) produced by Nextflow, puts them in database and allows a user to perform aggregate analyses. The tool is build using Python Flask and design interface from AppSeed.
