@@ -164,6 +164,11 @@ class MyModelAdminRun(ModelView):
 	can_delete             = False
 	can_create             = False
 	
+	## exclude runs havign NULL in completed
+	def get_query(self):
+		return self.session.query(self.model).filter(
+		  self.model.completed != 'NULL' )
+	
 	## allow access to the users having super_user=1 (is admin)
 	def is_accessible(self):
 		# only accessible if admin field is True
