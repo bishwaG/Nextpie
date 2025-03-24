@@ -24,6 +24,7 @@ class Config(object):
     
     FLASK_ADMIN_FLUID_LAYOUT = True
 
+
 class ProductionConfig(Config):
     DEBUG = False
 
@@ -38,7 +39,7 @@ class ProductionConfig(Config):
         config( 'DB_USERNAME' , default='user'),
         config( 'DB_PASS'     , default='pass'),
         config( 'DB_HOST'     , default='localhost'),
-        config( 'DB_PORT'     , default=5432),
+        config( 'DB_PORT'     , default=5000),
         config( 'DB_NAME'     , default='nextpie' )
     )
 
