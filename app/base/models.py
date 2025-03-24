@@ -3,8 +3,12 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+
 from flask_login import UserMixin
-from sqlalchemy import Binary, Column, Integer, String
+#from sqlalchemy.types import Binary
+from sqlalchemy import LargeBinary
+from sqlalchemy import Column, Integer, String
+#from sqlalchemy import Binary, Column, Integer, String
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 
@@ -24,7 +28,7 @@ class User(db.Model, UserMixin):
 	id = Column(Integer, primary_key=True)
 	username = Column(String, unique=True)
 	email = Column(String, unique=True)
-	password = Column(Binary)
+	password = Column(LargeBinary)
 	key=Column(String)
 	active=db.Column(db.Boolean, default=False, nullable=False)
 	super_user=db.Column(db.Boolean, default=False, nullable=False)
