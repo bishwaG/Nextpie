@@ -130,5 +130,5 @@ workflow{
  
 workflow.onComplete {
     
-	log.info "☑️  Workflow complete"
+	log.info "Workflow complete ☑️ "
 }
