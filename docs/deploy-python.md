@@ -34,7 +34,7 @@ pip3 install -r requirements/requirements.txt
 export FLASK_APP=run.py
 
 ## Set up the DEBUG environment (Unix/Mac)
-export FLASK_ENV=development
+export FLASK_DEBUG=1
 
 ## Database setup and seeding if SQLite database file is not available
 #flask db init
