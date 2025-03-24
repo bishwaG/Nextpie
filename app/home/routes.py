@@ -19,7 +19,11 @@ import random
 @blueprint.route('/index')
 @login_required
 def index():
-	return render_template('index.html', segment='index', title="Dashboard")
+	return render_template('index.html', 
+	    segment='index', 
+	    app_name="Nextpie", 
+	    title="Dashboard", 
+	    version="v0.0.2")
 
 
 ## LOAD DATA ===================================================================
