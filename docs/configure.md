@@ -1,10 +1,10 @@
 ## An Example workflow
 
-Nextflow comes with an example Nextflow workflow to explore Nextpie features. The example workflow is located in `example-workflow` directory. 
+Nextflow comes with an example Nextflow workflow to explore Nextpie features. The example workflow is located in `assets/example-workflow` directory. 
 
 ## Configure Nextflow pipeline for Nextpie
 
-Nextpie has a client plugin named [nf-nextpie](https://github.com/bishwaG/nf-nextpie). Once the following lines are added to `nextflow.config`, Nextlow will automatically download the pipeline during runtime and stores in `$HOME/.nextflow/plugins/nf-nextpie-X.X.X`. This feature greatly minimize configuration hassles.
+Nextpie has a client plugin named [nf-nextpie](https://github.com/bishwaG/nf-nextpie). Once the following lines are added to `nextflow.config`, Nextlow will automatically download the pipeline during runtime and stores in `$HOME/.nextflow/plugins/nf-nextpie-X.X.X`. This feature greatly minimizes configuration hassles.
 
 ```
 plugins {
