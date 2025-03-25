@@ -22,7 +22,7 @@ cd Nextpie
 
 ## Create a virtual environment (Unix)
 ## Change python version or user only 'python3'
-virtualenv -p python3.9 env
+python3.9 -m venv env 
 source env/bin/activate
 
 ## Install modules - SQLite Database
