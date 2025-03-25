@@ -66,12 +66,20 @@ Please run the following command to run the pipeline. Make sure that your locate
 > NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed. 
 
 ```bash
-./nextflow run ../main.nf -plugins nf-nextpie@0.0.1\
+## limit heap size for nextflow
+NXF_OPTS='-Xms1g -Xmx1g'
+_JAVA_OPTIONS='-Xms1g -Xmx4g'
+
+export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json"
+
+./nextflow run ../main.nf -plugins nf-nextpie@0.0.1 \
   --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
   --group "test_research_group" \
   -resume
 ```
+
+> NOTE: The environment variable NXF_PLUGINS_TEST_REPOSITORY is needed here to tell Nextflow from where to get the plugin. Once the plugin is included in Nextflow repository of plugins, Nextflow will automatically fetch the plugin without needing to provide a plugin path using NXF_PLUGINS_TEST_REPOSITORY.
 
 Once the workflow completes successfully you will see a reply from Nextpie. In the following block `Response: {existant-processes=0, non-existant-processes=2, run-exists=1}` is the response by Nextpie. Nextpie saw this particualr pipeline run a unique run. Thus, there were
 
