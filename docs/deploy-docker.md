@@ -21,7 +21,7 @@ Nextpie image is readily available in Dockerhub as a repository `fimmtech/nextpi
 
 ```bash
 # pull the docker image
-sudo docker pull fimmtech/nextpie:lastes
+sudo docker pull fimmtech/nextpie:latest
 
 ## run the image by forwarding local port 5000 to container's port 5000
 sudo docker run -p 5000:5000 fimmtech/nextpie:latest
