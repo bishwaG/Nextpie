@@ -11,6 +11,8 @@ Nextpie's API end point is avaialable via URL `http://127.0.0.1:5000/api/v1.0` i
 Nextpie has Swagget API interface to the API entry point `http://host-or-ip-address:port/api/v1.0`. Nextpie has a default API key `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M` for the `admin` user in it's SQLite database. To try out the API you should click "Authorize" button and provide the API key. As an example, you run "/get-groups" to get all the research groups from Nextpie.
 
 
+![](../assets/images/API-auth.png)
+
 ### API call using curl
 
 Following is an example of `GET` API call using `curl` in a Linux terminal.
