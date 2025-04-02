@@ -4,7 +4,7 @@ If you have already a [Python virtual environment](deploy-python.md) in the Next
 
 ```bash
 ## Create a virtual environment (Unix)
-virtualenv -p python3.6 env
+python3.9 -m venv env 
 source env/bin/activate
 ```
 
