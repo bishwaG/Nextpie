@@ -7,7 +7,7 @@ Nextpie comes with with a databased populated with sample data. Thus, user can [
 
 In case you decide to deploy Nextpie in a production environment please [clear the database](docs/db-clear-test-data.md) and add [SMTP](docs/config-email.md) details in email configuration (web interface >> Settings >> SMTP settings). 
 
-> NOTE: With Nextpie >=0.0.2, Nextflow pielines need [nf-nextpie(https://github.com/bishwaG/nf-nextpie)] plugin (client) to upload resource usage data to Nextpie. Nextpie users do not have to fiddle with their pipeline code anymore to integrate Nextpie. The data will be uploaded on the fly to Nextpie when a pipeline comopletes. The [example pipeline](docs/nextflow-workflow.md) provides more details on how to use the plugin.
+> NOTE: With Nextpie >=0.0.2, Nextflow pipelines need [nf-nextpie(https://github.com/bishwaG/nf-nextpie)] plugin (a client) to upload resource usage data to Nextpie. Nextpie users do not have to fiddle with their pipeline code anymore to integrate Nextpie. The data will be uploaded on the fly to Nextpie when a pipeline completes. The [example pipeline](docs/nextflow-workflow.md) provides more details on how to use the plugin.
 
 ## Requirements
 Nextpie is tested in Python `v3.9` in Redhat Exterprise Linux 9 and Ubuntu 24.04 LTS. All the python packages in requirements files under the directory `requirements` have version enforcement. Thus, it should work with other Linux distributions as long as you are able to create a Python virtual environment using mentioned version of Python packages. 
