@@ -1,6 +1,11 @@
 ## Running Nextpie as a docker container
 ---
 
+
+### Prerequisite
+Make sure that you have root access to the machine you are using and you have Docker installed. For installation guide, please refer to the official [Install Docker Engine](https://docs.docker.com/engine/install/) user manuals from Docker. 
+
+
 ### Using Nextpie repository as a source
 To run Nextpie as a docker container run the following commands in terminal. Before running following commands make sure that you have installed `docker` and `docker-compose` in your system and make sure that the docker daemon is running in your system. Please keep in mind that you should have root privlage to run docker containers. 
 
