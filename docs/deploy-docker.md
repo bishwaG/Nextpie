@@ -3,7 +3,7 @@
 
 
 ### Prerequisite
-Make sure that you have root access to the machine you are using and you have Docker installed. For installation guide, please refer to the official [Install Docker Engine](https://docs.docker.com/engine/install/) user manuals from Docker. 
+Make sure that you have root access to the machine you are using and you have Docker installed. For installation guide, please refer to the official [Install Docker Engine](https://docs.docker.com/engine/install/) user manual from Docker. 
 
 
 ### Using Nextpie repository as a source
