@@ -18,7 +18,7 @@ sudo docker compose up --build
 > **NOTE:** If you have docker-compose version `1.x.x`, you have to run `sudo docker-compose up --build` 
 > **NOTE:** Add `--remove-orphans` flag to the above command in case you have orphan containers
 
-Open your browser and go to [http://localhost:5000](http://localhost:5000). Use username `admin` and password `admin` to login.
+Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
 
 ### Using Dockerhub as a source
 
@@ -32,7 +32,7 @@ sudo docker pull fimmtech/nextpie:latest
 sudo docker run -p 5000:5000 fimmtech/nextpie:latest
 ```
 
-Open your browser and go to [http://localhost:5000](http://localhost:5000). Use username `admin` and password `admin` to login.
+Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
 
 
 ### Useful docker commands

@@ -46,5 +46,5 @@ Run Gunicorn webserver.
 gunicorn --bind 127.0.0.1:5000 run:app
 ```
 
-Open your browser and go to [http://localhost:5000](http://localhost:5000). Use username `admin` and password `admin` to login.
+Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
 
