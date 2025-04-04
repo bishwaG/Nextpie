@@ -29,7 +29,7 @@ Once the dependencies are installed successfully, run the following command to r
 which gunicorn
 
 ## run gunicorn
-gunicorn --bind 0.0.0.0:5000 run:app
+gunicorn --bind 127.0.0.1:5000 run:app
 ```
 
 Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
