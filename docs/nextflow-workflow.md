@@ -1,3 +1,4 @@
+
 ## An Example workflow
 
 Nextflow comes with an example Nextflow workflow to help you integrate Nextpie in any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example workflow is a samiple workflow that takes FASTQ files as inputs and process tham using FastQC to generate quality reports per FASTQ files.
@@ -21,6 +22,11 @@ Now put FastQC binary in `PATH` and run `fastqc -version`. If the command displa
 ```bash
 export PATH=$HOME/FastQC:$PATH
 fastqc -version
+```
+Make sure that you have right version of Java installed. In Ubuntu `24.04.2 LTS`, installing Java version 17 will work for both FastQC and Nextflow `24.10.4`.
+
+```bash
+sudo apt install openjdk-17-jre-headless
 ```
 
 ## Running an example workflow
@@ -62,25 +68,30 @@ drwxr-xr-x 8 user user 4.0K Mar  3 16:02 ..
 
 Please run the following command to run the pipeline. Make sure that your located at `$HOME/nextpie/example-workflow/test-runs`. Nextflow binary is located inside `example-workflow/bin`
 
-> NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in a [development mode](deploy-python.md).
+> NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in as a [docker container](deploy-docker.md). If you do not have sudo right to run a docker container, deploy Nextpie using [Conda](deploy-conda.md) or [Python virtual environment](deploy-python.md).
 
-> NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed. 
+> NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed for Nextlow. 
 
+>NOTE: Make sure that `trace.enabled=true` in your Nextlow workflow's nextflow.config file.
+>
 ```bash
 ## limit heap size for nextflow
 NXF_OPTS='-Xms1g -Xmx1g'
 _JAVA_OPTIONS='-Xms1g -Xmx4g'
 
+## The nf-nextpie plugin will upload trace.txt file
+## Currently nf-nectpie is not in Nextflow's public plugin repository.
+## Once it is in the repository, you do not have to set NXF_PLUGINS_TEST_REPOSITORY.
 export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json"
 
-./nextflow run ../main.nf -plugins nf-nextpie@0.0.1 \
+./nextflow run ../main.nf \
+  -plugins nf-nextpie@0.0.1 \
   --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
-  --group "test_research_group" \
-  -resume
+  --group "test_research_group"
 ```
 
-> NOTE: The environment variable NXF_PLUGINS_TEST_REPOSITORY is needed here to tell Nextflow from where to get the plugin. Once the plugin is included in Nextflow repository of plugins, Nextflow will automatically fetch the plugin without needing to provide a plugin path using NXF_PLUGINS_TEST_REPOSITORY.
+> NOTE: The environment variable NXF_PLUGINS_TEST_REPOSITORY is needed here to tell Nextflow from where to get the plugin. Once the plugin is included in Nextflow repository of plugins, Nextflow will automatically fetch the plugin without needing to provide a plugin location using NXF_PLUGINS_TEST_REPOSITORY.
 
 Once the workflow completes successfully you will see a reply from Nextpie. In the following block `Response: {existant-processes=0, non-existant-processes=2, run-exists=1}` is the response by Nextpie. Nextpie saw this particualr pipeline run a unique run. Thus, there were
 
@@ -90,28 +101,36 @@ Once the workflow completes successfully you will see a reply from Nextpie. In t
 
 
 ```
-N E X T F L O W  ~  version 23.10.1
-Launching `../main.nf` [focused_planck] DSL2 - revision: ca8089d2a3
+ N E X T F L O W   ~  version 24.10.4
+
+WARN: =======================================================================
+=                                WARNING                                    =
+= You are running this script using a un-official plugin repository.        =
+=                                                                           =
+= https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json
+=                                                                           =
+= This is only meant to be used for plugin testing purposes.                =
+=============================================================================
+
+Launching `../main.nf` [adoring_varahamihira] DSL2 - revision: 34df9cf9c5
+
+[NEXTPIE] Config file: /home/bishwa/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json
 ===============================================================================
- Test-workflow v0.0.1
+ Example-workflow v0.0.2
 ===============================================================================
 Run Name       : test_project
 Group          : test_research_group
-FASTQs         : fastq/*_R{1,2}_*.fastq.gz
+FASTQs         : fastq/*_R{1,2}*.fastq.gz
 Output Dir     : ./results
 ===============================================================================
 Do you want to continue (y/n)?y
 executor >  local (2)
-[52/f9e05e] process > preprocess:FastQC (SRR2121687) [100%] 2 of 2 ✔
-workflow: Test-workflow
-version : 0.0.1
-group   : test_research_group
-project : test_project
-Pushing run metadata to Nextpie http://localhost:5000
-Response: {message=Records inserted into the database., response=info}
-Completed at: 12-Jul-2024 15:05:52
-Duration    : 7m 17s
-CPU hours   : 0.2
-Succeeded   : 2
-
+[02/f737fc] preprocess:FastQC (SRR2121688) [100%] 2 of 2 ✔
+Workflow complete ☑️ 
+[NEXTPIE] Uploading usage data!
+[NEXTPIE] Trace file: ./results/pipeline_info/Trace.txt
+[NEXTPIE] URI: http://localhost:5000/api/v1.0/upload-data
+[NEXTPIE] Response:
+ {"message":"Records are inserted into the database (2 new processes).","response":"success"}
 ```
+

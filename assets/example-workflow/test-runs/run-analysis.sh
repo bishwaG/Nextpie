@@ -9,7 +9,6 @@ export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releas
 ./nextflow run ../main.nf -plugins nf-nextpie@0.0.1 \
   --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
-  --group "test_research_group" \
-  -resume
+  --group "test_research_group"
 
 
