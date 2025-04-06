@@ -41,7 +41,7 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Remove test data from the database](docs/db-clear-test-data.md)
 * #### [Backup (dump) Nextpie's database (SQLite)](docs/db-dump.md)
 
-* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md) [demo video](#)
+* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md) [[demo video](#)]
 * #### [Nextpie API](docs/api.md)
 * #### [Admin page](docs/admin.md)
 
