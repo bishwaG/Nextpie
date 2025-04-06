@@ -1,9 +1,9 @@
 ## An Example workflow
 
+Nextflow comes with an example Nextflow workflow to help you integrate Nextpie in any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example workflow is a samiple workflow that takes FASTQ files as inputs and process tham using FastQC to generate quality reports per FASTQ files.
+
 ### Prerequisite
 Before proceeding make sure that you have Nextpie up and running. You can adopt one of the many deployment methods mentioned in the [main page](../README.md).
-
-Nextflow comes with an example Nextflow workflow to help you integrate Nextpie in any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example workflow is a samiple workflow that takes FASTQ files as inputs and process tham using FastQC to generate quality reports per FASTQ files.
 
 ## setting an environment
 
@@ -36,8 +36,6 @@ cd $HOME
 git clone https://github.com/bishwaG/Nextpie.git
 cd Nextpie/
 ```
-
-Follow the instruction on Nextpie [running in a development mode](deploy-python.md). Although you can deploy Nextpie in a production environment rather easily, we are running it in development mode to keep things simple.
 
 ### Step 3: Locate input data
 
