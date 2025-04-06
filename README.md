@@ -29,7 +29,7 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### Deployment
     - [Python virtual environment](docs/deploy-python.md) (development environment) [[Instructon video](https://youtu.be/dHXS6Gmq3Gw)]
     - [Conda environment](docs/deploy-conda.md) [[Instructon video](https://youtu.be/nSijblHforM)]
-    - [Guix environment](docs/deploy-guix.md)
+    - [Guix environment](docs/deploy-guix.md) ([Instructon video](#))
     - [Docker](docs/deploy-docker.md) [[Instructon video](https://youtu.be/dv2M-vaUkkw)]
     - [Gunicorn](docs/deploy-gunicorn.md)
     - [Waitress](docs/deploy-waitress.md) (Windows)
@@ -41,9 +41,11 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Remove test data from the database](docs/db-clear-test-data.md)
 * #### [Backup (dump) Nextpie's database (SQLite)](docs/db-dump.md)
 
-* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md)
+* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md) [demo video](#)
 * #### [Nextpie API](docs/api.md)
 * #### [Admin page](docs/admin.md)
 
 ## Demo videos
-* [Generating plots using defult interace](https://youtu.be/CrL1GM2gCLs)
+* [Nextpie webUI overview](#)
+* [Generating plots using webUI](https://youtu.be/CrL1GM2gCLs)
+* [Uploading trace file manually](#)

@@ -1,5 +1,20 @@
 ## Removing test data from the databased
 
+If you want to get rid of the test data, there are two available options.
+
+- By replacing the default SQLite databse file
+- By removing test records using Flask dommand-line
+
+## Replacing default SQLite database
+
+Nextpie repository comes with an extra SQLite database file `assets/db-wo-test-data.sqlite3`. The database does not have any records in Group, Project, Run and Process tables. Thus, the easiest way to remove test data from the database is to replace `db.sqlite3` by `assets/db-wo-test-data.sqlite3`. Alternately, you can modify database path in `config.py` by changing `SQLALCHEMY_DATABASE_URI` value as follows. 
+
+``python
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'assets', 'db-wo-test-data.sqlite3')
+``
+
+## Removing records using Flask CLI
+
 If you have already a [Python virtual environment](deploy-python.md) in the Nextpie root directory, skip this step. Otherwise, create a Python virtual environment and activate via terminal.
 
 ```bash
