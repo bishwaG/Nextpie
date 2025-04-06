@@ -29,7 +29,7 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### Deployment
     - [Python virtual environment](docs/deploy-python.md) (development environment) [[Instructon video](https://youtu.be/dHXS6Gmq3Gw)]
     - [Conda environment](docs/deploy-conda.md) [[Instructon video](https://youtu.be/nSijblHforM)]
-    - [Guix environment](docs/deploy-guix.md) ([Instructon video](#))
+    - [Guix environment](docs/deploy-guix.md)
     - [Docker](docs/deploy-docker.md) [[Instructon video](https://youtu.be/dv2M-vaUkkw)]
     - [Gunicorn](docs/deploy-gunicorn.md)
     - [Waitress](docs/deploy-waitress.md) (Windows)
