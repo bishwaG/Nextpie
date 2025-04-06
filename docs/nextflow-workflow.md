@@ -1,5 +1,8 @@
 ## An Example workflow
 
+### Prerequisite
+Before proceeding make sure that you have Nextpie up and running. You can adopt one of the many deployment methods mentioned in the [main page](../README.md).
+
 Nextflow comes with an example Nextflow workflow to help you integrate Nextpie in any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example workflow is a samiple workflow that takes FASTQ files as inputs and process tham using FastQC to generate quality reports per FASTQ files.
 
 ## setting an environment
