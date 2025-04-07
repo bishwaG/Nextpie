@@ -31,7 +31,7 @@ config.json:
 
 ## Firewall configuration
 
-If you have a firewall running in a machine where is Nextpie is running, it is essential to open the port on which Nextpie is listening/running. Nextpie run by default on port `5000`. The port can be changed according to your need. If you deploy Nextpie into a production you could modify the port to `8080` or `80` (may require root access). Please refer to [Gunicorn](deploy-gunicorn.md) docs. You can use Apache web server using reverse proxy as well.
+If you have a firewall running in a machine where Nextpie is running, it is essential to open the port on which Nextpie is listening/running. Nextpie run by default on port `5000`. The port can be changed according to your need. If you deploy Nextpie into a production you could modify the port to `8080` or `80` (may require root access). Please refer to [Gunicorn](deploy-gunicorn.md) docs. You can use Apache web server using reverse proxy as well.
 
 Following links will guide you how to you a port using Firewalld (in Redhat systems) and Uncomplecated firewall (in Ubuntu systems).
 
