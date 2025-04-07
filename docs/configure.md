@@ -1,20 +1,22 @@
+
 ## An Example workflow
 
-Nextflow comes with an example Nextflow workflow to explore Nextpie features. The example workflow is located in `assets/example-workflow` directory. 
+Nextflow comes with an example Nextflow workflow to explore Nextpie features. The example workflow is located in `assets/example-workflow` directory. Please refer to `assets/example-workflow/test-runs/run-analysis.sh` script.
 
 ## Configure Nextflow pipeline for Nextpie
 
-Nextpie has a client plugin named [nf-nextpie](https://github.com/bishwaG/nf-nextpie). Once the following lines are added to `nextflow.config`, Nextlow will automatically download the pipeline during runtime and stores in `$HOME/.nextflow/plugins/nf-nextpie-X.X.X`. This feature greatly minimizes configuration hassles.
+Nextpie has a client plugin named [nf-nextpie](https://github.com/bishwaG/nf-nextpie). Once you export the environment variable `NXF_PLUGINS_TEST_REPOSITORY` (with the value shown in the code block below) and Nextflow command-line option`-plugins nf-nextpie@0.0.1`, Nextflow will automatically download the pipeline during runtime and stores in `$HOME/.nextflow/plugins/nf-nextpie-0.0.1`. This feature greatly minimizes configuration hassles. Currently, `nf-nextpie` plugin is not in Nextflow's plugin repository. Once it is in the public repository you do not even have to export `NXF_PLUGINS_TEST_REPOSITORY` variable.
 
-```
-plugins {
-  id 'nf-nextpie'
-}
-```
+```bash
+## Provide nf-nextplugin location
+export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json"
 
+## Run Nextflow using -plugins command-line parameter
+./nextflow run ../main.nf -plugins nf-nextpie@0.0.1  ....
+```
 When pipeline completes, `workflow.complete` triggers `nf-nextpie` to upload usage data to Nextpie.
 
-The plugin comes with a default config file. The file is located at `$HOME/.nextflow/plugins/nf-nextpie-X.X.X/classes/nextflow/nextpie/config.json` in the local dowload copy. The config file contains enties for Nextpie host, port in which Nextpie in running in the host, and an API key to connect to Nextpie host.
+The plugin comes with a default config file. The file is located at `$HOME/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json` in the local dowload copy. The config file contains enties for Nextpie host, port in which Nextpie in running in the host, and an API key to connect to Nextpie host.
 
 config.json:
 ```
