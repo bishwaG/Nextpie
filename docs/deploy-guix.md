@@ -2,7 +2,9 @@
 
 Nextpie can be run in Guix as well. Please refer to [Guix installation guide](https://guix.gnu.org/manual/en/html_node/Binary-Installation.html) to install in your system. Please note that Guix instalaltion requires root privlage. 
 
-THe the following code block to create a Guix environment for Nextpie. 
+> NOTE: Guix is tested only in Redhat Linux 9.5. It is not tested in Ubuntu distribution.
+
+The the following code block to create a Guix environment for Nextpie. 
 ```bash
 git clone https://github.com/bishwaG/Nextpie.git
 cd Nextpie
