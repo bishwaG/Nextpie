@@ -93,11 +93,8 @@ export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releas
 
 > NOTE: The environment variable NXF_PLUGINS_TEST_REPOSITORY is needed here to tell Nextflow from where to get the plugin. Once the plugin is included in Nextflow repository of plugins, Nextflow will automatically fetch the plugin without needing to provide a plugin location using NXF_PLUGINS_TEST_REPOSITORY.
 
-Once the workflow completes successfully you will see a reply from Nextpie. In the following block `Response: {existant-processes=0, non-existant-processes=2, run-exists=1}` is the response by Nextpie. Nextpie saw this particualr pipeline run a unique run. Thus, there were
+Once the workflow completes successfully you will see a reply from Nextpie. In the following block `{"message":"Records are inserted into the database (2 new processes).","response":"success"}` is the response by Nextpie.
 
-* 0 existant-processes in the database
-* 2 non-existant processes (meaning data has been inserted to the database)
-* 0 existing runs.
 
 
 ```
