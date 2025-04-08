@@ -27,10 +27,10 @@ Nextpie is tested in Python `v3.9` in Redhat Exterprise Linux 9 and Ubuntu 24.04
 Nextpie can be run inside varities of software environments. Use one of the following suitable environments to deploy Nextpie.
 
 * #### Deployment
-    - [Python virtual environment](docs/deploy-python.md) (development environment) [[Instructon video](https://youtu.be/dHXS6Gmq3Gw)]
-    - [Conda environment](docs/deploy-conda.md) [[Instructon video](https://youtu.be/nSijblHforM)]
+    - [Python virtual environment](docs/deploy-python.md) (development environment) [[Instructon video](https://youtu.be/HJSIUa0EsD0)]
+    - [Conda environment](docs/deploy-conda.md) [[Instructon video](https://youtu.be/-2Af_aU4vmM)]
     - [Guix environment](docs/deploy-guix.md)
-    - [Docker](docs/deploy-docker.md) [[Instructon video](https://youtu.be/dv2M-vaUkkw)]
+    - [Docker](docs/deploy-docker.md) [[Instructon video](https://youtu.be/kmLNcgQN33I)]
     - [Gunicorn](docs/deploy-gunicorn.md)
     - [Waitress](docs/deploy-waitress.md) (Windows)
 
@@ -41,7 +41,7 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Remove test data from the database](docs/db-clear-test-data.md)
 * #### [Backup (dump) Nextpie's database (SQLite)](docs/db-dump.md)
 
-* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md) [[demo video](#)]
+* #### [Running an example Nextflow workflow](docs/nextflow-workflow.md) [[demo video](https://youtu.be/ZrnkrdmcLv0)]
 * #### [Nextpie API](docs/api.md)
 * #### [Admin page](docs/admin.md)
 
