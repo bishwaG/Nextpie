@@ -1,0 +1,7 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+4	59/d7b0e3	24311	CellrangerMulti:multi (sample-1)	COMPLETED	0	2025-04-09 18:52:11.699	7h 12m 17s	7h 11m 28s	602.2%	64.8 GB	73.4 GB	3.5 TB	548.5 GB
+1	2b/cfd390	24312	CellrangerMulti:multi (sample-2)	COMPLETED	0	2025-04-09 18:52:11.749	8h 50m	8h 49m 19s	632.6%	67.2 GB	75.7 GB	4.1 TB	791.1 GB
+5	20/3009e5	24310	CellrangerMulti:multi (sample-3)	COMPLETED	0	2025-04-09 18:52:11.644	8h 52m 33s	8h 52m 8s	635.5%	66.2 GB	74.6 GB	4.1 TB	737 GB
+3	9c/62d6c3	24313	CellrangerMulti:multi (sample-4)	COMPLETED	0	2025-04-09 18:52:11.802	9h 45m 43s	9h 45m 18s	651.8%	67.6 GB	76.5 GB	4.3 TB	871.7 GB
+2	2a/fab6d7	24314	CellrangerMulti:multi (sample-5)	COMPLETED	0	2025-04-09 18:52:11.865	15h 21m 54s	8h 10m 9s	647.6%	66.6 GB	75.1 GB	4 TB	717.2 GB
+6	18/b38035	24315	CellrangerMulti:aggr ()	COMPLETED	0	2025-04-10 10:14:06.350	1h 41m	1h 40m 39s	92.3%	17.3 GB	20.7 GB	37.5 GB	23.4 GB
