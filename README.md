@@ -46,6 +46,6 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Admin page](docs/admin.md)
 
 ## Demo videos
-* [Nextpie webUI overview](#)
-* [Generating plots using webUI](https://youtu.be/CrL1GM2gCLs)
-* [Uploading trace file manually](#)
+* [Nextpie webUI overview](https://youtu.be/069BpLCY42c)
+* [Generating plots using webUI](https://youtu.be/LSUZ7l-sJLU)
+* [Uploading trace file manually](https://youtu.be/9uKZO2qpCug)
