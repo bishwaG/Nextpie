@@ -2,8 +2,14 @@
 
 If you want to get rid of the test data, there are two available options.
 
+- Via the API
 - By replacing the default SQLite databse file
 - By removing test records using Flask dommand-line
+
+
+## REmoving the records using the API
+
+To delete all the records associated to groups, you can provide comma separated group IDs using `/delete-records` in the API endpoint `http://127.0.0.1:5000/api/v1.0`.
 
 ## Replacing default SQLite database
 
