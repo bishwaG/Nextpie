@@ -17,5 +17,6 @@ Nextpie can be run inside varities of software environments. Use one of the foll
 * #### [Backup (dump) Nextpie's database (SQLite)](db-dump.md)
 
 * #### [Running an example Nextflow workflow](nextflow-workflow.md) [demo video](https://youtu.be/ZrnkrdmcLv0)
+* #### [Running Nextpie on non-default port](non-default-port.md)
 * #### [Nextpie API](api.md)
 * #### [Admin page](admin.md)
