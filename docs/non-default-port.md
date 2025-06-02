@@ -1,45 +1,113 @@
-# Running Nextpie on a different port than 5000.
 
-If your computer had port `5000` already in use, the same port can not be used for Nextpie. You can execute the following command to check whether the port is in use.
+# Running Nextpie on a Different Port than 5000
 
-```
+If your computer already has port `5000` in use, it cannot be used for running Nextpie. To check whether the port is in use, execute the following command:
+
+```bash
 sudo netstat -tulnp | grep :5000
 ```
-If the port is not in use, there will be no output. If the port is in use someting similr to the following will be displayed.
+
+If the port is not in use, there will be no output. If it is in use, you will see output similar to the following:
 
 ```
 tcp        0      0 127.0.0.1:5000          0.0.0.0:*               LISTEN      489670/python3.9
 ```
 
-The hassle free solution to the problem, is to termiante the service (if less cirtical) using the port `5000` and run Nextpie normally. However, if you are running a cirtical service on the port `5000`, it is wiser to run Nextpie on a different port. You can kill the process ID and the program (service) name on the last column of the above output separted by `/`. The following command can be executed to terminate the service. Please note that the processed ID and the program/service name will be different.
+The simplest solution is to terminate the service using port `5000` (if it's non-critical) and run Nextpie normally. However, if the service using port `5000` is critical, it's better to run Nextpie on a different port. You can terminate the process using the process ID and program name shown in the last column of the output above. Use the following command (replace the ID accordingly):
 
-```
+```bash
 sudo kill -9 489670
 ```
 
+## Step 1: Changing the Port for Nextpie
 
-## Changing the port for Nextpie
+### Docker Container
 
-### Docker container
-There are two approaces to run Nextpie as a docker container. You have to modify the port number in both the cases.
+There are two ways to run Nextpie as a Docker container. In both cases, you will need to modify the port number.
 
 #### Using `docker compose`
-If you are planning to run Nextpie as a docker container using the command `sudo docker compose up --build`, you have to modify the file `docker-compose.yml` in line number 8 to `"5111:5000"`. Here we are forwarding your host PC's port `5111` to docker container's port `5000`. The local port `5111` can be any port number of your choice , but make sure that it is not in use in your system. You can check it by executing the command `sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER`. 
 
-Next [update the nf-nextpie config file](#updating-nf-nextpie-config).
+If you plan to use the command `sudo docker compose up --build`, you need to edit the `docker-compose.yml` file. Change line 8 to:
+
+```yaml
+"5111:5000"
+```
+
+This forwards your host computer's port `5111` to the container's port `5000`. You can use any available port number instead of `5111`, but ensure it's not already in use. Check availability with:
+
+```bash
+sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER
+```
+
 
 #### Using `docker run`
-If you are used to or planning to run Nextpie using the command  `sudo docker run -p 5000:5000 fimmtech/nextpie:latest`, if you have to modify the port `5000:5000` to `5111:5000`. Here we are forwarding your host PC's port `5111` to docker container's port `5000`. The local port `5111` can be any port number of your choice , but make sure that it is not in use in your system. You can check it by executing the command `sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER`. 
 
-Next [update the nf-nextpie config file](#updating-nf-nextpie-config).
-## Conda environment
+If you're using the command:
 
-If you are running Nextpie under a conda environment you can start Gunicorn webserver by executing the command `gunicorn --bind 127.0.0.1:5111 run:app`. Here we are running Nextpie on the host computer's port `5111`.  The local port `5111` can be any port number of your choice , but make sure that it is not in use in your system. You can check it by executing the command `sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER`. 
+```bash
+sudo docker run -p 5000:5000 fimmtech/nextpie:latest
+```
 
-Next [update the nf-nextpie config file](#updating-nf-nextpie-config).
+Replace `5000:5000` with `5111:5000` to use a different host port:
 
-## Updating nf-nextpie config
-We have to change the port in the plugin `nf-nextpie`'s config file as well. Nextpie has a config file `$HOME/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json`. The config file is created automatically only after you have run Nextflow pipeline with the parameter `-plugins nf-nextpie@0.0.1`. If the file does not exist, either run the example worklow or run any workflow with the parameter `-plugins nf-nextpie@0.0.1`. Once you have the file in the mentioned path, modify the port value `5000` to `5111` and save the file.
+```bash
+sudo docker run -p 5111:5000 fimmtech/nextpie:latest
+```
 
-After changing the port from `5000` to `5111`, open your browser and go to [http://127.0.0.1:5111](http://127.0.0.1:5111). Use username `admin` and password `admin` to login.
+Again, ensure the selected host port is not in use. Check with:
+
+```bash
+sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER
+```
+
+
+### Conda/Guix Environment
+
+If you're running Nextpie in a Conda or Guix environment, you can start the Gunicorn web server with:
+
+```bash
+gunicorn --bind 127.0.0.1:5111 run:app
+```
+
+This starts Nextpie on port `5111`. As before, you can choose any available port. Check availability with:
+
+```bash
+sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER
+```
+### Python environment
+If you are running Nextpie in a python (development environment), run the following command to start Nextpie. Note that default port `5000` has been changed to `5111`. 
+
+```bash
+flask run --host=127.0.0.1 --port=5111
+```
+As before, you can choose any available port. Check availability with:
+
+```bash
+sudo netstat -tulnp | grep :YOUR_NEW_PORT_NUMBER
+```
+
+## Step 2: Updating nf-nextpie Config
+
+You also need to update the port in the nf-nextpie plugin's config file, located at:
+
+```bash
+$HOME/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json
+```
+
+This file is automatically created after running any Nextflow pipeline with the parameter:
+
+```bash
+-plugins nf-nextpie@0.0.1
+```
+
+If the file does not exist, run the [example workflow](nextflow-workflow.md) or any workflow using the above plugin parameter. Once the file is available, open it, change the port from `5000` to `5111`, and save it.
+
+After updating the configuration, open your browser and navigate to:
+
+[http://127.0.0.1:5111](http://127.0.0.1:5111)
+
+Log in using:
+
+* **Username**: `admin`
+* **Password**: `admin`
 
