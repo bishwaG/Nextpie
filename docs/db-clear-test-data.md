@@ -1,4 +1,4 @@
-## Removing test data from the databased
+# Removing test data from the databased
 
 If you want to get rid of the test data, there are two available options.
 
@@ -11,24 +11,24 @@ If you want to get rid of the test data, there are two available options.
 
 To delete all the records associated to groups, you can provide comma separated group IDs using `/delete-records` in the API endpoint `http://127.0.0.1:5000/api/v1.0`. This is not limited to test data removal only.
 
-![](images/nextpie-plots.png/remove-data-by-gid.png)
+![](images/remove-data-by-gid.png)
 
 Make sure that you have deployed Nextpie and it is running. 
 
-### Step 1: Provide API key
+### Step 1:
 
 - Go to [http://127.0.0.1:5000/api/v1.0](http://127.0.0.1:5000/api/v1.0)
 - Click **Authorize** button and provide the default API key `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M` if you have not created a new API key from the Nextpie's web interface. A newly created API key will always overwrite the old one.
 
 ### Step 2: 
 
-- Click the *Default namespace** and expand it.
+- Click the **Default namespace** and expand it.
 - Click **/delete-records** and expand it.
 - Click **Try it out** button. This will enable **GroupID** textfield and also shows **Execute** button.
 
 ### Step 3:
 
-- Provide comma separated group IDs you would like to remove. If you want to remove only the test data, provide group IDs `1, 2, 3, 4, 5, 6, 7, 8, 10, 11`. You can always double check the group IDs from Nextpie's web interface (Database >> Group).
+- Provide comma separated group IDs you would like to remove. If you want to remove only the test data, provide group IDs `1, 2, 3, 4, 5, 6, 7, 8, 10, 11`. You can easily get group IDs from Nextpie's web interface (Database >> Group).
 
 ### Step 4:
 
