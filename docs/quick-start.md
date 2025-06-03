@@ -2,13 +2,13 @@
 
 This quick start guide will help you deploy, run, and test Nextpie with minimal effort.
 
-# Prerequisites
+# 1. Prerequisites
 
 Ensure that you have root access to the machine and that Docker is installed. For installation instructions, please refer to the official [Install Docker Engine](https://docs.docker.com/engine/install/) guide from Docker.
 
-## Deployment
+## 2. Deployment
 
-### Pulling an running a (Docker) container image
+### 2.1 Pulling an running a (Docker) container image
 
 The Nextpie image is available on Docker Hub under the repository []fimmtech/nextpie](https://hub.docker.com/repository/docker/fimmtech/nextpie/general). You can easily pull the image and run it as a container using the following commands in a terminal:
 
@@ -25,7 +25,7 @@ sudo netstat -tulnp | grep :5000
 
 If port `5000` is already in use, please use a different port, such as `5111`. You can choose any available port, but make sure to check its availability using the command above.
 
-### When port 5000 is Free
+#### When port 5000 is Free
 
 Run the following command when host port `5000` is free. This command forwards the local port `5000` to the container's port `5000` using the `-p` flag:
 
@@ -39,7 +39,7 @@ Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use 
 * **Username:** `admin`
 * **Password:** `admin`
 
-### When port 5000 is in Use
+#### When port 5000 is in Use
 
 Run the following command when host port `5000` is already in use. This command forwards local port `5111` to the container's port `5000`:
 
@@ -53,7 +53,7 @@ Open your browser and go to [http://127.0.0.1:5111](http://127.0.0.1:5111). Use 
 * **Username:** `admin`
 * **Password:** `admin`
 
-## Running a Test Pipeline
+## 3. Running a Test Pipeline
 
 Once Nextpie has been successfully deployed, refer to the [example workflow guide](nextflow-workflow.md) to run a test pipeline.
 
