@@ -30,7 +30,7 @@ authorizations = {
 ## Create the API
 desc  = "This is a RESTful API to interact with Nextpie web application.\n"
 desc += "Code repository: https://github.com/bishwaG/Nextpie\n"
-desc += "Contact: nextpie@gmail.com"
+desc += "Contact: nextpietool@gmail.com"
 ver   = "1.0"
 api = Api(blueprint,
           version=ver,
