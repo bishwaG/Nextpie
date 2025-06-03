@@ -8,9 +8,9 @@ Ensure that you have root access to the machine and that Docker is installed. Fo
 
 ## Deployment
 
-### Using Docker Hub as the Source
+### Pulling an running a (Docker) container image
 
-The Nextpie image is available on Docker Hub under the repository `fimmtech/nextpie`. You can easily pull the image and run it as a container using the following commands in a terminal:
+The Nextpie image is available on Docker Hub under the repository []fimmtech/nextpie](https://hub.docker.com/repository/docker/fimmtech/nextpie/general). You can easily pull the image and run it as a container using the following commands in a terminal:
 
 ```bash
 # Pull the Docker image
@@ -25,7 +25,7 @@ sudo netstat -tulnp | grep :5000
 
 If port `5000` is already in use, please use a different port, such as `5111`. You can choose any available port, but make sure to check its availability using the command above.
 
-### When Port 5000 Is Free
+### When port 5000 is Free
 
 Run the following command when host port `5000` is free. This command forwards the local port `5000` to the container's port `5000` using the `-p` flag:
 
@@ -39,7 +39,7 @@ Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use 
 * **Username:** `admin`
 * **Password:** `admin`
 
-### When Port 5000 Is in Use
+### When port 5000 is in Use
 
 Run the following command when host port `5000` is already in use. This command forwards local port `5111` to the container's port `5000`:
 
