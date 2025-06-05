@@ -18,7 +18,7 @@ Make sure that you have deployed Nextpie and it is running.
 ### Step 1:
 
 - Go to [http://127.0.0.1:5000/api/v1.0](http://127.0.0.1:5000/api/v1.0)
-- Click **Authorize** button and provide the default API key `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M` if you have not created a new API key from the Nextpie's web interface. A newly created API key will always overwrite the old one.
+- Click **Authorize** button and provide the default API key `jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M`, if you have not created a new API key from the Nextpie's web interface. A newly created API key will always overwrite the old one.
 
 ### Step 2: 
 
