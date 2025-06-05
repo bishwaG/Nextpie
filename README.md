@@ -27,7 +27,7 @@ Nextpie is tested in Python `v3.9` in Redhat Exterprise Linux 9 and Ubuntu 24.04
 Nextpie can be run inside varities of software environments. Use one of the following suitable environments to deploy Nextpie.
 
 
-* #### [Quick start](docs/quick-start.md)
+* #### [Quick start](docs/quick-start.md)[[Instructon video](https://youtu.be/D-WCaAl1iBM)]
 * #### Deployment
     - [Python virtual environment](docs/deploy-python.md) (development environment) [[Instructon video](https://youtu.be/HJSIUa0EsD0)]
     - [Conda environment](docs/deploy-conda.md) [[Instructon video](https://youtu.be/-2Af_aU4vmM)]
