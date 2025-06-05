@@ -10,7 +10,7 @@ Ensure that you have root access to the machine and that Docker is installed. Fo
 
 ### 2.1 Pulling an running a (Docker) container image
 
-The Nextpie image is available on Docker Hub under the repository []fimmtech/nextpie](https://hub.docker.com/repository/docker/fimmtech/nextpie/general). You can easily pull the image and run it as a container using the following commands in a terminal:
+The Nextpie image is available on Docker Hub under the repository [fimmtech/nextpie](https://hub.docker.com/repository/docker/fimmtech/nextpie/general). You can easily pull the image and run it as a container using the following commands in a terminal:
 
 ```bash
 # Pull the Docker image
