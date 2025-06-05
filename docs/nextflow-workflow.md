@@ -1,4 +1,5 @@
 
+
 ## An Example workflow
 
 Nextflow comes with an example Nextflow workflow to help you integrate Nextpie in any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example workflow is a samiple workflow that takes FASTQ files as inputs and process tham using FastQC to generate quality reports per FASTQ files.
@@ -70,19 +71,16 @@ Please run the following command to run the pipeline. Make sure that your locate
 
 > NOTE: before running the pipelien make sure that Nextpie is running under `http://localhost:5000`. For simplicity you can run it in as a [docker container](deploy-docker.md). If you do not have sudo right to run a docker container, deploy Nextpie using [Conda](deploy-conda.md) or [Python virtual environment](deploy-python.md).
 
+> NOTE: If you are [running Nextpie on a non-default port](non-default-port.md),  please remember to update `port` in nf-nextpie plugin's config file `$HOME/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json`.
+
 > NOTE: Make sure that you have correct version of Java (openjdk in Linux) installed for Nextlow. 
 
->NOTE: Make sure that `trace.enabled=true` in your Nextlow workflow's nextflow.config file.
->
+> NOTE: Make sure that `trace.enabled=true` is set in your Nextlow workflow's nextflow.config file.
+
 ```bash
 ## limit heap size for nextflow
 NXF_OPTS='-Xms1g -Xmx1g'
 _JAVA_OPTIONS='-Xms1g -Xmx4g'
-
-## The nf-nextpie plugin will upload trace.txt file
-## Currently nf-nectpie is not in Nextflow's public plugin repository.
-## Once it is in the repository, you do not have to set NXF_PLUGINS_TEST_REPOSITORY.
-export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json"
 
 ./nextflow run ../main.nf \
   -plugins nf-nextpie@0.0.1 \
@@ -91,23 +89,10 @@ export NXF_PLUGINS_TEST_REPOSITORY="https://github.com/bishwaG/nf-nextpie/releas
   --group "test_research_group"
 ```
 
-> NOTE: The environment variable NXF_PLUGINS_TEST_REPOSITORY is needed here to tell Nextflow from where to get the plugin. Once the plugin is included in Nextflow repository of plugins, Nextflow will automatically fetch the plugin without needing to provide a plugin location using NXF_PLUGINS_TEST_REPOSITORY.
-
 Once the workflow completes successfully you will see a reply from Nextpie. In the following block `{"message":"Records are inserted into the database (2 new processes).","response":"success"}` is the response by Nextpie.
-
-
 
 ```
  N E X T F L O W   ~  version 24.10.4
-
-WARN: =======================================================================
-=                                WARNING                                    =
-= You are running this script using a un-official plugin repository.        =
-=                                                                           =
-= https://github.com/bishwaG/nf-nextpie/releases/download/0.0.1/nf-nextpie-0.0.1-meta.json
-=                                                                           =
-= This is only meant to be used for plugin testing purposes.                =
-=============================================================================
 
 Launching `../main.nf` [adoring_varahamihira] DSL2 - revision: 34df9cf9c5
 
