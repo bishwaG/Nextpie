@@ -7,7 +7,7 @@ If you want to remove test data, there are three available options:
 - By replacing the default SQLite database file  
 - By removing test records using the Flask command-line interface  
 
-## Removing Records Using the API
+## Removing records using the API
 
 To delete all records associated with specific groups, you can provide comma-separated group IDs using the `/delete-records` API endpoint at `http://127.0.0.1:5000/api/v1.0`. This method can be used for more than just test the data removal.
 
@@ -36,7 +36,7 @@ To delete all records associated with specific groups, you can provide comma-sep
 
 ⚠️This will remove all related records (projects, runs, and processes) for the specified groups from the database.
 
-## Replacing the Default SQLite Database
+## Replacing the default SQLite database
 
 > **Note:** This method does not work if you have deployed Nextpie as a Docker container.
 
@@ -46,7 +46,7 @@ The Nextpie repository includes an alternate SQLite database file: `assets/db-wo
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'assets', 'db-wo-test-data.sqlite3')
 ```
 
-## Removing Records Using Flask CLI
+## Removing records using Flask CLI
 
 > ⚠️ **Note:** This method does not work if you have deployed Nextpie as a Docker container.
 
