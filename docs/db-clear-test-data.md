@@ -38,7 +38,7 @@ To delete all records associated with specific groups, you can provide comma-sep
 
 ## Replacing the default SQLite database
 
-> **Note:** This method does not work if you have deployed Nextpie as a Docker container.
+> ⚠️ **Note:** This method does not work if you have deployed Nextpie as a Docker container.
 
 The Nextpie repository includes an alternate SQLite database file: `assets/db-wo-test-data.sqlite3`. This database contains no records in the Group, Project, Run, or Process tables. The simplest way to remove test data is to replace `db.sqlite3` with `assets/db-wo-test-data.sqlite3`. Alternatively, you can modify the database path in `config.py` by updating the `SQLALCHEMY_DATABASE_URI` value as follows:
 
