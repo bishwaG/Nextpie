@@ -1,8 +1,11 @@
+
 ## Admin GUI
 
 
 ![](../assets/images/admin.png)
 
-Nextpie has an administrator view for modifing cetrain database entries. It can be accessed via [http://127.0.0.1:5000/admin](http://127.0.0.1:5000/admin). The URL is not explicitly mentioned anywhere in Nextpie. Thus, an administrator should type the URL in a address bar of a web browser to access it. Any user having superuser (database table user, field super_user) access can the interface. Nextpie has default administrator user `admin` which can not be deleted via the interface. 
 
-> Note: The base URL could be different if you have hosted Nextpie in a production environment with a domain name or public IP address. 
+Nextpie provides an administrator interface for modifying specific database entries. It can be accessed by navigating to http://127.0.0.1:5000/admin. This URL is **not** linked or displayed within the Nextpie user interface, so administrators must manually enter it into the browser's address bar. 
+Any user marked as a **superuser** (the `super_user` field in the `user` table) can access this interface. Nextpie includes a default administrative user named `admin`, which **cannot be deleted** through the interface.
+
+> **Note:** If you're running Nextpie in a production environment with a domain name or public IP address, the base URL will differ accordingly.
