@@ -30,15 +30,15 @@ This file defines:
 }
 
 ```
-- host: The hostname or IP address of the machine running Nextpie.
+- **host:** The hostname or IP address of the machine running Nextpie.
 
-- port: The port Nextpie is running on.
+- **port:** The port Nextpie is running on.
 
-- api-key: The API key used to authenticate with the Nextpie API.
+- **api-key:** The API key used to authenticate with the Nextpie API.
 
-- workflow-name-var: The name of variable storing pipeline name in Nextflow pipeline's `nextflow.config` file.
+- **workflow-name-var:** The name of variable storing pipeline name in Nextflow pipeline's `nextflow.config` file.
 
-- worfklow-version-var: The name of variable storing pipeline version in Nextflow pipeline's `nextflow.config` file.
+- **worfklow-version-var:** The name of variable storing pipeline version in Nextflow pipeline's `nextflow.config` file.
 
 >⚠️ Important: Do not use the default API key in production environments. Always generate a new, secure key for production use.
 
