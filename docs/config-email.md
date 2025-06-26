@@ -1,11 +1,23 @@
-# Email configuration
+## Email configuration
 
-Email configuration is required for sending account recovery emails. The default user `admin` can modify SMTP details from Settings page. Login to Nextpie's web interface using username `admin` and password `admin` to change SMTP configurations. Update dummy email `admin@example.com` of `admin` user at the same time.
+The default administrator account (admin) can update the SMTP settings from the Settings page.
 
-![A test image](images/imap-settings.png)
+To configure SMTP: 
 
-To be able to use Gmail for sending emails, you have to create an app password. Please follow [Google's instruction](https://support.google.com/mail/answer/185833?hl=en) to create an app password.
+#### ✅ Step 1. 
+Log in to the Nextpie web interface ([http://127.0.0.1:5000/](http://127.0.0.1:5000/)) using the default credentials:
 
-> Note: Without SMTP details Nextpie cannot send password recovery emails.
+- **Username:** admin
+- **Password:** admin
 
+#### ✅ Step 2. 
+Navigate to the Settings page to update the SMTP configuration.
 
+#### ✅ Step 3. 
+At the same time, update the default email address admin@example.com associated with the admin account.
+
+![](images/imap-settings.png)
+
+> ⚠️NOTE: To use Gmail as your SMTP provider, you must create an App Password. Please follow [Google's instruction](https://support.google.com/mail/answer/185833?hl=en) to generate one for your Gmail account.
+
+> ⚠️ NOTE: Without valid SMTP configuration, Nextpie will not be able to send password recovery emails.

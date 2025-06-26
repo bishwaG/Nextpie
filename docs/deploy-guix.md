@@ -1,40 +1,52 @@
-# Running Nextpie using Guix
 
-Nextpie can be run in Guix as well. Please refer to [Guix installation guide](https://guix.gnu.org/manual/en/html_node/Binary-Installation.html) to install in your system. Please note that Guix instalaltion requires root privlage. 
 
-> NOTE: Guix is tested only in Redhat Linux 9.5. It is not tested in Ubuntu distribution.
+## 📦 Running Nextpie Using Guix
 
-The the following code block to create a Guix environment for Nextpie. 
+Nextpie can also be run within a Guix environment. To get started, please refer to the official [Guix installation guide](https://guix.gnu.org/manual/en/html_node/Installation.html) to install Guix on your system. Note that Guix installation requires root privileges.
+
+> ⚠️ Important: Guix has only been tested on Red Hat Linux 9.5 and is not tested on Ubuntu or other distributions.
+
+### Setting Up the Guix Environment for Nextpie
+
+### ✅ Step 1: Clone the Nextpie repository and navigate to its directory: 
 ```bash
-git clone https://github.com/bishwaG/Nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git 
 cd Nextpie
+```
+### ✅ Step 2: Create and activate the Guix environment by running: 
+```bash
 guix shell -m manifest.scm
 ```
+After this command executes, your terminal prompt will display [env], indicating the Guix environment is active.
 
-After running above code block you will see `[env]` in your prompt. This tells that the Guix environment is active. Since Guix repository does not have all the dependencies of Nextpie, we install via `pip3`. 
+### Installing Dependencies
 
-First make sure that `pip3` which in `PATH` is not a system-wide installed one.
+Because the Guix repository does not include all of Nextpie’s dependencies, you will need to install the remaining dependencies using pip3.
+
+- First, verify that the pip3 in your current PATH is not the system-wide installation by running: 
 ```bash
 which pip3
 ```
+- Then install dependencies from the requirements file: pip3 install -r requirements/requirements.txt
 
-Now, Install the dependencies.
+### Running Nextpie
 
+- Ensure the gunicorn being used is the one from inside the Guix environment and not system-wide: 
 ```bash
-pip3 install -r requirements/requirements.txt
+which gunicorn 
 ```
-
-Once the dependencies are installed successfully, run the following command to run Nextpie under Gunicorn wer server.
-
+-  Run the Gunicorn web server on port 5000: 
 ```bash
-## make sure that systemwide installed gunicorn is not called
-which gunicorn
-
-## run gunicorn
 gunicorn --bind 127.0.0.1:5000 run:app
 ```
+Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). 
 
-Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
+Use the default login credentials:
 
-Press `Ctrl+C` to termiante Gunicorn webserver.
-Press `Ctrl+D` to deactivate Guix environment.
+**Username:** admin
+**Password:** admin
+
+### Stopping and Exiting
+
+* Press **Ctrl+C** in the terminal to terminate the Gunicorn server.
+* Press **Ctrl+D** to deactivate the Guix environment.

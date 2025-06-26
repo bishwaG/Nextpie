@@ -1,50 +1,62 @@
 
-# Running Nextpie inside a Conda environment
 
-It is possible to run Nextpie under Conda environment. Runs the following command block to install Conda. 
+## 📦 Running Nextpie Inside a Conda Environment
 
-> NOTE: If you do not want ~/.bashrc to be modified by Conda, do not run conda init even if the conda installer suggests it.
+You can run Nextpie within a Conda environment. Follow the steps below to install Conda, set up the environment, and launch the web server.
 
+### ✅ Step 1: Download and Install Miniconda
+
+Download the Miniconda installer script:
 ```bash
-## Download the installer
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.8.3-Linux-x86_64.sh
+```
+Choose an installation path where you have write access. For example:
+```bash
+# Optional: create installation directory and change ownership
+sudo mkdir -p /opt/Conda
+sudo chown $USER:$USER /opt/Conda
 
-## Provide INSTALL_PATH where you have write access
-## sudo mkdir -p /opt/Conda
-## sudo chown user:user /opt/Conda
+# Set the installation path
 INSTALL_PATH=/opt/Conda/miniconda3-py38_4.8.3
 
-## Type yes and press enter when asked
-## Do you wish the installer to initialize Miniconda3 by running conda init?
+# Run the installer
 sh Miniconda3-py38_4.8.3-Linux-x86_64.sh -p $INSTALL_PATH
 ```
-For changes to take effect, close the current terminal and open a new terminal.
+Note: When prompted by the installer with:
+```
+Do you wish the installer to initialize Miniconda3 by running conda init?
+```
+You may answer **no** if you don’t want Conda to modify your `~/.bashrc`. However, this will change the way Conda is loaded in your terminal session. You have to export Conda binary `PATH` and load the Conda environment by executing `source activate ENV_NAME`
 
-In the recent versions, we have discontinued creating a conda environment using the `environment.yml` file to install dependencies. The process can take an exceptionally long time to set up the environment. Instead of using `environment.yml` to create a conda environment, we now use Python's pip to install the dependencies.
+After installation, close the current terminal and open a new one to ensure that environment changes have taken effect.
 
-Now create a new conda environment and install dependencies using the comands in the following code block.
+### ✅ Step 2: Create an environment
 
+Nextpie no longer recommends creating the Conda environment using the environment.yml file due to long setup times. Instead, install dependencies using pip.
 ```bash
+# Clone the Nextpie repository
 git clone https://github.com/bishwaG/Nextpie.git
 cd Nextpie
-conda create -n nextpie-v0.0.1 python=3.9
 
-## activate the env
+# Create and activate a new Conda environment
+conda create -n nextpie-v0.0.1 python=3.9
 conda activate nextpie-v0.0.1
 
-## install dependency (missing in conda repo) sqlite_dump via pip
-## make sure that pip you are using is from conda environment
+# Confirm pip is from the Conda environment
 which pip
-pip3 install -r requirements/requirements.txt
 
+# Install Python dependencies using pip
+pip install -r requirements/requirements.txt
 ```
+### ✅ Step 3: Run the Gunicorn Web Server
 
-Run Gunicorn webserver.
-
+Once dependencies are installed, you can start the Nextpie web server using Gunicorn:
 ```bash
-## run webserver
 gunicorn --bind 127.0.0.1:5000 run:app
 ```
+Open your web browser and navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
+Log in using the default credentials:
 
+- **Username:** admin
+- **Password:** admin

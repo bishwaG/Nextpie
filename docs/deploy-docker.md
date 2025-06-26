@@ -1,46 +1,60 @@
-## Running Nextpie as a docker container
----
 
 
-### Prerequisite
-Make sure that you have root access to the machine you are using and you have Docker installed. For installation guide, please refer to the official [Install Docker Engine](https://docs.docker.com/engine/install/) user manual from Docker. 
+## 🐳 Running Nextpie as a Docker Container
 
+Nextpie can be deployed easily using Docker. Below are two approaches: building from source, or pulling from Docker Hub.
 
-### Using Nextpie repository as a source
-To run Nextpie as a docker container run the following commands in terminal. Before running following commands make sure that you have installed `docker` and `docker-compose` in your system and make sure that the docker daemon is running in your system. Please keep in mind that you should have root privlage to run docker containers. 
+✅ Prerequisites
+- Root or sudo access
+- Docker and Docker Compose installed
+- Docker daemon running
 
+🔗 For installation, refer to the official Docker installation guide: https://docs.docker.com/engine/install/
+
+### ✅ Option 1: Using the Nextpie Repository
+
+1. Clone the Nextpie repository and navigate into the directory: 
 ```bash
-git clone https://github.com/bishwaG/Nextpie.git
+git clone https://github.com/bishwaG/Nextpie.git 
 cd Nextpie
+```
+2. Build and run the container using Docker Compose: 
+```bash
 sudo docker compose up --build
 ```
 
-> **NOTE:** If you have docker-compose version `1.x.x`, you have to run `sudo docker-compose up --build` 
-> **NOTE:** Add `--remove-orphans` flag to the above command in case you have orphan containers
+📝 Note:
 
-Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
+- If you’re using Docker Compose `v1.x.x`, use `sudo docker-compose up --build` instead.
+- Add `--remove-orphans` if you have leftover containers from previous builds.
 
-### Using Dockerhub as a source
+3. Once the container is running, open your browser and visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-Nextpie image is readily available in Dockerhub as a repository `fimmtech/nextpie`. You can conveniently pull the image and run as a container using the following commands in a terminal.
+Log in using the default credentials:
+- **Username:** admin
+-  **Password:** admin
 
+### ✅ Option 2: Using Docker Hub
+
+You can also run Nextpie directly from the prebuilt Docker image hosted on Docker Hub.
+
+1. Pull the latest image: 
 ```bash
 # pull the docker image
 sudo docker pull fimmtech/nextpie:latest
-
+```
+2. Run the container by exposing the correct port: 
+```bash 
 ## run the image by forwarding local port 5000 to container's port 5000
 sudo docker run -p 5000:5000 fimmtech/nextpie:latest
 ```
+3. Visit http://127.0.0.1:5000 in your browser and log in using the default credentials.
 
-Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
+### 🔧 Useful Docker Commands
 
-
-### Useful docker commands
-
-Following docker commands can be useful while debugging docker realated issues.
+These Docker commands can help with troubleshooting or managing containers:
 
 ```bash
-
 ## list all docker images
 sudo docker images -a
 
@@ -58,5 +72,4 @@ docker rm --force [CONTAINER ID]
 
 ## SSH to a container
 docker exec -it [CONTINER NAME] /bin/bash
-
 ```

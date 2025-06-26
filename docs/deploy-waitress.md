@@ -1,20 +1,24 @@
+
+
 ## Waitress
----
 
-[Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/) (Gunicorn equivalent for Windows) is meant to be a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library.
+[Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/) is a production-quality, pure-Python WSGI server designed for Windows, similar to Gunicorn on Unix systems. It offers good performance and has no dependencies beyond the standard Python library.
 
-> Install using pip
-
+To install Waitress, run:
 ```bash
-$ pip install waitress
+pip install waitress
 ```
-> Start the app using [waitress-serve](https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html)
-
+Start the application with:
 ```bash
-$ waitress-serve --port=5000 run:app
+waitress-serve --port=5000 run:app
+```
+You should see: 
+```
 Serving on http://localhost:5000
 ```
+Open your browser and navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use the default credentials to log in:
 
-Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000). Use username `admin` and password `admin` to login.
+**Username:** admin
+**Password:** admin
 
-> NOTE: Nextipe is built to run under Linux. Theoritically it is possible to run under Windows, but it has not been tested. 
+> ⚠️ Note: Nextpie is primarily designed to run on Linux. While it may theoretically work on Windows using Waitress, this setup has not been tested.

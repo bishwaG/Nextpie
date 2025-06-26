@@ -1,4 +1,5 @@
 
+
 # Quick Start
 
 This quick start guide will help you deploy, run, and test **Nextpie** with minimal effort.
@@ -12,6 +13,7 @@ Ensure you have **root access** to your machine and that **Docker** is installed
 ### Pull and Run the Docker Container
 
 The Nextpie Docker image is available on Docker Hub under the repository:  
+
 [**fimmtech/nextpie**](https://hub.docker.com/r/fimmtech/nextpie)
 
 You can pull the image and run it as a container using the following commands:
@@ -19,17 +21,17 @@ You can pull the image and run it as a container using the following commands:
 # Pull the Docker image 
 sudo docker pull fimmtech/nextpie:latest
 ```
-Nextpie runs on port `5000` by default. When launching the container, the local (host) port 5000 is forwarded to the container’s port `5000`.
+Nextpie runs on port `5000` by default. When launching the container, the local (host) port `5000` is forwarded to the container’s port `5000`.
 
-Before proceeding, it is a good idea to check whether port 5000 is already in use:
+Before proceeding, it is a good idea to check whether port `5000` is already in use:
 ```bash
 sudo netstat -tulnp  **|**  grep :5000
 ```
-If the port is free, proceed as shown below. Otherwise, use an alternative port such as 5111.
+If the port is free, proceed as shown below. Otherwise, use an alternative port such as `5111`.
 
 #### ☑️ When Port 5000 is Available
 
-Run the following command to map host port 5000 to container port 5000:
+Run the following command to map host port `5000` to container port `5000`:
 ```bash
 sudo docker run -p 5000:5000 fimmtech/nextpie:latest
 ```
@@ -44,7 +46,7 @@ Use the following default credentials to log in:
 
 #### ❗ When Port 5000 is in Use
 
-If port 5000 is already taken, you can use an alternative, such as `5111`:
+If port `5000` is already taken, you can use an alternative, such as `5111`:
 ```bash
 sudo docker run -p 5111:5000 fimmtech/nextpie:latest
 ```
