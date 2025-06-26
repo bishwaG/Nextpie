@@ -22,20 +22,23 @@ This file defines:
 
 ```json
 {
-
-"host": "localhost",
-
-"port": 5005,
-
-"api-key": "jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M"
-
+  "host": "localhost",
+  "port": 5000,
+  "api-key": "jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M",
+  "workflow-name-var" : "workflow_name",
+  "worfklow-version-var" : "workflow_ver"
 }
+
 ```
 - host: The hostname or IP address of the machine running Nextpie.
 
 - port: The port Nextpie is running on.
 
 - api-key: The API key used to authenticate with the Nextpie API.
+
+- workflow-name-var: The name of variable storing pipeline name in Nextflow pipeline's `nextflow.config` file.
+
+- worfklow-version-var: The name of variable storing pipeline version in Nextflow pipeline's `nextflow.config` file.
 
 >⚠️ Important: Do not use the default API key in production environments. Always generate a new, secure key for production use.
 
