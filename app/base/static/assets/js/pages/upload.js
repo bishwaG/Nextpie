@@ -50,19 +50,19 @@ $(document).ready(function() {
         form_data.append("projectName", $("#projectName").val());
         
         if($("#reportFile")[0].files.length >0){
-        	form_data.append('reportFile', $('#reportFile').prop('files')[0]);  
+        	form_data.append('reportFile', $('#reportFile').prop('files')[0]);
 		textInputs.forEach(input => {
                 clearContentWithFlashing(input);  // Clear content of each input field letter by letter
             });
 	}
-	
+
 	// for trace files
 	var ins = document.getElementById('traceFiles').files.length;
 	for (var x = 0; x < ins; x++) {
 		//form_data.append("myfile2[]", document.getElementById('traceFiles').files[x]);
 		form_data.append('traceFile[]', $('#traceFiles').prop('files')[x]);
 	}
-	
+
         $.ajax({
             xhr: function() {
 		var xhr = new window.XMLHttpRequest();
