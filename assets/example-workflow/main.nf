@@ -56,12 +56,17 @@ if (params.help){
  * Configurable variables
  ******************************************************************************
  */
+params.workflow_name = params.workflow_name ?: false
+params.workflow_ver  = params.workflow_ver  ?: false
+
 params.name             = false
 params.group            = false
 params.fastqs           = "fastq/*_R{1,2}_*.fastq.gz"
 //params.outDir           = "./results"
 
 
+workflow_name =  workflow.manifest.name   ?:params.workflow_name 
+workflow_ver  =  workflow.manifest.version?:params.workflow_ver
 
 
 custom_runName = params.name
@@ -86,7 +91,7 @@ Channel
  ******************************************************************************
  */
 log.info "==============================================================================="
-log.info " ${params.workflow_name} v${params.workflow_ver}"
+log.info " PIPELINE: ${workflow_name} VERSION: ${workflow_ver}"
 log.info "==============================================================================="
 def summary = [:]
 summary['Run Name']       = custom_runName ?: workflow.runName
