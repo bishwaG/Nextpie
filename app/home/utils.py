@@ -151,8 +151,9 @@ class Utils:
 			return 0
 	
 	
-	
+	########################################################################
 	## returns a time object from a given time
+	########################################################################
 	@staticmethod
 	def getTimeObj(mytime):
 		ms = 0 
@@ -192,8 +193,9 @@ class Utils:
 		
 		return time(int(h),int(m),int(s), int(ms))
 		
-		
+	########################################################################
 	## function to check file extension
+	########################################################################
 	@staticmethod
 	def checkExt(filename, exts):
 		file_ext = str.split(filename,".")[1]
@@ -201,8 +203,9 @@ class Utils:
 			return True
 		else:
 			return False
-	
+	########################################################################
 	## Function to merge more than one Trace files
+	########################################################################
 	@staticmethod
 	def parseReportFile(reportFile):
 	
@@ -237,10 +240,54 @@ class Utils:
 
 		return [groupName, projectName, pipeline, pipelineVer]
 	
+	########################################################################
+	## Get folder size in MB
+	########################################################################
+	@staticmethod
+	def get_folder_size(path):
+		"""Calculate total size of a directory in bytes."""
+		total = 0
+		for dirpath, dirnames, filenames in os.walk(path):
+			for f in filenames:
+				try:
+					fp = os.path.join(dirpath, f)
+					if not os.path.islink(fp):
+						total += os.path.getsize(fp)
+				except OSError:
+					pass  # Skip unreadable files
+		return total
+
+	@staticmethod
+	def build_tree(path):
+		"""Recursively build folder tree with size info."""
+		if not os.path.exists(path):
+			return None
+
+		result = {
+		"name": os.path.basename(path),
+		"path": path,
+		"size_kb": round(Utils.get_folder_size(path) / 1024, 2),
+		"children": []
+		}
+
+		try:
+			for entry in os.scandir(path):
+				if entry.is_dir():
+					child = Utils.build_tree(entry.path)
+					if child:
+						result["children"].append(child)
+		except PermissionError:
+			pass  # Skip folders without access
+
+		return result
+    	
+    	
+	########################################################################
 	## function to parse trace files
 	## Takes list [groupName, projectName, pipelineVer]
+	########################################################################
 	@staticmethod
-	def parseTraceFiles(metadataList, uploadDir, actionSource, random_group_proj):
+	def parseTraceFiles(metadataList, traceFilePath, actionSource, random_group_proj):
 		
 		## function input
 		groupName   = metadataList[0]
@@ -249,11 +296,12 @@ class Utils:
 		pipelineVer = metadataList[3]
 
 		## remove 'v' or 'V' from version
-		if "v" in pipelineVer:
-			pipelineVer = pipelineVer.replace("v","")
-		elif "V" in pipelineVer:
-			pipelineVer = pipelineVer.replace("V", "")
+		#if "v" in pipelineVer:
+		#	pipelineVer = pipelineVer.replace("v","")
+		#elif "V" in pipelineVer:
+		#	pipelineVer = pipelineVer.replace("V", "")
 		
+		#print("###################################\n"+pipelineVer)
 		
 		## Create a group record if does not exist
 		g = ""
@@ -275,25 +323,38 @@ class Utils:
 			p = projExists
 		
 		
-		path = uploadDir
+		#path = uploadDir
 		
 		## support both trace.txt and Trace.txt
-		allFiles = glob.glob(os.path.join(path, "Trace.txt*"))
-		if len(allFiles)==0:
-			allFiles = glob.glob(os.path.join(path, "trace.txt*"))
+		#allFiles = glob.glob(os.path.join(path, "Trace.txt*"))
+		#if len(allFiles)==0:
+		#	allFiles = glob.glob(os.path.join(path, "trace.txt*"))
+		
+		## if file (sent via API)
+		if os.path.isfile(traceFilePath):
+			allFiles = [traceFilePath]
+		elif os.path.isdir(traceFilePath):
+			 allFiles = glob.glob(os.path.join(traceFilePath, "TRACE__*"))
+		
+		
+		print("[apps.home.Utils ] WORKFLOW: " + pipeline + 
+		                   "\tVERSION:  " + pipelineVer  +
+		                   "\tGROUP  :  " + groupName +
+		                   "\tPROJECT:  " + projectName)
+		print("[apps.home.Utils ] FILES   :  \n" + "\n".join(allFiles))
 		
 		## take trace files in a loop
 		fileCounter = 0
 		run_exists_flag   = 0
 		for traceFile in allFiles:
-			fileCounter += 1
-			fName, fExt = os.path.splitext(traceFile)
-			fExt = fExt.replace(".","")
-			count = 0
-			if fExt == "txt":
-				count = 1
-			else:
-				count = int(fExt) + 1
+			#fileCounter += 1
+			#fName, fExt = os.path.splitext(traceFile)
+			#fExt = fExt.replace(".","")
+			#count = 0
+			#if fExt == "txt":
+			#	count = 1
+			#else:
+			#	count = int(fExt) + 1
 			
 			
 			#print("COUNT:" + str(count))
@@ -314,7 +375,7 @@ class Utils:
 					submitted=Utils.checkRunFromTraceFile(traceFile, "submitted"), 
 					#completed="",
 					trace_file=os.path.basename(traceFile),
-					run_count=count,
+					run_count=1,
 					project=p,
 					entry_via=actionSource)
 				
@@ -335,33 +396,75 @@ class Utils:
 			disk_read = 0
 			disk_write = 0
 			wchar_list = []
+			
+			print("################################################################################")
+			print("Contens of the file: " + traceFile)
+			## read trace file line by line
 			with open(traceFile) as reader1:
 				lineCounter  = -1
 				proc_exists_flag   = []
 				for line in reader1.readlines():
+					## get header positions
+					if lineCounter == -1:
+						header_line = line.strip()
+						columns = header_line.split("\t")
+						
+						taskID_pos      = columns.index('task_id')
+						hashID_pos      = columns.index('hash')
+						native_id_pos   = columns.index('native_id')
+						name_pos        = columns.index('name')
+						status_pos      = columns.index('status')
+						exit_pos        = columns.index('exit')
+						submit_pos      = columns.index('submit')
+						duration_pos    = columns.index('duration')
+						realtime_pos    = columns.index('realtime')
+						cpu_pos         = columns.index('%cpu')
+						peak_rss_pos    = columns.index('peak_rss')
+						peak_vmem_pos   = columns.index('peak_vmem')
+						rchar_pos       = columns.index('rchar')
+						wchar_pos       = columns.index('wchar')
+						
+						"""
+						print(f'"taskID_pos   : {taskID_pos}"')
+						print(f'"hashID_pos   : {hashID_pos}"')
+						print(f'"native_id_pos: {native_id_pos}"')
+						print(f'"name_pos     : {name_pos}"')
+						print(f'"status_pos   : {status_pos}"')
+						print(f'"exit_pos     : {exit_pos}"')
+						print(f'"submit_pos   : {submit_pos}"')
+						print(f'"duration_pos : {duration_pos}"')
+						print(f'"realtime_pos : {realtime_pos}"')
+						print(f'"cpu_pos      : {cpu_pos}"')
+						print(f'"peak_rss_pos : {peak_rss_pos}"')
+						print(f'"peak_vmem_pos: {peak_vmem_pos}"')
+						print(f'"rchar_pos    : {rchar_pos}"')
+						print(f'"wchar_pos    : {wchar_pos}"')
+						"""
 					## skip header line
 					if lineCounter >= 0:
 						
+						print(line.strip())
+						
 						split = line.split("\t")
 						
-						taskID    = split[0]
-						hashID    = split[1]
-						native_id = split[2]
-						name      = split[3]
-						status    = split[4]
-						exit      = split[5]
+						taskID    = split[taskID_pos]
+						hashID    = split[hashID_pos]
+						native_id = split[native_id_pos]
+						name      = split[name_pos]
+						status    = split[status_pos]
+						exit      = split[exit_pos]
 						
 						#convert string to data and time object
 						if(split[6] == "-"):
 							continue
-						submit    = datetime.strptime(split[6], "%Y-%m-%d %H:%M:%S.%f")
-						duration  = Utils.getTimeObj(split[7])
-						realtime  = Utils.getTimeObj(split[8])
-						cpu       = split[9]
-						peak_rss  = split[10]
-						peak_vmem = split[11]
-						rchar     = split[12]
-						wchar     = split[13]
+						submit    = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
+						duration  = Utils.getTimeObj(split[duration_pos])
+						realtime  = Utils.getTimeObj(split[realtime_pos])
+						cpu       = split[cpu_pos]
+						peak_rss  = split[peak_rss_pos]
+						peak_vmem = split[peak_vmem_pos]
+						rchar     = split[rchar_pos]
+						wchar     = split[wchar_pos]
 						
 						## append submitted time to the list
 						if status=="COMPLETED":
@@ -463,10 +566,10 @@ class Utils:
 		
 		## if zero new processes remove run, project and group
 		## when group and project is generated randomly 
-		print("########################################################")
-		print("Group: " + str(g.id) + " " + g.name)
-		print("Project: " + str(p.id) + " " + p.name)
-		print("Run: "+ str(r.id) + " " + r.pipeline + " " + r.version)
+		#print("########################################################")
+		#print("Group: " + str(g.id) + " " + g.name)
+		#print("Project: " + str(p.id) + " " + p.name)
+		#print("Run: "+ str(r.id) + " " + r.pipeline + " " + r.version)
 		
 		if random_group_proj and new_processes ==0:
 			g_rm = Group.query.get(g.id)
@@ -492,9 +595,10 @@ class Utils:
 		#return {"message":"Records inserted into the database.", "response":"info"}
 		
 		
-
+	########################################################################
 	## Function to check status, submitted time and completed time of a run.
 	## Data is collected from trace file
+	########################################################################
 	@staticmethod
 	def checkRunFromTraceFile(traceFile, var):
 		## Allowed variables
@@ -513,24 +617,38 @@ class Utils:
 		with open(traceFile) as reader1:
 				lineCounter=-1
 				for line in reader1.readlines():
+					
+					## get columns
+					if lineCounter == -1:
+						header_line = line.strip()
+						columns = header_line.split("\t")
+						
+						
+						status_pos      = columns.index('status')
+						submit_pos      = columns.index('submit')
+						realtime_pos    = columns.index('realtime')
+						
+						
 					## skip header line
 					if lineCounter >= 0:
 						
 						## print line
-						print("LINE:", line)
+						# print(line.strip())
 						## split by tab
 						split = line.split("\t")
 						
 						## skip if this job was not submitted
-						if(split[6] == "-"):
+						if(split[status_pos] == "-"):
 							continue
-						
+						if(split[submit_pos] == "-"):
+							continue
+							
 						## get jon status from 5th column
-						status    = split[4]
+						status    = split[status_pos]
 						
 						## split submitted time and get a time object
-						submit    = datetime.strptime(split[6], "%Y-%m-%d %H:%M:%S.%f")
-						realtime  = Utils.getTimeObj(split[8])
+						submit    = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
+						realtime  = Utils.getTimeObj(split[realtime_pos])
 						
 						
 						## if a job is COMPLETED or CACHED 
@@ -553,7 +671,8 @@ class Utils:
 						
 					lineCounter += 1
 		## send status (sends failed if FAILED value is found in submitted list)
-		print(submitted_list)
+		#print(submitted_list)
+		
 		if var == "status":
 			if "FAILED" in status_list:
 				return "Run failed"
