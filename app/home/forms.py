@@ -46,8 +46,8 @@ class passwordChange(FlaskForm):
 	userName        = StringField('Username',           id='run_name')
 	email           = StringField('Email',              id='email', validators=[DataRequired(), Email()])
 	oldPassword     = PasswordField('Old password',     id='old_pass', validators=[DataRequired()])
-	newPassword     = PasswordField('New password',     id='new_pass')
-	confirmPassword = PasswordField('Confirm Password', id='new_pass')
+	newPassword     = PasswordField('New password',     id='new_pass', validators=[DataRequired()])
+	confirmPassword = PasswordField('Confirm Password', id='new_pass', validators=[DataRequired()])
 
 
 class APIkeyForm(FlaskForm):
