@@ -191,14 +191,14 @@ function copyText() {
             </div>
         </div>
         <!-- [ breadcrumb ] end -->
-        <!-->
+        <!--
         <div id="messages" class="hide" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <div id="messages_content" >
 
               </div>
             </div>
-            <!-->
+            --> 
             
         <div id="alert" class="alert alert-info alert-dismissible fade show" role="alert">
               {% with messages = get_flashed_messages() %}
@@ -247,7 +247,7 @@ function copyText() {
                                             
                                             <div class="form-group">
                                                 <label for="email">{{ pwd_form.email.label }}</label>
-                                                {{ pwd_form.email( class_="form-control", placeholder="name@example.com") }}
+                                                {{ pwd_form.email( class_="form-control", value=pwd_form.email.data, placeholder="name@example.com") }}
                                                 <small id="traceHelp" class="form-text text-muted">name@example.com</small>
                                             </div>
 
