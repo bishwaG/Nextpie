@@ -67,7 +67,7 @@ class SMTPform(FlaskForm):
     
 	#SMTPtls    = SelectField('Use TLS', choices=[('True', 'Option 1'), ('False', 'Option 2')])
 	SMTPuser   = StringField('SMTP user',   id='user', validators=[DataRequired(), Email()])
-	SMTPpass   = StringField('Password',   id='pass', validators=[DataRequired()])
+	SMTPpass   = PasswordField('Password',   id='pass', validators=[DataRequired()])
 	SMTPreply  = StringField('Reply to email',  id='reply', validators=[DataRequired(), Email()])
 	
 	
