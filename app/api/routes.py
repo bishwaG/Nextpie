@@ -9,6 +9,8 @@ from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 import glob
 import os
+import random
+import string
 
 from wtforms.validators import Regexp
 from wtforms.fields import StringField
@@ -57,7 +59,7 @@ parser = api.parser()
 parser.add_argument('File', location='files',type=FileStorage, required=True,
                             help="Trace.txt produced from Nextflow")
 parser.add_argument('Workflow', type=str, required=True, help='Workflow name.', trim=True)
-parser.add_argument('Version',  type=inputs.regex(r'^[0-9]\.[0-9*.]'), required=True, help='Workflow version. Example: 1.0.2', trim=True)
+parser.add_argument('Version',  type=str, required=True, help='Workflow version. Example: 1.0.2', trim=True)
 parser.add_argument('Group',    type=str, required=True, help='Research group name.', trim=True)
 parser.add_argument('Project',  type=str, required=True, help='Project name.', trim=True)
 
@@ -78,14 +80,31 @@ class MyResource1(Resource):
 
 		trace_file = args['File']
 		filename   = secure_filename(trace_file.filename)
-		if not (filename == "Trace.txt" or filename == "trace.txt"):
-			return {"message":"File name can only be Trace.txt or trace.txt "},403
-
-
+		
+		#if not (filename == "Trace.txt" or filename == "trace.txt"):
+		#	return {"message":"File name can only be Trace.txt or trace.txt "},422
+		
+		if not filename.endswith(".txt"):
+			return {"message":"File name can only have .txt extension."},422
+		
+		
+		
 		workflow   = args['Workflow']
 		version    = args['Version']
 		group      = args['Group']
 		project    = args['Project']
+		
+		print("[apps.api.routes ] WORKFLOW: " + workflow + 
+		                   "\tVERSION:  " + version  +
+		                   "\tGROUP  :  " + group +
+		                   "\tPROJECT:  " + project+
+		                   "\tFILE: "+ filename)
+		
+		## replace / by _ if any exists
+		workflow = workflow.replace("/", "_")
+		workflow = workflow.replace(" ", "_")
+		version  = version.replace("/", "_")
+		version  = version.replace(" ", "_")
 		
 		## if group and project empty generate randomly.
 		rnd_group_proj = False
@@ -98,18 +117,77 @@ class MyResource1(Resource):
 		#return jsonify(details)
 		
 		## get uploaded file
-		path = os.path.join( app.config['UPLOAD_FOLDER'], "API")
-
-		if not os.path.isdir(path):
-			os.makedirs(path, exist_ok=True)
-
-		## Save uploaded file
+		upload_path = os.path.join( app.config['UPLOAD_FOLDER'], "API")
+		
+		## create upload dir -------------------------------------------
+		#if not os.path.isdir(path):
+		#	os.makedirs(path, exist_ok=True)
+		
+		
+		try:
+			if not os.path.isdir(upload_path):
+				os.makedirs(upload_path, exist_ok=True)
+		except PermissionError as e:
+			return jsonify({"message": f"Permission denied: {e}", "response": "error"})
+		except Exception as e:
+			return jsonify({"message": f"An error occurred: {e}", "response": "error"})
+		
+		
+		## Save uploaded file by ---------------------------------------
+		## adding random sting at the back.
+		# Generate a random string of 10 characters
+		random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+		# Split the filename into base name and extension
+		base_name, extension = filename.rsplit('.', 1)
+		# Create the new filename
+		new_filename = f"{base_name}_{random_string}.{extension}"
+		
 		if trace_file:
-			trace_file.save(os.path.join(path, filename))
+			try:
+				# Save the file to the specified upload_path
+				trace_file.save(os.path.join(upload_path, new_filename))
+			except PermissionError as e:
+				# Handle permission-related errors (e.g., no write access)
+				return jsonify({"message": f"Permission denied: {e}", "response": "error"})
+			except FileNotFoundError as e:
+				# Handle errors if the directory is not found
+				return jsonify({"message": f"File not found: {e}", "response": "error"})
+			except Exception as e:
+				# Handle any other unexpected errors
+				return jsonify({"message": f"An error occurred: {e}", "response": "error"})
+		
+		## check if the file is empty
+		file_path = os.path.join(upload_path, new_filename)
+		if os.path.getsize(file_path) == 0:
+			return jsonify({"message": f"The trace file {file_path} is empty.", "response": "error"})
+		
+		
+		## check the trace file has required columns
+		required_headers = ['task_id', 'hash', 'native_id', 'name', 
+		'status', 'exit', 'submit',     'duration', 'realtime', 
+		'%cpu', 'peak_rss', 'peak_vmem', 'rchar', 'wchar']
+		
+		with open(file_path, 'r') as f:
+			header_line = f.readline().strip()
+		columns = header_line.split('\t')
+		missing = [col for col in required_headers if col not in columns]
+		
+		if missing:
+			return jsonify(  {"message":f"Missing columns: {missing} in the trace file.", "response":"error"} )
 
-		x =  Utils.parseTraceFiles(details, path, actionSource="API", random_group_proj=rnd_group_proj )
+				
+		x =  Utils.parseTraceFiles(details, file_path, actionSource="API", random_group_proj=rnd_group_proj )
+		
+		
+		## delete uploded file
+		"""
+		if os.path.exists(file_path):
+			os.remove(file_path)
+			print(f"Trace file '{file_path}' deleted.")
+		else:
+			print(f"Trace file '{file_path}' does not exist.")
+		"""
 		return jsonify(x)
-
 		#api.abort(403)
 
 
