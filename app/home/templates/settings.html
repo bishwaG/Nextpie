@@ -10,6 +10,115 @@
 <script src="/static/assets/plugins/jquery/js/jquery-mini.js"></script>
 <script>
 
+
+function loadUploadStats() {
+    $.ajax({
+        type: "GET",
+        url: "/upload-stats",  // make sure this route returns JSON
+        dataType: "json",
+        success: function(data) {
+            if (data.error) {
+                $("#upload-stats").html(`<div style="color:red;"><strong>${data.message}</strong></div>`);
+                return;
+            }
+
+            if (data.warnings && data.warnings.length > 0) {
+                const warningHtml = data.warnings.map(w => `<div style="color:orange;">Warning: ${w}</div>`).join("");
+                $("#upload-stats").html(warningHtml);
+            }
+
+            const treeHtml = buildTreeHtml(data);
+            $("#upload-stats").html(treeHtml);
+        },
+        error: function(xhr, status, error) {
+            $("#upload-stats").html(`<div style="color:red;">Error loading stats: ${error}</div>`);
+        }
+    });
+}
+
+
+function clearUploads() {
+    if (!confirm("Are you sure you want to delete all contents from API and GUI folders?")) return;
+
+    $.ajax({
+        type: "POST",
+        url: "/clearUploads",
+        success: function(response) {
+            showMessage(response.message, "success");
+            loadUploadStats();  // reload stats if applicable
+        },
+        error: function(xhr, status, error) {
+            let msg = xhr.responseJSON?.message || "An error occurred while clearing uploads.";
+            showMessage(msg, "danger");
+        }
+    });
+}
+
+// Helper function to display messages
+function showMessage(message, type) {
+    const $msg = $("#alert");
+    $msg
+        .removeClass("hide")
+        .removeClass("alert-success alert-danger")
+        .addClass("alert")  // bootstrap alert base
+        .addClass("alert-" + type)  // alert-success or alert-danger
+        .show("alert")
+        .html(message);
+        
+    const $btn = $("#button");
+    $btn
+        .show("button")
+
+    // Optionally auto-hide after 5 seconds
+    setTimeout(() => {
+        $msg.addClass("hide").removeClass("alert alert-success alert-danger").empty();
+    }, 10000);
+}
+
+$.ajax({
+    type: "GET",
+    url: "upload-stats",
+    dataType: "json",
+    success: function(data) {
+        if (data.error) {
+            $("#upload-stats").html(`<div style="color:orange;font-weight:bold;">${data.message}</div>`);
+            return;
+        }
+
+        if (data.warnings && data.warnings.length > 0) {
+            const warningHtml = data.warnings.map(w => `<div style="color:orange;">Warning: ${w}</div>`).join("");
+            $("#upload-stats").html(warningHtml);
+        }
+
+        const treeHtml = buildTreeHtml(data);
+        $("#upload-stats").append(treeHtml);
+    },
+    error: function(jqXHR, textStatus) {
+        if (textStatus === 'timeout') {
+            alert('Request timed out');
+        }
+    },
+    timeout: 3000
+});
+
+
+function buildTreeHtml(node) {
+    let html = `<ul><li><strong>${node.name}</strong> (${node.size_mb} MB)`;
+
+    if (node.children && node.children.length > 0) {
+        html += "<ul>";
+        node.children.forEach(child => {
+            html += `<li><strong>${child.name}</strong> (${child.size_kb} KB) - Subfolders: ${child.num_subfolders}</li>`;
+        });
+        html += "</ul>";
+    }
+
+    html += "</li></ul>";
+    return html;
+}
+
+
+
 function generateKey(){
 
 var username = $("#userName").val();
@@ -82,13 +191,14 @@ function copyText() {
             </div>
         </div>
         <!-- [ breadcrumb ] end -->
-        
+        <!-->
         <div id="messages" class="hide" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <div id="messages_content" >
-              
+
               </div>
             </div>
+            <!-->
             
         <div id="alert" class="alert alert-info alert-dismissible fade show" role="alert">
               {% with messages = get_flashed_messages() %}
@@ -98,9 +208,11 @@ function copyText() {
             {% endfor %}
         {% endif %}
         {% endwith %}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+              <!--
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="display: none;">
+                <span id="button"  aria-hidden="true">&times;</span>
               </button>
+              -->
         </div>
 
         
@@ -177,53 +289,79 @@ function copyText() {
                               <div id="proj-pipe-run" class="proj-pipe-run">
                                   
                                     <form id="form2" method="post" action="">
-                                    <p> API key enables users to access application API. A key will not be generated if a user does not have API access.
+                                            <p> API key enables users to access application API. A key will not be generated if a user does not have API access.</p>
 
 
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">{{ key_form.key.label }}</label>
                                                 
                                                 <div class="input-group mb-3">
-						  {{ key_form.key( class_="form-control", disabled=True) }}
-						  <div class="input-group-append">
-						    <button id="copy" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" disabled>
-						    <span class="feather icon-clipboard" aria-hidden="true"></span>
-						    </button>
-						  </div>
-						</div>
+                                                    {{ key_form.key( class_="form-control", disabled=True) }}
+                                                    <div class="input-group-append">
+                                                         <button id="copy" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" disabled>
+                                                             <span class="feather icon-clipboard" aria-hidden="true"></span>
+                                                         </button>
+                                                      </div>
+                                                </div>
 
-                                                <small id="emailHelp" class="form-text text-muted" style="font-color:red;">WARNING: If old API key exists in the system, it will be overwritten by a new one.
-                                                Old key will not be functional. Copy the key to a safe place as same key can not be regenerated. The new API key should also be updated in nf-nextpie plugin's config file.'</small>
+                                                <small id="emailHelp" class="form-text text-muted" style="font-color:red;">WARNING: The old old API will be overwritten by a new one.
+                                                Thus, the old key will not be functional. Copy the key to a safe place as same key can not be regenerated. The new API key should also be updated in nf-nextpie plugin's config file.'</small>
                                             </div>
                                             
                                             
                                             <div class="form-group">
-                                            <button id="key" type="button" class="btn btn-primary btn-lg" onclick="generateKey();">
-                                                 <span class="feather icon-refresh-cw" aria-hidden="true"></span> Generate a key
-                                            </button>
+                                                 <button id="key" type="button" class="btn btn-primary btn-lg" onclick="generateKey();">
+                                                     <span class="feather icon-refresh-cw" aria-hidden="true"></span> Generate a key
+                                                 </button>
+                                            </div>
                                         </form>
                              
-                             </div>
+                              </div>
+                              </div>
                             </div>
                         </div>
-                            
+
+
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Upload folder stats</h5>
+                                     <div class="card-block">
+                              <div id="proj-pipe-run" class="proj-pipe-run">
+
+                                    <form id="form2" method="post" action="">
+                                            <p> Current stats of the upload folder. </p>
+
+                                            <div id="upload-stats"></div>
+
+
+                                            <div class="form-group">
+                                                <small id="emailHelp" class="form-text text-muted" style="font-color:red;">WARNING: Contents older than 1 day will be removed.'</small>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                 <button id="key" type="button" class="btn btn-primary btn-lg" onclick="clearUploads();">
+                                                     <span class="feather icon-trash-2" aria-hidden="true"></span> Clean uploads
+                                                 </button>
+                                            </div>
+                                        </form>
+
+                              </div>
+                              </div>
                             </div>
-                        <div>
-                    <div>
+                        </div>
+
+                     </div>
 
                     </div>
-                    <!-- [ Main Content ] end -->
-                </div>
-            </div>
+                    <!-- [ Main Content ] row end -->
 
-        </div>
-
-
-    </div>
 
      <div class="row">
         {% if user_is_admin %}
         <div class="col-xl-6">
+
                         <div class="card">
                             <div class="card-header">
                                 <h5>SMTP settings</h5>
@@ -291,6 +429,7 @@ function copyText() {
                             </div>
                         </div>
                     </div>
+
 
 
         </div> <!-- col-xl-6 closed -->
