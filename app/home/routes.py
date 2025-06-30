@@ -96,41 +96,32 @@ def change_passsword():
 	## If submit button is pressed
 	if 'submit1' in request.form:
 		
-		## when old password is provided and email provide is new
+		## check old password
+		## get user
+		user = User.query.filter_by(username=username).first()		
 		
+		allow = 1
 		
-		## when password is changed
+		pass_len = 6
 		
 		if pwdForm.newPassword.data != "" or pwdForm.confirmPassword.data !="":
 			if len(pwdForm.newPassword.data) < 6:
-				flash("Minimum password length is 6.")
+				allow = 0
+				flash(f"Minimum password length is {6}.")
 			if pwdForm.newPassword.data != pwdForm.confirmPassword.data:
+				allow = 0
 				flash("Confirmed password did not match.")
-		## when new email is provide
-		elif pwdForm.newPassword.data == "" and pwdForm.confirmPassword.data =="" and pwdForm.email.data !="":
-			## get user
-			user = User.query.filter_by(username=username).first()
-			## update email
-			if not verify_pass( pwdForm.oldPassword.data, user.password):
-				flash("Wrong current password")
-			else:
-				user.email = request.form['email']
-				db.session.commit()
-				
-				pwdForm.email.data = user.email
-				
-				flash("Saved successfully!")
-		else:
-			user = User.query.filter_by(username=username).first()
-
-			## check if old possword is correct
-			if not verify_pass( pwdForm.oldPassword.data, user.password):
-				flash("Wrong current password")
-			else:
-				user.set_password(pwdForm.newPassword.data)
-				user.email = request.form['email']
-				db.session.commit()
-				flash("Saved successfully!")
+		
+		if not verify_pass( pwdForm.oldPassword.data, user.password):
+			allow = 0
+			flash("Wrong current password")
+		
+		if allow == 1:
+			user.set_password(pwdForm.newPassword.data)
+			user.email = request.form['email']
+			db.session.commit()
+			flash("Saved successfully!")	
+		
 	
 	## if SMTP for is submitted
 	if 'submit3' in request.form:
