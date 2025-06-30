@@ -15,7 +15,7 @@ import numpy as np
 import re
 import json
 import random
-
+import string
 @blueprint.route('/index')
 @login_required
 def index():
@@ -23,7 +23,7 @@ def index():
 	    segment='index', 
 	    app_name="Nextpie", 
 	    title="Dashboard", 
-	    version="v0.0.2")
+	    version="v0.0.3")
 
 
 ## LOAD DATA ===================================================================
@@ -289,6 +289,65 @@ def generate_key(username):
 		return jsonify(key)
 
 
+
+## Clear UPload folder ---------------------------------------------------------
+
+import jwt
+import datetime
+from app.home.uploadStats import uploadStats
+
+@blueprint.route('/upload-stats', methods=['GET'])
+@login_required
+def get_upload_stats():
+	
+	root_path = app.config['UPLOAD_FOLDER']
+	#Utils.get_folder_size_mb(root_path)
+	
+	tree = uploadStats.build_tree_with_counts(root_path)
+	return(json.dumps(tree, indent=2))
+
+import shutil
+@blueprint.route('/clearUploads', methods=['POST'])
+@login_required
+def clear_uploads():
+	
+	UPLOADS_DIR = app.config['UPLOAD_FOLDER']
+	TARGET_SUBFOLDERS = ["API", "GUI"]
+	if not os.path.exists(UPLOADS_DIR):
+        	return jsonify({"message": "Uploads folder does not exist."}), 404
+        
+	deleted = []
+	skipped = []
+
+	try:
+		for subfolder in TARGET_SUBFOLDERS:
+			folder_path = os.path.join(UPLOADS_DIR, subfolder)
+			if not os.path.isdir(folder_path):
+				skipped.append(subfolder)
+				continue
+
+			# Delete all contents inside the folder (but not the folder itself)
+			for entry in os.listdir(folder_path):
+				entry_path = os.path.join(folder_path, entry)
+				try:
+					if os.path.isfile(entry_path) or os.path.islink(entry_path):
+						os.remove(entry_path)
+					elif os.path.isdir(entry_path):
+						shutil.rmtree(entry_path)
+				except Exception as e:
+					skipped.append(f"{subfolder}/{entry} (error: {e})")
+			deleted.append(subfolder)
+
+		message = f"Cleared contents of: {', '.join(deleted)}." if deleted else "Nothing to clear."
+		if skipped:
+			message += f" Skipped: {', '.join(skipped)}."
+
+		return jsonify({"message": message})
+
+	except Exception as e:
+		return jsonify({"message": f"Error during cleanup: {str(e)}"}), 500
+
+
 # ██╗███╗░░██╗██████╗░██╗░░░██╗████████╗  ██████╗░░█████╗░████████╗░█████╗░
 # ██║████╗░██║██╔══██╗██║░░░██║╚══██╔══╝  ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
 # ██║██╔██╗██║██████╔╝██║░░░██║░░░██║░░░  ██║░░██║███████║░░░██║░░░███████║
@@ -316,8 +375,14 @@ def submit_data():
 		
 		## check if the upload filder exists
 		if not os.path.exists(path):
-			#return jsonify(response="fail",reason="Upload folder does not exist in the server.")
-			return jsonify({"message":"Upload folder does not exist in the server.", "response":"error"})
+			try:
+				os.makedirs(path, exist_ok=True)
+			except PermissionError as e:
+				return jsonify({"message": f"Permission denied: {e}", "response": "error"})
+			except FileNotFoundError as e:
+				return jsonify({"message": f"Invalid path: {e}", "response": "error"})
+			except OSError as e:
+				return jsonify({"message": f"OS error occurred: {e}", "response": "error"})
 
 		## check if the foler has write access
 		is_readable = os.access(path, os.R_OK)
@@ -328,13 +393,17 @@ def submit_data():
 		if not is_writable:
 			#return jsonify(response="fail",reason="The upload folder does not have write access in the server.")
 			return jsonify({"message":"The upload folder does not have write access in the server.", "response":"error"})
-
-		## make upload folder empty
-		for f in Path(path).glob('*'):
-			try:
-				f.unlink()
-			except OSError as e:
-				print("Error: %s : %s" % (f, e.strerror))
+		
+		## create GUI folder if does not exist -------------------------
+		session_folder = ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+		upload_path = path = os.path.join( app.config['UPLOAD_FOLDER'], "GUI", session_folder)
+		try:
+			if not os.path.isdir(path):
+				os.makedirs(path, exist_ok=True)
+		except PermissionError as e:
+			return jsonify({"message": f"Permission denied: {e}", "response": "error"})
+		except Exception as e:
+			return jsonify({"message": f"An error occurred: {e}", "response": "error"})
 				
 		## get input values
 		## these are sent via javascript form_data form
@@ -377,7 +446,7 @@ def submit_data():
 				if not Utils.checkExt( filename,app.config['UPLOAD_EXTENSIONS']) :
 					#return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
 					return jsonify({"message":"File type is not allowed. Only .txt allowed.", "response":"error"})
-				file.save(os.path.join(path, filename))
+				file.save(os.path.join(upload_path, "TRACE__"+filename))
 				fileList.append(filename)
 			else:
 				#return jsonify(response="fail",reason="No file part.")
@@ -397,12 +466,12 @@ def submit_data():
 					#return jsonify(response="fail",reason="File type is not allowed. Only .txt allowed.")
 					return jsonify({"message":"File type is not allowed. Only .txt allowed.", "response":"error"})
 
-			## save file
-			file.save(os.path.join(path, filename))
+			## save report file
+			file.save(os.path.join(path, "REPORT__"+filename))
 
 			## parse report file -------------------------------------------
 			## Returns projectname, group name and pipeline version
-			projGroupVer = Utils.parseReportFile(os.path.join(path, filename))
+			projGroupVer = Utils.parseReportFile(os.path.join(path, "REPORT__"+filename))
 		
 			if projGroupVer[3] == "":
 				#return jsonify(response="fail", reason="Can not extract workflow version. Make sure that your report file contains ' WORKFLOW-NAME v0.0.1' in the second line.")
@@ -421,12 +490,14 @@ def submit_data():
 				return jsonify({"message":"Can not extract group name. Make sure that your report file contains 'Group: ' follwed by group name in any line.", "response":"error"})
 			
 		## ['research_group_A', 'test_run_poj_1', 'RNAseq', '2.0.1']
-		print(projGroupVer)
+		#print(projGroupVer)
 		
+			
+			
 		#return jsonify(projGroupVer)
 		## parse Trace.txt files ---------------------------------------
 		return jsonify( Utils.parseTraceFiles(metadataList=projGroupVer, 
-		   uploadDir=app.config['UPLOAD_FOLDER'], 
+		   traceFilePath=upload_path, 
 		   actionSource="GUI", 
 		   random_group_proj=rnd_group_proj))
 
