@@ -56,8 +56,8 @@ if (params.help){
  * Configurable variables
  ******************************************************************************
  */
-params.workflow_name = params.workflow_name ?: false
-params.workflow_ver  = params.workflow_ver  ?: false
+params.workflow_name = false
+params.workflow_ver  = false
 
 params.name             = false
 params.group            = false
