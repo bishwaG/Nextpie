@@ -1,8 +1,13 @@
 
 
+
 # Quick Start
 
 This quick start guide will help you deploy, run, and test **Nextpie** with minimal effort.
+
+## 🎥 Instructional video
+
+You may refer to the instructional video available on [YouTube](https://youtu.be/HJSIUa0EsD0).
 
 ## Prerequisites
 
