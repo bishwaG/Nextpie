@@ -7,7 +7,7 @@ This quick start guide will help you deploy, run, and test **Nextpie** with mini
 
 ## 🎥 Instructional video
 
-You may refer to the instructional video available on [YouTube](https://youtu.be/D-WCaAl1iBM).
+You may refer to the instructional video available on [YouTube](https://youtu.be/Mo9c3YT9H6k).
 
 ## Prerequisites
 
