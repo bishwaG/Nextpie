@@ -30,7 +30,7 @@ Nextpie runs on port `5000` by default. When launching the container, the local 
 
 Before proceeding, it is a good idea to check whether port `5000` is already in use:
 ```bash
-sudo netstat -tulnp  **|**  grep :5000
+sudo netstat -tulnp  |  grep :5000
 ```
 If the port is free, proceed as shown below. Otherwise, use an alternative port such as `5111`.
 
