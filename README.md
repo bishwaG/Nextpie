@@ -35,7 +35,7 @@ Nextpie has been tested with Python `v3.9` on **Red Hat Enterprise Linux 9** and
 
 Nextpie can be deployed in various environments. Choose one of the options below to get started:
 
-### 🚀 [Quick Start](docs/quick-start.md) [[Instructional video](https://youtu.be/D-WCaAl1iBM)]
+### 🚀 [Quick Start](docs/quick-start.md) [[Instructional video](https://youtu.be/Mo9c3YT9H6k)]
 
 ### 🛠 Deployment Options
 
