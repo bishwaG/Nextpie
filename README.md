@@ -70,4 +70,5 @@ Nextpie can be deployed in various environments. Choose one of the options below
 - [Nextpie Web UI Overview](https://youtu.be/069BpLCY42c)  
 - [Generating Plots via Web UI](https://youtu.be/LSUZ7l-sJLU)  
 - [Manually Uploading Trace Files](https://youtu.be/9uKZO2qpCug)
+- [Using nf-core pipelines with Nextpie](https://youtu.be/tVVx3bXz2F0)
 
