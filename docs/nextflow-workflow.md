@@ -1,5 +1,6 @@
 
 
+
 ## An Example workflow
 
 Nextpie comes with an example Nextflow workflow to help you integrate Nextpie into any Nextflow workflow. The example workflow is located in `assets/example-workflow` directory. The example is a simple workflow that takes FASTQ files as inputs and process them using FastQC to generate quality reports per FASTQ files.
@@ -82,7 +83,7 @@ NXF_OPTS='-Xms1g -Xmx1g'
 _JAVA_OPTIONS='-Xms1g -Xmx4g'
 
 ./nextflow run ../main.nf \
-  -plugins nf-nextpie@0.0.1 \
+  -plugins nf-nextpie@0.0.2 \
   --fastqs 'fastq/*_R{1,2}*.fastq.gz' \
   --name "test_project" \
   --group "test_research_group"
@@ -90,14 +91,16 @@ _JAVA_OPTIONS='-Xms1g -Xmx4g'
 
 Once the workflow completes successfully you will see a reply from Nextpie. In the following block `{"message":"Records are inserted into the database (2 new processes).","response":"success"}` is the response by Nextpie.
 
-```
+```bash
  N E X T F L O W   ~  version 24.10.4
 
-Launching `../main.nf` [adoring_varahamihira] DSL2 - revision: 34df9cf9c5
+Launching `../main.nf` [grave_hilbert] DSL2 - revision: 64da441873
 
-[NEXTPIE] Config file: /home/bishwa/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json
+[NEXTPIE] Pipeline name Test-pipeline and version label 2.1.0 found in manifest scope.
+[NEXTPIE] The variables workflow_name and workflow_ver from the params scope will be ignored if they exist.
+[NEXTPIE] Config file: /home/bishwa/.nextflow/plugins/nf-nextpie-0.0.2/classes/nextflow/nextpie/config.json
 ===============================================================================
- Example-workflow v0.0.2
+ PIPELINE: Test-pipeline VERSION: 2.1.0
 ===============================================================================
 Run Name       : test_project
 Group          : test_research_group
@@ -106,11 +109,15 @@ Output Dir     : ./results
 ===============================================================================
 Do you want to continue (y/n)?y
 executor >  local (2)
-[02/f737fc] preprocess:FastQC (SRR2121688) [100%] 2 of 2 ✔
+[55/e0d436] preprocess:FastQC (SRR2121687) [100%] 2 of 2 ✔
 Workflow complete ☑️ 
 [NEXTPIE] Uploading usage data!
 [NEXTPIE] Trace file: ./results/pipeline_info/Trace.txt
 [NEXTPIE] URI: http://localhost:5000/api/v1.0/upload-data
 [NEXTPIE] Response:
- {"message":"Records are inserted into the database (2 new processes).","response":"success"}
+ {
+  "message": "Records are inserted into the database (2 new processes).",
+  "response": "success"
+}
+
 ```
