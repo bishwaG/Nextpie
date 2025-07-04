@@ -8,6 +8,10 @@ Nextpie comes with an example Nextflow workflow to help you integrate Nextpie in
 ### Prerequisite
 Before proceeding, ensure that you have Nextpie up and running. You can adopt one of the many deployment methods mentioned on the [main page](../README.md).
 
+### 🎥 Instructional video
+
+You may refer to the instructional video available on [YouTube](https://youtu.be/GCBzzCs7RQQ).
+
 ## setting an environment
 
 First, download the FastQC zipped archive and decompress it in your `$HOME` directory via a terminal.

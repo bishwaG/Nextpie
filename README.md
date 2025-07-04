@@ -58,7 +58,7 @@ Nextpie can be deployed in various environments. Choose one of the options below
 
 ### 🧪 Workflow Integration
 
-- [Run an Example Nextflow Workflow](docs/nextflow-workflow.md) [[Demo video](https://youtu.be/ZrnkrdmcLv0)]  
+- [Run an Example Nextflow Workflow](docs/nextflow-workflow.md) [[Demo video](https://youtu.be/GCBzzCs7RQQ)]  
 - [Run Nextpie on a Non-Default Port](docs/non-default-port.md)  
 - [Nextpie API Documentation](docs/api.md)  
 - [Admin Interface](docs/admin.md)  

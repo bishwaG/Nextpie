@@ -1,5 +1,6 @@
 
 
+
 ## 🐳 Running Nextpie as a Docker Container
 
 Nextpie can be deployed easily using Docker. Below are two approaches: building from source, or pulling from Docker Hub.
@@ -11,7 +12,28 @@ Nextpie can be deployed easily using Docker. Below are two approaches: building 
 
 🔗 For installation, refer to the official Docker installation guide: https://docs.docker.com/engine/install/
 
-### ✅ Option 1: Using the Nextpie Repository
+### 🎥 Instructional video
+
+You may refer to the instructional video available on [YouTube](https://youtu.be/kmLNcgQN33I).
+
+
+### ✅ Option 1: Using Docker Hub
+
+You can also run Nextpie directly from the prebuilt Docker image hosted on Docker Hub.
+
+1. Pull the latest image: 
+```bash
+# pull the docker image
+sudo docker pull fimmtech/nextpie:latest
+```
+2. Run the container by exposing the correct port: 
+```bash 
+## run the image by forwarding local port 5000 to container's port 5000
+sudo docker run -p 5000:5000 fimmtech/nextpie:latest
+```
+3. Visit http://127.0.0.1:5000 in your browser and log in using the default credentials.
+
+### ✅ Option 2: Using the Nextpie Repository
 
 1. Clone the Nextpie repository and navigate into the directory: 
 ```bash
@@ -33,23 +55,6 @@ sudo docker compose up --build
 Log in using the default credentials:
 - **Username:** admin
 -  **Password:** admin
-
-### ✅ Option 2: Using Docker Hub
-
-You can also run Nextpie directly from the prebuilt Docker image hosted on Docker Hub.
-
-1. Pull the latest image: 
-```bash
-# pull the docker image
-sudo docker pull fimmtech/nextpie:latest
-```
-2. Run the container by exposing the correct port: 
-```bash 
-## run the image by forwarding local port 5000 to container's port 5000
-sudo docker run -p 5000:5000 fimmtech/nextpie:latest
-```
-3. Visit http://127.0.0.1:5000 in your browser and log in using the default credentials.
-
 ### 🔧 Useful Docker Commands
 
 These Docker commands can help with troubleshooting or managing containers:

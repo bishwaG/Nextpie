@@ -4,6 +4,10 @@
 
 You can run Nextpie within a Conda environment. Follow the steps below to install Conda, set up the environment, and launch the web server.
 
+### 🎥 Instructional video
+
+You may refer to the instructional video available on [YouTube](https://youtu.be/-2Af_aU4vmM).
+
 ### ✅ Step 1: Download and Install Miniconda
 
 Download the Miniconda installer script:

@@ -1,6 +1,9 @@
-
-
 ## 🐍 Running in a development mode
+
+
+### 🎥 Instructional video
+
+You may refer to the instructional video available on [YouTube](https://youtu.be/HJSIUa0EsD0).
 
 Before deploying Nextpie using Python in development mode, ensure that your system has the following installed:
 

@@ -1,22 +1,31 @@
-## User manual
-Nextpie can be run inside varities of software environments. Use one of the following suitable environments to deploy Nextpie.
+## User Manual
 
-* #### Deployment
-    - [Python virtual environment](deploy-python.md) (development environment) [[Instructon video](https://youtu.be/HJSIUa0EsD0)]
-    - [Conda environment](deploy-conda.md) [[Instructon video](https://youtu.be/-2Af_aU4vmM)]
-    - [Guix environment](deploy-guix.md) 
-    - [Docker](deploy-docker.md) [[Instructon video](https://youtu.be/kmLNcgQN33I))]
-    - [Gunicorn](deploy-gunicorn.md)
-    - [Waitress](deploy-waitress.md) (Windows)
+Nextpie can be deployed in various environments. Choose one of the options below to get started:
 
-* #### Configurations
-    - [Email](config-email.md)
-    - [Integrating Nextpie into Nextflow workflow](configure.md)
+### 🚀 [Quick Start](docs/quick-start.md) [[Instructional video](https://youtu.be/Mo9c3YT9H6k)]
 
-* #### [Remove test data from the database](db-clear-test-data.md)
-* #### [Backup (dump) Nextpie's database (SQLite)](db-dump.md)
+### 🛠 Deployment Options
 
-* #### [Running an example Nextflow workflow](nextflow-workflow.md) [demo video](https://youtu.be/ZrnkrdmcLv0)
-* #### [Running Nextpie on non-default port](non-default-port.md)
-* #### [Nextpie API](api.md)
-* #### [Admin page](admin.md)
+- [Python virtual environment](deploy-python.md) (Development) [[Instructional video](https://youtu.be/HJSIUa0EsD0)]  
+- [Conda environment](deploy-conda.md) [[Instructional video](https://youtu.be/-2Af_aU4vmM)]  
+- [Guix environment](deploy-guix.md)  
+- [Docker](deploy-docker.md) [[Instructional video](https://youtu.be/kmLNcgQN33I)]  
+- [Gunicorn](deploy-gunicorn.md)  
+- [Waitress (Windows)](deploy-waitress.md)  
+
+### ⚙ Configuration
+
+- [Email Settings](config-email.md)  
+- [Integrating Nextpie with Nextflow Workflows](configure.md)  
+
+### 🧹 Maintenance
+
+- [Remove Test Data](db-clear-test-data.md)  
+- [Backup (Dump) SQLite Database](db-dump.md)  
+
+### 🧪 Workflow Integration
+
+- [Run an Example Nextflow Workflow](nextflow-workflow.md) [[Demo video](https://youtu.be/GCBzzCs7RQQ)]  
+- [Run Nextpie on a Non-Default Port](non-default-port.md)  
+- [Nextpie API Documentation](api.md)  
+- [Admin Interface](admin.md)  
