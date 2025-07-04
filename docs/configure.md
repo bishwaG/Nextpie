@@ -1,5 +1,6 @@
 
 
+
 ## Example workflow
 
 Nextpie includes an example Nextflow workflow to help users explore its features. This workflow is located in the `assets/example-workflow` directory.
@@ -8,41 +9,105 @@ To run the example, refer to the script at:
 ```
 assets/example-workflow/test-runs/run-analysis.sh
 ```
-## Configure Nextflow pipeline for Nextpie 
 
-Nextpie has a client plugin named [nf-nextpie](https://github.com/bishwaG/nf-nextpie). Once you run Nextflow with the command-line option `-plugins nf-nextpie@0.0.1`, Nextflow will automatically download the plugin during runtime and stores it in `$HOME/.nextflow/plugins/nf-nextpie-0.0.1`. This greatly minimizes configuration hassles.
+ 
+## The Configuration File
+
+
+Upon first use in a Nextflow pipeline (e.g., using `-plugins nf-nextpie@0.0.2`), the plugin is automatically downloaded to:
+
 ```bash
-./nextflow run ../main.nf -plugins nf-nextpie@0.0.1 ....
+$HOME/.nextflow/plugins/nf-nextpie-0.0.2
+
 ```
-## Plugin configuration
+Its configuration file can be found at:
 
-The plugin includes a default configuration file located at `$HOME/.nextflow/plugins/nf-nextpie-0.0.1/classes/nextflow/nextpie/config.json`.
+```bash
+$HOME/.nextflow/plugins/nf-nextpie-0.0.2/classes/nextflow/nextpie/config.json
+```
 
-This file defines:
+
+The default contents of `config.json` are:
 
 ```json
 {
   "host": "localhost",
   "port": 5000,
   "api-key": "jWCr-uqJB9fO9s1Lj2QiydXs4fFY2M",
-  "workflow-name-var" : "workflow_name",
-  "worfklow-version-var" : "workflow_ver"
+  "workflow-name-var": "workflow_name",
+  "workflow-version-var": "workflow_ver"
 }
-
 ```
-- **host:** The hostname or IP address of the machine running Nextpie.
 
-- **port:** The port Nextpie is running on.
+### `host`
 
-- **api-key:** The API key used to authenticate with the Nextpie API.
+The hostname or IP address of the machine running the Nextpie server. The default is `localhost`, which refers to the local machine.
 
-- **workflow-name-var:** The name of variable storing pipeline name in Nextflow pipeline's `nextflow.config` file.
+### `port`
 
-- **worfklow-version-var:** The name of variable storing pipeline version in Nextflow pipeline's `nextflow.config` file.
+The port on which the Nextpie server is running. Do not change this unless you know what you're doing or if the default port is already in use.
 
->⚠️ Important: Do not use the default API key in production environments. Always generate a new, secure key for production use.
+### `api-key`
 
-Once the pipeline run completes, Nextflow's` workflow.complete` event handler will trigger the plugin to upload usage data to Nextpie automatically.
+An API key required for authentication. The client (`nf-nextpie`) uses this key to authenticate with the Nextpie server. In a production environment, it is highly recommended to generate a unique API key using the Nextpie GUI and replace the default value for security purposes.
+
+> ⚠️ Important: Do not use the default API key in production environments. Always generate a new key for production use.
+
+### `workflow-name-var` and `workflow-version-var`
+
+> ⚠️ NOTE: Do not modify the `workflow-name-var` and `workflow-version-var` variables. These are not user-configurable parameters.
+
+
+These are the names of the Nextflow variables that store the pipeline name and version, respectively. Their values are expected to be set to `workflow_name` and `workflow_ver`, meaning these variables must exist within your pipeline's `params` scope (e.g., in `nextflow.config`).
+
+The plugin searches for these variables in the `params` scope. Therefore, `workflow_name` and `workflow_ver` should be defined as follows:
+
+```groovy
+params {
+  workflow_name = 'my-workflow'
+  workflow_ver  = '1.0.1'
+}
+```
+
+
+The plugin looks for `name` and `version` in the `manifest` scope, and for `workflow_name` and `workflow_ver` in the `params` scope. If `name` and `version` are present in `manifest`, the plugin will **ignore** `workflow_name` and `workflow_ver` from `params` and instead use the values from `manifest`.
+
+If you're using [nf-schema](https://github.com/nextflow-io/nf-schema) in your pipeline, leveraging the `manifest` scope is often more advantageous, as it avoids the need for intrusive modifications to your Nextflow pipeline. As long as the `name` and `version` variables are defined in the `manifest` scope, they will be automatically picked up by the plugin.
+
+While `nf-nextpie` can retrieve the workflow name and version from the `params` scope, using the `manifest` scope is highly recommended. It is considered best practice to store pipeline metadata—such as `name`, `version`, `affiliation`, `email`, `github`, and similar fields—within the `manifest` block.
+**Example:**
+
+```groovy
+manifest {
+  name    = 'my-workflow'
+  version = '1.0.1'
+}
+```
+> NOTE: Both `params` and `manifest` scopes are defined in the Nextflow pipeline's configuration file (`nextflow.config`).
+> 
+## Integrating `nf-nextpie` with a Nextflow Pipeline
+
+There are two ways to integrate `nf-nextpie` into a Nextflow pipeline:
+
+### ✅ Option 1: Using `nextflow.config`
+
+Add the following to the `plugins` block in `nextflow.config`:
+
+```groovy
+plugins {
+  id 'nf-nextpie@0.0.2'
+}
+```
+
+This allows all runs of the pipeline to use the plugin by default.
+
+### ✅ Option 2: Using the Command Line
+
+Supply the plugin using the command-line option for each run:
+
+```bash
+nextflow run mypipeline.nf -plugins nf-nextpie@0.0.2
+```
 
 ## Firewall configuration
 
