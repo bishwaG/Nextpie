@@ -74,6 +74,6 @@ Options:
 
 Provide the comma-separated group IDs from the Group table to remove all records linked to them:
 ```bash
-flask clear --gid 1,2,3,4,5,6,7,8,10,11
+flask clear --gid 1,2,3,4,5,6,7,8
 ```
 NOTE: This method can be used for more than simply test data removal.
