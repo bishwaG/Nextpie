@@ -190,7 +190,7 @@ class Utils:
 			d    = split[idx[0]]
 			d    = int( d.replace("d","") )
 
-		
+		print(s)
 		return time(int(h),int(m),int(s), int(ms))
 		
 	########################################################################
@@ -404,6 +404,9 @@ class Utils:
 				lineCounter  = -1
 				proc_exists_flag   = []
 				for line in reader1.readlines():
+					if line.strip() == "" or "null" in line:
+						continue
+				
 					## get header positions
 					if lineCounter == -1:
 						header_line = line.strip()
@@ -616,7 +619,13 @@ class Utils:
 		
 		with open(traceFile) as reader1:
 				lineCounter=-1
+				
+				
 				for line in reader1.readlines():
+					
+					## skip empty lines
+					if line.strip() == "" or "null" in line:
+						continue
 					
 					## get columns
 					if lineCounter == -1:
@@ -628,7 +637,8 @@ class Utils:
 						submit_pos      = columns.index('submit')
 						realtime_pos    = columns.index('realtime')
 						
-						
+					print("===========================================================")
+					print("Line: " + line)	
 					## skip header line
 					if lineCounter >= 0:
 						
@@ -639,8 +649,6 @@ class Utils:
 						
 						## skip if this job was not submitted
 						if(split[status_pos] == "-"):
-							continue
-						if(split[submit_pos] == "-"):
 							continue
 							
 						## get jon status from 5th column
