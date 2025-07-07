@@ -359,7 +359,8 @@ def comma_separated_numbers(value):
 parser8 = api.parser()
 parser8.add_argument('Group IDs', type=comma_separated_numbers, required=True, help="Group IDs separated by commas")
 
-                     
+
+from app import db               
 @api.route('/delete-records', endpoint='delete-records')
 @api.doc(security='apikey')
 class ClearDB(Resource):
