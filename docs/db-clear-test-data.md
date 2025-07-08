@@ -26,7 +26,7 @@ To delete all records associated with specific groups, you can provide comma-sep
 
 ### ✅ Step 3:
 
-- Enter the comma-separated group IDs you wish to remove. To only remove the test data, enter the following group IDs: `1,2,3,4,5,6,7,8,10,11`. You can easily obtain group IDs from Nextpie’s web interface under **Database >> Group**.
+- Enter the comma-separated group IDs you wish to remove. To only remove the test data, enter the following group IDs: `1,2,3,4,5,6,7,8`. You can easily obtain group IDs from Nextpie’s web interface under **Database >> Group**.
 
 ### ✅ Step 4:
 - Press the **Execute** button.
