@@ -190,7 +190,7 @@ class Utils:
 			d    = split[idx[0]]
 			d    = int( d.replace("d","") )
 
-		print(s)
+		#print(s)
 		return time(int(h),int(m),int(s), int(ms))
 		
 	########################################################################
@@ -397,12 +397,17 @@ class Utils:
 			disk_write = 0
 			wchar_list = []
 			
+			
+			
 			print("################################################################################")
 			print("Contens of the file: " + traceFile)
 			## read trace file line by line
 			with open(traceFile) as reader1:
 				lineCounter  = -1
 				proc_exists_flag   = []
+				
+				inserted = 0
+				
 				for line in reader1.readlines():
 					if line.strip() == "" or "null" in line:
 						continue
@@ -446,7 +451,7 @@ class Utils:
 					## skip header line
 					if lineCounter >= 0:
 						
-						print(line.strip())
+						#print(line.strip())
 						
 						split = line.split("\t")
 						
@@ -458,7 +463,7 @@ class Utils:
 						exit      = split[exit_pos]
 						
 						#convert string to data and time object
-						if(split[6] == "-"):
+						if(split[submit_pos] == "-"):
 							continue
 						submit    = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
 						duration  = Utils.getTimeObj(split[duration_pos])
@@ -519,21 +524,35 @@ class Utils:
 								    runs       = r)
 								    
 								    
-							db.session.add(proc)
-							db.session.commit()
-							#tt.sleep(0.0005)
-						
-							proc_exists_flag.append(0)
+							try:
+								db.session.flush()
+								db.session.add(proc)
+								db.session.commit()
+								tt.sleep(0.005)
+								
+								inserted = 1
+								print(line.strip())
+								#print(taskID)
+							
+								proc_exists_flag.append(0)
+							except Exception as e:
+								db.session.rollback()
+								print("Eror: %s", str(e))
+								
 							
 						else:
 							proc_exists_flag.append(1)
 						
 						## If else end
 						
-					
+					if inserted == 0:
+						print("Not inserted: " + line)
+					#else:
+					#	print("Inserted")
 					## increase line counter
 					lineCounter += 1
-				
+					
+					
 				## for loop end
 				
 			## if there are any processes existing
@@ -637,8 +656,8 @@ class Utils:
 						submit_pos      = columns.index('submit')
 						realtime_pos    = columns.index('realtime')
 						
-					print("===========================================================")
-					print("Line: " + line)	
+					#print("===========================================================")
+					#print("Line: " + line)	
 					## skip header line
 					if lineCounter >= 0:
 						
