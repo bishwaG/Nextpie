@@ -189,7 +189,17 @@ class Utils:
 		if len(idx):
 			d    = split[idx[0]]
 			d    = int( d.replace("d","") )
-
+		
+		## if s == 60
+		if s == 60:
+			s = 0
+			m = m + 1
+		
+		## if h == 24
+		if h == 24:
+			h = 0
+			d = d + 1
+		
 		#print(s)
 		return time(int(h),int(m),int(s), int(ms))
 		
