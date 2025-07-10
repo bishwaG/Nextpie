@@ -528,7 +528,7 @@ class Utils:
 								db.session.flush()
 								db.session.add(proc)
 								db.session.commit()
-								tt.sleep(0.005)
+								##tt.sleep(0.005)
 								
 								inserted = 1
 								print(line.strip())
