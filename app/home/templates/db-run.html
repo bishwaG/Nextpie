@@ -141,6 +141,7 @@ var filterParams = {
       { headerName:"Submitted",   field: "submited",   filter: 'agTextColumnFilter',  sortable: true, chartDataType: 'excluded', filterParams: filterParams },
       { headerName:"Completed",   field: "completed",   filter: 'agDateColumnFilter',  sortable: true, chartDataType: 'excluded', filterParams: filterParams },
       { headerName:"Runtime (hr)",field: "run_time_hr", filter: 'agTextColumnFilter',  sortable: true, chartDataType: 'series', aggFunc: 'sum'   },
+      { headerName:"Runtime (min)",field: "run_time_min", filter: 'agTextColumnFilter',  sortable: true, chartDataType: 'series', aggFunc: 'sum'   },
       { headerName:"Read (TB)",   field: "read_TB",     filter: 'agNumberColumnFilter',sortable: true, chartDataType: 'series', aggFunc: 'sum'   },
       { headerName:"Write (TB)",  field: "write_TB",    filter: 'agNumberColumnFilter',sortable: true, chartDataType: 'series', aggFunc: 'sum'   },
       { headerName:"Memory (TB)", field: "memory_GB",   filter: 'agNumberColumnFilter',sortable: true, chartDataType: 'series', aggFunc: 'sum'  },
