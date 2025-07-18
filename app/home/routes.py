@@ -18,12 +18,13 @@ import random
 import string
 @blueprint.route('/index')
 @login_required
+
+
 def index():
 	return render_template('index.html', 
 	    segment='index', 
-	    app_name="Nextpie", 
 	    title="Dashboard", 
-	    version="v0.0.3")
+	    version=app.config['VERSION'])
 
 
 ## LOAD DATA ===================================================================
@@ -35,7 +36,8 @@ def load_data():
 	return render_template('upload-data.html',
 	    segment='upload',
 	    title="Upload Data",
-	    form=loadForm)
+	    form=loadForm,
+	    version=app.config['VERSION'])
 
 #
 # ░██████╗███████╗████████╗████████╗██╗███╗░░██╗░██████╗░░██████╗
@@ -176,7 +178,8 @@ def change_passsword():
 	    pwd_form=pwdForm,
 	    key_form=keyForm,
 	    smtp_form=smtpForm,
-	    user_is_admin=isAdmin)
+	    user_is_admin=isAdmin,
+	    version=app.config['VERSION'])
 
 ## -----------------------------------------------------------------------------
 @blueprint.route('/users', methods=['GET','POST'])
@@ -364,6 +367,8 @@ def submit_data():
 		
 		#return jsonify({"message":"Reply", "response":"success"})
 		
+		
+		
 		## check if the upload filder exists
 		if not os.path.exists(path):
 			try:
@@ -439,6 +444,22 @@ def submit_data():
 					return jsonify({"message":"File type is not allowed. Only .txt allowed.", "response":"error"})
 				file.save(os.path.join(upload_path, "TRACE__"+filename))
 				fileList.append(filename)
+				
+				## check report file columns
+				required_columns = {"task_id", "hash", "native_id", "name", "status", "exit",
+				  "submit", "duration", "realtime", "%cpu",
+				  "peak_rss", "peak_vmem", "rchar", "wchar"
+				  }
+				
+				with open(os.path.join(upload_path, "TRACE__"+filename), "r") as f:
+					header_line = f.readline().strip()
+					actual_columns = set(header_line.split("\t"))
+
+				missing = required_columns - actual_columns
+				
+				if missing:
+					return jsonify({"message":f"The uploaded trace file(s) has missing columns {missing}", "response":"error"})
+			
 			else:
 				#return jsonify(response="fail",reason="No file part.")
 				return jsonify({"message":"No file part.", "response":"error"})
@@ -483,8 +504,7 @@ def submit_data():
 		## ['research_group_A', 'test_run_poj_1', 'RNAseq', '2.0.1']
 		#print(projGroupVer)
 		
-			
-			
+		
 		#return jsonify(projGroupVer)
 		## parse Trace.txt files ---------------------------------------
 		return jsonify( Utils.parseTraceFiles(metadataList=projGroupVer, 
@@ -508,7 +528,8 @@ def submit_data():
 def db_search_page(table):
 	return render_template("db-"+table+".html",
 	    segment="db-"+table,
-	    title=table.title())
+	    title=table.title(),
+	    version=app.config['VERSION'])
 
 from datetime import date
 from sqlalchemy import extract
@@ -563,17 +584,18 @@ def db_search(table):
 		#a = []
 		for i in query:
 			a.append({"id":str(i[1]),
-			    "workflow"    :str(i[2]),
-			    "version"     :str(i[3]),
-			    "submited"    :str(i[4].strftime("%d/%m/%Y")),
-			    "completed"   :str(i[5].strftime("%d/%m/%Y")),
-			    "run_time_hr" :float(i[6]),
-			    "read_TB"     :float(i[7]),
-			    "write_TB"    :float(i[8]),
-			    "memory_GB"   :float(i[9]),
-			    "status"      :str(i[10]),
-			    "entry_via"   :str(i[11]),
-			    "project_name":str(i[12])
+			    "workflow"     :str(i[2]),
+			    "version"      :str(i[3]),
+			    "submited"     :str(i[4].strftime("%d/%m/%Y")),
+			    "completed"    :str(i[5].strftime("%d/%m/%Y")),
+			    "run_time_hr"  :round( float(i[6]), 3 ),
+			    "run_time_min" :round( float(i[6]*60), 3 ),
+			    "read_TB"      :float(i[7]),
+			    "write_TB"     :float(i[8]),
+			    "memory_GB"    :float(i[9]),
+			    "status"       :str(i[10]),
+			    "entry_via"    :str(i[11]),
+			    "project_name" :str(i[12])
 			    })
 
 		return jsonify(a)
@@ -588,8 +610,8 @@ def db_search(table):
 		    Process.status,
 		    Process.exit,
 		    Process.submit,
-		    Process.duration,
-		    Process.realtime,
+		    Process.duration_min,
+		    Process.realtime_min,
 		    Process.cpu,
 		    Process.peak_rss,
 		    Process.peak_vmem,
@@ -613,8 +635,8 @@ def db_search(table):
 			    "status"       :str(i[4]),
 			    "exit"         :str(i[5]),
 			    "submitted"    :str(i[6].strftime("%d/%m/%Y")),
-			    "duration"     :str(i[7].strftime("%H:%M:%S.%f")),
-			    "realtime"     :str(i[8].strftime("%H:%M:%S.%f")),
+			    "duration_min" :str( round(i[7], 3) ),
+			    "realtime_min" :str( round(i[8], 3) ),
 			    "cpu"          :0 if i[9] == "-" else float(i[9].split("%")[0]),
 			    "peak_rss_mb"  :Utils.toMB( i[10] ),
 			    "peak_vmem_mb" :Utils.toMB( i[11] ),
@@ -743,21 +765,24 @@ def get_info(action):
 def run_stats():
 	return render_template("stats-run.html",
 	                       segment='stats-run',
-	                       title="Run")
+	                       title="Run",
+	                       version=app.config['VERSION'])
 
 @blueprint.route('/stats-proc', methods=['GET','POST'])
 @login_required
 def proc_stats():
 	return render_template("stats-proc.html",
 	                       segment='stats-proc',
-	                       title="Process")
+	                       title="Process",
+	                       version=app.config['VERSION'])
 
 @blueprint.route('/stats-gp', methods=['GET','POST'])
 @login_required
 def gp_stats():
 	return render_template("stats-gp.html",
 	                       segment='stats-gp',
-	                       title="Group & Projects")
+	                       title="Group & Projects",
+	                       version=app.config['VERSION'])
 
 ## Action ----------------------------------------------------------------------
 from sqlalchemy import func, distinct
@@ -770,7 +795,7 @@ def get_process(action,workflow,version):
 
 	if action == "get-process-runtime":
 		query = db.session.query(Run,Process).\
-		    add_columns(Process.id, Process.realtime).\
+		    add_columns(Process.id, Process.realtime_min).\
 		    filter( (Run.pipeline==workflow) & (Run.version==version) & (Run.id==Process.run_id)).\
 		    all()
 
@@ -816,7 +841,7 @@ def get_process(action,workflow,version):
 		for x in new_query:
 			if proc_name == x[1] and action == "get-process-runtime":
 				run_time  =x[3]
-				run_time_hr  = run_time.hour +  run_time.minute/60 + run_time.second/(60*60)
+				run_time_hr  = run_time / 60
 				mat_list.append(run_time_hr)
 				#print(x[1],x[3])
 			if proc_name == x[1] and action == "get-process-memory":
