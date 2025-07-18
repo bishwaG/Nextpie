@@ -3,6 +3,8 @@ from   decouple import config
 
 class Config(object):
 
+    VERSION = "v0.0.3"
+    
     basedir    = os.path.abspath(os.path.dirname(__file__))
 
     # Set up the App SECRET_KEY
