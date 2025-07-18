@@ -20,6 +20,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from app.base.models import Settings
+
+
 class Misc:
 	"Misc. functions"
 	
@@ -150,7 +152,35 @@ class Utils:
 		else:
 			return 0
 	
-	
+	#######################################################################################################################################
+	## returns total minutes
+	########################################################################
+	@staticmethod
+	def duration_to_min(time_str):
+		time_dict = {'d': 0.0, 'h': 0.0, 'm': 0.0, 's': 0.0, 'ms': 0.0}
+		parts = time_str.strip().split()
+
+		for item in parts:
+			try:
+				if item.endswith('ms'):
+					time_dict['ms'] += float(item[:-2])
+				else:
+					unit = item[-1]
+					if unit in time_dict:
+						time_dict[unit] += float(item[:-1])
+			except (ValueError, IndexError):
+				continue  # skip invalid parts
+
+		# Convert all to total minutes
+		total_minutes = (
+		  time_dict['d'] * 24 * 60 +    # days → minutes
+		  time_dict['h'] * 60 +         # hours → minutes
+		  time_dict['m'] +              # already in minutes
+		  time_dict['s'] / 60 +         # seconds → minutes
+		  time_dict['ms'] / 1000 / 60   # ms → seconds → minutes
+		)
+		return total_minutes
+    
 	########################################################################
 	## returns a time object from a given time
 	########################################################################
@@ -163,14 +193,16 @@ class Utils:
 		d  = 0
 
 		split = mytime.split(" ")
-			
+		print(split)
 		## for ms
 		idx = [i for i, item in enumerate(split) if re.search( re.compile("ms$") , item)]
+		
 		if len(idx):
 			ms   = split[idx[0]]
 			ms   = int( ms.replace("ms","") )
 		## seconds
 		idx = [i for i, item in enumerate(split) if re.search( re.compile("[0-9]s$") , item)]
+		print(idx)
 		if len(idx):
 			s    = split[idx[0]]
 			s    = float( s.replace("s","") )
@@ -184,22 +216,36 @@ class Utils:
 		if len(idx):
 			h    = split[idx[0]]
 			h    = int( h.replace("h","") )
-		## days (UNUSED)
+		## days
 		idx = [i for i, item in enumerate(split) if re.search( re.compile("d$") , item)]
 		if len(idx):
 			d    = split[idx[0]]
 			d    = int( d.replace("d","") )
+			
+		#if d != 0:
+		#	h = h + (d*24)
+		
+		## if ms==1000
+		#if ms == 1000:
+		#	ms = 0
+		#	s  = s + 1
 		
 		## if s == 60
-		if s == 60:
-			s = 0
-			m = m + 1
+		#if s == 60:
+		#	s = 0
+		#	m = m + 1
 		
 		## if h == 24
-		if h == 24:
-			h = 0
-			d = d + 1
-		
+		#if h == 24:
+		#	h = 0
+		#	d = d + 1
+		print("=========================================================")
+		print(Utils.duration_to_min(mytime))
+		print( d )
+		print( h )
+		print( m )
+		print( s )
+		print( ms )
 		#print(s)
 		return time(int(h),int(m),int(s), int(ms))
 		
@@ -418,6 +464,8 @@ class Utils:
 				
 				inserted = 0
 				
+				combined_runtime_min = 0
+				
 				for line in reader1.readlines():
 					if line.strip() == "" or "null" in line:
 						continue
@@ -475,14 +523,17 @@ class Utils:
 						#convert string to data and time object
 						if(split[submit_pos] == "-"):
 							continue
-						submit    = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
-						duration  = Utils.getTimeObj(split[duration_pos])
-						realtime  = Utils.getTimeObj(split[realtime_pos])
-						cpu       = split[cpu_pos]
-						peak_rss  = split[peak_rss_pos]
-						peak_vmem = split[peak_vmem_pos]
-						rchar     = split[rchar_pos]
-						wchar     = split[wchar_pos]
+						submit       = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
+						#duration     = Utils.getTimeObj(split[duration_pos])
+						#realtime     = Utils.getTimeObj(split[realtime_pos])
+						duration_min = Utils.duration_to_min(split[duration_pos])
+						realtime_min = Utils.duration_to_min(split[realtime_pos])
+						
+						cpu          = split[cpu_pos]
+						peak_rss     = split[peak_rss_pos]
+						peak_vmem    = split[peak_vmem_pos]
+						rchar        = split[rchar_pos]
+						wchar        = split[wchar_pos]
 						
 						## append submitted time to the list
 						if status=="COMPLETED":
@@ -494,12 +545,12 @@ class Utils:
 							
 							## completed = submitted + runtime
 							
-							completed_list.append(submit + timedelta(hours=realtime.hour, minutes=realtime.minute,seconds=realtime.second, microseconds=realtime.microsecond) )
+							completed_list.append(submit + timedelta( minutes=realtime_min ) )
 							
 						## check if completed
 						if status=="FAILED":
 							submitted_list.append(submit)
-							completed_list.append(submit + timedelta(hours=realtime.hour, minutes=realtime.minute,seconds=realtime.second, microseconds=realtime.microsecond) )
+							completed_list.append(submit + timedelta( minutes=realtime_min ) )
 							run_status="FAILED"
 						
 						if status=="ABORTED":
@@ -524,8 +575,8 @@ class Utils:
 								    status    = status,
 								    exit      = exit,
 								    submit    = submit,
-								    duration  = duration,
-								    realtime  = realtime,
+								    duration_min  = duration_min,
+								    realtime_min  = realtime_min,
 								    cpu       = cpu,
 								    peak_rss  = peak_rss,
 								    peak_vmem = peak_vmem,
@@ -545,6 +596,10 @@ class Utils:
 								#print(taskID)
 							
 								proc_exists_flag.append(0)
+								
+								## add runtime to get total runtime for runs
+								combined_runtime_min = combined_runtime_min + realtime_min
+								
 							except Exception as e:
 								db.session.rollback()
 								print("Eror: %s", str(e))
@@ -573,9 +628,10 @@ class Utils:
 			if len(completed_list) !=0:
 				r.completed = max(completed_list)
 			if len(submitted_list) !=0 and len(completed_list) !=0:
-				rt            = max(completed_list) - min(submitted_list)
-				rt_hr         = rt.seconds/(60*60)
-				r.run_time_hr = "{:.2f}".format(rt_hr)
+				#rt            = max(completed_list) - min(submitted_list)
+				#rt_hr         = rt.seconds/(60*60)
+				#r.run_time_hr = "{:.2f}".format(rt_hr)
+				r.run_time_hr   = combined_runtime_min / 60
 			
 			if status == "ABORTED":
 				r.status    = status
@@ -684,8 +740,10 @@ class Utils:
 						status    = split[status_pos]
 						
 						## split submitted time and get a time object
-						submit    = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
-						realtime  = Utils.getTimeObj(split[realtime_pos])
+						if(split[submit_pos] == "-"):
+							continue
+						submit        = datetime.strptime(split[submit_pos], "%Y-%m-%d %H:%M:%S.%f")
+						realtime_min  = Utils.duration_to_min(split[realtime_pos])
 						
 						
 						## if a job is COMPLETED or CACHED 
@@ -693,12 +751,12 @@ class Utils:
 						## append completed time to completed list
 						if status=="COMPLETED" or status=="CACHED":
 							submitted_list.append(submit)
-							completed_list.append(submit + timedelta(hours=realtime.hour, minutes=realtime.minute,seconds=realtime.second, microseconds=realtime.microsecond) )
+							completed_list.append(submit + timedelta( minutes=realtime_min) )
 						
 						## if a job has FAILED add 'failed' to status list
 						if status=="FAILED":
 							submitted_list.append(submit)
-							completed_list.append(submit + timedelta(hours=realtime.hour, minutes=realtime.minute,seconds=realtime.second, microseconds=realtime.microsecond) )
+							completed_list.append(submit + timedelta(minutes=realtime_min) )
 							status_list.append("FAILED")
 						## for aborted put submitted time = completed time
 						if status=="ABORTED":
