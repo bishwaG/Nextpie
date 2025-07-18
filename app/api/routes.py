@@ -235,16 +235,16 @@ class GetRuns(Resource):
 		return Analysis.get_runs(year)
 		
 		
-################################################################################
+###################################################################################################################################################
 ## G E T   P R O C E S S E S
-################################################################################
+###################################################################################################################################################
 
-
+from datetime import datetime
 ## input fields 
 parser3 = api.parser()
-parser3.add_argument('Year', type=int, required=False, help="Select a year", choices=[year[0] for year in years])
+parser3.add_argument('Year', type=int, required=False, help="Select a year", choices=[year[0] for year in years], default=datetime.now().year)
 parser3.add_argument('Project', type=str, required=False, help="Project name")
-parser3.add_argument('Status', type=str, required=False, 
+parser3.add_argument('Status', type=str, required=True, 
                      help="Process status", 
                      choices=("","COMPLETED", "FAILED", "CACHED", "ABORTED"))
 
@@ -261,7 +261,11 @@ class GetProcs(Resource):
 		project = args["Project"]
 		status  = args["Status"]
 		
-		return jsonify([{"message":"Not implemented!"}])
+		
+		return Analysis.get_filtered_processes(year, project, status)
+		
+		
+		#return jsonify([{"message":"Not implemented!"}])
 
 
 ################################################################################
