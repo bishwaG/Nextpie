@@ -1,4 +1,4 @@
-from app.home.models import Group, Project, Run
+from app.home.models import Group, Project, Run, Process
 from app import db
 from flask import jsonify
 from sqlalchemy import extract, func
@@ -63,6 +63,60 @@ class Analysis:
 		for row in query_this_year]
 		
 		return jsonify(result)	
+	
+	## get filtered processs
+	def get_filtered_processes(year, project_name, status):
+		processes = db.session.query(Process).\
+		  join(Run, Process.run_id == Run.id).\
+		  join(Project, Run.project_id == Project.id).\
+		  filter(Process.status == status).\
+		  filter(extract('year', Process.submit) == year). \
+		  add_columns(Project.name,
+		    Process.id,
+		    Process.task_id,
+		    Process.hash,
+		    Process.native_id,
+		    Process.name,
+		    Process.status,
+		    Process.exit,
+		    Process.submit,
+		    Process.duration_min,
+		    Process.realtime_min,
+		    Process.cpu,
+		    Process.peak_rss,
+		    Process.peak_vmem,
+		    Process.rchar,
+		    Process.wchar)
+		
+		if project_name:
+			processes = query.filter(Project.name == project_name)
+			
+		## serialize query to be able to convert to JSON
+		a = []
+		for i in processes.all():
+			a.append({"project_name":str(i[1]),
+			    "id"                :str(i[2]),
+			    "task_id"           :str(i[3]),
+			    "hash"              :str(i[4]),
+			    "native_id"         :str(i[5]),
+			    "name"              :str(i[6]),
+			    "status"            :str(i[7]),
+			    "exit"              :str(i[8]),
+			    "submit"            :str(i[9]),
+			    "duration_min"      :str(i[10]),
+			    "realtime_min"      :str(i[11]),
+			    "cpu"               :str(i[12]),
+			    "peak_rss"          :str(i[13]),
+			    "peak_vmem"         :str(i[14]),
+			    "rchar"             :str(i[15]),
+			    "wchar"             :str(i[16].strip()),
+			    
+			    })
+
+		return jsonify(a)
+		
+		
+		
 	
 	## Fetch runs by year
 	def get_runs(year):
