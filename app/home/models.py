@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 
+from sqlalchemy.dialects.postgresql import INTERVAL
 
 class Group(db.Model):
 	__tablename__ = 'Group'
@@ -105,8 +106,10 @@ class Process(db.Model):
 	status    = db.Column(db.String(20))
 	exit      = db.Column(db.Integer())
 	submit    = db.Column(db.DateTime())
-	duration  = db.Column(db.Time())
-	realtime  = db.Column(db.Time())
+	#duration  = db.Column(db.Time())
+	#realtime  = db.Column(db.Time())
+	duration_min  = db.Column(db.Integer) 
+	realtime_min  = db.Column(db.Integer) 
 	cpu       = db.Column(db.String(140))
 	peak_rss  = db.Column(db.String(140))
 	peak_vmem = db.Column(db.String(140))	
