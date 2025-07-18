@@ -1,3 +1,4 @@
+
 ![](assets/images/nextpie-plots.png)
 
 # Nextpie
@@ -30,6 +31,12 @@ Nextpie has been tested with Python `v3.9` on **Red Hat Enterprise Linux 9** and
 - Gunicorn  
 
 ---
+
+## The `-resume` behavior
+
+Nextpie's SQLite database records each Nextflow process using a unique hash, generated based on a specific combination of the research group and research project. When a process fails, Nextflow assigns it a new hash, causing the failed process to always be recorded as a new entry in the database. However, for successfully completed processes, Nextflow retains the same hash. As a result, when using Nextflow's -resume option, Nextpie avoids duplicate entries by recognizing that the process has already been recorded during a previous pipeline run.
+
+When running a Nextflow pipeline with Nextpie, it is possible to omit the research group and project names. In such cases, Nextpie generates random identifiers for both the research group and project to compensate for the missing information. However, because these identifiers are randomly generated and not tied to any consistent naming scheme, Nextpie cannot determine whether a process belongs to an existing project. Consequently, each pipeline execution—regardless of the use of the -resume option—is treated as a unique run. As a result, all entries from the trace file are inserted into the database as new records.
 
 ## User Manual
 
