@@ -1133,12 +1133,20 @@ def get_p_status(action):
 	if action == "get-pipe-ver-status":
 
 		
-
+		## failed
 		ver_failed = Run.query.with_entities(Run.version,Run.status,
 		            func.count(Run.status)).group_by(Run.version,Run.status).filter(Run.status=="FAILED").all()
 		
 		## add red color to failed ones
 		ver_failed = [(*t, word) for t, word in zip(ver_failed, ["#ec5959"]*len(ver_failed))]
+		
+		## aborted
+		ver_abo = Run.query.with_entities(Run.version,Run.status,
+		            func.count(Run.status)).group_by(Run.version,Run.status).filter(Run.status=="ABORTED").all()
+		
+		## add red color to failed ones
+		ver_abo = [(*t, word) for t, word in zip(ver_abo, ["#e5a50a"]*len(ver_failed))]
+		
 		
 		ver_comp = Run.query.with_entities(Run.version,Run.status,
 		            func.count(Run.status)).group_by(Run.version,Run.status).filter(Run.status=="COMPLETED").all()
@@ -1162,7 +1170,7 @@ def get_p_status(action):
 				
 				
 		#return jsonify( ver_failed + ver_comp + pipe_ver)
-		return jsonify(new_pipe_ver + ver_comp + ver_failed)
+		return jsonify(new_pipe_ver + ver_comp + ver_failed + ver_abo)
 				
 	elif action == "get-run-runtime":
 
