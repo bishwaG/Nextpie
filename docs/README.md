@@ -1,8 +1,6 @@
 ## User Manual
 
-Nextpie can be deployed in various environments. Choose one of the options below to get started:
-
-### 🚀 [Quick Start](quick-start.md) [[Instructional video](https://youtu.be/Mo9c3YT9H6k)]
+### 🚀 [Quick Start](docs/quick-start.md) [[Instructional video](https://youtu.be/Mo9c3YT9H6k)]
 
 ### 🛠 Deployment Options
 
@@ -16,7 +14,7 @@ Nextpie can be deployed in various environments. Choose one of the options below
 ### ⚙ Configuration
 
 - [Email Settings](config-email.md)  
-- [Integrating Nextpie with Nextflow Workflows](configure.md)  
+- [Integrating Nextpie with Nextflow Workflows](docs/configure.md)  
 
 ### 🧹 Maintenance
 
@@ -29,3 +27,12 @@ Nextpie can be deployed in various environments. Choose one of the options below
 - [Run Nextpie on a Non-Default Port](non-default-port.md)  
 - [Nextpie API Documentation](api.md)  
 - [Admin Interface](admin.md)  
+
+---
+
+## 🎥 Demo Videos
+
+- [Nextpie Web UI Overview](https://youtu.be/069BpLCY42c)  
+- [Generating Plots via Web UI](https://youtu.be/LSUZ7l-sJLU)  
+- [Manually Uploading Trace Files](https://youtu.be/9uKZO2qpCug)
+- [Using nf-core pipelines with Nextpie](https://youtu.be/tVVx3bXz2F0)
